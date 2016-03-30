@@ -16,3 +16,8 @@ AdaCrash.log
 AdaCrash.out
 AdaCrash.pdf
 AdaCrash.toc
+
+# Artifacts related to the web site.
+Ada-Mascot.png
+Thumbs.db
+samples.zip
