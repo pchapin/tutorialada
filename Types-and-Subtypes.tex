@@ -1,0 +1,363 @@
+\section{Types and Subtypes}
+
+In the examples so far you have seen the built-in types |Integer| and |Character|. Ada also has
+a type |Float| for floating point values and a type |Boolean| for true/false values. These types
+are similar to their counterparts in other programming languages. However, it may surprise you
+to learn that, with the possible exception of |Boolean|, these built-in types are often not used
+directly. Instead Ada encourages you to define types that reflect your problem domain and then
+use your types throughout your program. There is nothing new about this idea; many languages
+support some mechanism for creating user defined types. However, in Ada it is possible to create
+even user defined integer, floating point, and character types---a feature many languages do not
+support.
+
+To explore this idea further, I will start by introducing Ada's \newterm{strong typing}. There
+is no precise definition of this term, but for our purposes we will say that a strongly typed
+language is one which does very few, if any, implicit type conversions. Unlike C, for example,
+Ada will not convert integers to floating point values or vice-versa without explicit
+instruction from the programmer. The example procedure in Listing~\ref{lst:strong-typing}
+illustrates the effect.
+
+\begin{figure}[tbhp]
+\begin{lstlisting}[
+  frame=single,
+  xleftmargin=0in,
+  caption={Vowel Counting Program},
+  label=lst:strong-typing]
+procedure Strong_Typing_Example is
+   I : Integer;
+   F : Float;
+begin
+   I := 1;    -- Okay.
+   I := 1.0;  -- Error. Can't assign a Float to an Integer.
+   F := 1;    -- Error. Can't assign an Integer to a Float.
+   F := 1.0;  -- Okay.
+   F := I;    -- Error.
+   I := F;    -- Error.
+   F := Float(I);    -- Okay. Explicit conversion.
+   I := Integer(F);  -- Okay. Explicit conversion.
+end Strong_Typing_Example;
+\end{lstlisting}
+\end{figure}
+
+If you are not used to strong typing you may find it excessively pedantic and annoying. However,
+it exists for a reason. Experience has shown that many bugs first manifest themselves as
+confusion about types. If you find yourself mixing types in your program, it may mean that you
+have a logical error. Does it make sense to put a value representing aircraft velocity into a
+variable that holds a passenger count? Strong typing can catch errors like this, and thus it
+promotes software reliability.
+
+By creating a new type for each logically distinct set of values in your program, you enable the
+compiler to find logical errors that it might otherwise miss. For example, suppose you are
+working on a program that manipulates a two dimensional array of graphical pixels. Instead of
+using |Integer| to represent pixel coordinates you might define separate types as follows:
+
+\begin{lstlisting}
+type X_Coordinate_Type is new Integer;
+type Y_Coordinate_Type is new Integer;
+\end{lstlisting}
+
+Here the two types |X_Coordinate_Type| and |Y_Coordinate_Type| are distinct types with no
+implicit conversion from one to the other, even though fundamentally both are integer types. Yet
+because they are distinct, assigning a Y coordinate value to a variable intended to hold an X
+coordinate is now a compile-time error rather than a mistake to be found, if you are lucky,
+during testing. For example suppose you had the variables:
+
+\begin{lstlisting}
+Base_Length : X_Coordinate_Type;
+Side_Length : Y_Coordinate_Type;
+\end{lstlisting}
+
+\noindent Now an assignment such as:
+
+\begin{lstlisting}
+Side_Length := Base_Length;
+\end{lstlisting}
+
+\noindent is caught by the compiler as a type mismatch error. If you actually desire to do this
+assignment anyway because, perhaps, you are talking about a square figure, you can use an
+explicit type conversion:
+
+\begin{lstlisting}
+Side_Length := Y_Coordinate_Type(Base_Length);
+\end{lstlisting}
+
+You might feel that distinguishing between coordinate values in two dimensions is overly
+restrictive. Yet it may still make sense to define a separate |Coordinate_Type| to distinguish
+values that are pixel coordinates from other kinds of integers in your program such as, for
+example, line counters, TCP/IP port numbers, user ID numbers, and so forth. In a language like C
+where a single type ``int'' might be used to hold all the values I mentioned, the compiler is
+powerless to detect illogical mixing of those values across what are really totally different
+conceptual domains.
+
+In C++ one could create a class representing each logical concept, and then use overloaded
+operators to make instances of that class appear integer-like. However, that is a very
+heavy-handed approach to solve what should be a simple problem. Thus, it is not commonly
+done.\footnote{If you are a C++ person, as an exercise try writing a C++ template that allows
+  you to ``easily'' define distinct, integer-like types. Compare your result with the Ada
+  facility described here.}
+
+Ada also allows you to constrain the range of allowed values when you define a new scalar type.
+Consider the pixel coordinate example again, and suppose that the drawing area is limited to
+2048 pixels in width and 1024 pixels in height. These limitations can be made known to Ada's
+type system using type definitions such as:
+
+\begin{lstlisting}
+type X_Coordinate_Type is range 0 .. (2048 - 1);
+type Y_Coordinate_Type is range 0 .. (1024 - 1);
+\end{lstlisting}
+
+Here the (still distinct) types are defined as constrained ranges on |Integer| with the bounds
+on |X_Coordinate_Type| running from 0 to 2047 inclusive. When defining new types like this Ada
+requires that the ranges be \newterm{static expressions} that can be computed by the compiler.
+Thus, an expression such as |2048 - 1| is acceptable but an expression involving a variable is
+not.
+
+Whenever a value is assigned to a variable the compiler inserts runtime checks, if necessary, to
+verify that the assigned value is in the range of that variable's type. If a range check fails,
+the |Constraint_Error| exception is raised. Notice that, unlike the type checking, range checks
+are done at runtime. For example:
+
+\begin{lstlisting}
+Side_Length := Y_Coordinate_Type(Base_Length); -- Might raise Constraint_Error.
+Base_Length := X_Coordinate_Type(Side_Length); -- No Constraint_Error possible.
+Side_Length := 1024;  -- Will raise Constraint_Error at runtime.
+Side_Length := 1023;  -- No Constraint_Error possible.
+\end{lstlisting}
+
+The first assignment above might raise |Constraint_Error| because the value in |Base_Length|
+could be out of range for type |Y_Coordinate_Type|. However, the compiler can't know for sure
+(in general) without running your program, and so the check is done at runtime. However, the
+compiler can be sure that the second assignment above will not raise |Constraint_Error| since
+every possible value of |Y_Coordinate_Type| is legitimate for |X_Coordinate_Type|. Thus the
+compiler is encouraged, although not required, to ``optimize away'' the runtime check.
+
+The third assignment above clearly tries to put an out of range value into |Side_Length| but the
+program will compile anyway. Failed range checks are uniformly handled at runtime; the Ada
+language does not require compilers to detect any of them at compile time, no matter how obvious
+they may be. That said, a reasonable compiler will notice the obvious range violation in this
+example and produce a warning message about it.
+
+Defining your own types also helps you write portable programs. The only integer type compilers
+must support is |Integer|. The number of bits used by type |Integer| is implementation defined
+and varies from compiler to compiler. Most compilers support additional, non-standard integer
+types such as |Long_Integer| and |Long_Long_Integer|. However, the names of these additional
+types, and even their existence, varies from compiler to compiler. Rather than deal with this
+complexity directly you can just specify the range of values you desire and the compiler will
+select the most appropriate underlying type. For example
+
+\begin{lstlisting}
+type Block_Counter_Type is range 0 .. 1_000_000_000;
+\end{lstlisting}
+
+Variables of type |Block_Counter_Type| may be represented as |Integer| or |Long_Integer| or some
+other type as appropriate. In any case they will be constrained to only hold values between zero
+and one billion inclusive. If the compiler does not have a built-in integer type with a large
+enough range it will produce an error message. If the compiler accepts your type definition you
+will not get any surprises. Notice also how Ada allows you to embed underscores in large numbers
+to improve their readability.
+
+Ada also allows you to define \newterm{modular types}. These types are unsigned and have
+``wrap-around'' semantics. Incrementing beyond the end of an ordinary type causes an exception,
+but incrementing beyond the end of a modular type wraps around to zero. In addition the
+operators |not|, |and|, |or|, and |xor| can be used on modular types to do bitwise manipulation.
+The following listing demonstrates this:
+
+\begin{lstlisting}
+type Offset_Type is mod 2**12;  -- Two to the 12th power.
+-- The range of Offset_Type is 0 .. 2**12 - 1.
+...
+Offset : Offset_Type;
+...
+Offset := Offset and 16#3FF#;   -- Bitwise AND with a hex mask.
+\end{lstlisting}
+
+\noindent Here a modular type |Offset_Type| is introduced to hold 12 bit offsets. The variable
+|Offset| is masked so that only the lower 10 bits are retained. The snippet above also
+demonstrates Ada's exponentiation operator and how numbers in bases other than 10 can be
+written. Because Ada was designed for use in embedded systems, its support for low level bit
+manipulation is good.
+
+\subsection{Enumeration Types}
+
+In many cases you want to define a type that has only a small number of allowed values and you
+want to name those values abstractly. For example, the definition
+
+\begin{lstlisting}
+type Day_Type is (Sun, Mon, Tue, Wed, Thu, Fri, Sat);
+\end{lstlisting}
+
+\noindent introduces |Day_Type| as an \newterm{enumeration type}. Variables of type |Day_Type|
+can only take on the values listed in the type definition. Those values are called
+\newterm{enumerators}. This is useful for writing your program in abstract terms that are easy
+to understand. Because the compiler treats enumeration types as distinct from integer types (and
+from each other) you will not be allowed to mix unrelated concepts without compile time errors.
+
+Enumeration types are useful for modeling real world entities that have a limited number of
+distinct states. They can also be used as more descriptive alternatives to the built-in type
+|Boolean|. For example:
+
+\begin{lstlisting}
+type Color_Type is (Red, Yellow, Green);
+type State_Type is (Initializing, Waiting, Processing, Stopping);
+
+-- These types are alternatives to Boolean's True/False.
+type Switch_Setting is (Off, On);
+type Control_Rod_Setting is (Down, Up);
+type System_Mode is (Sleeping, Active);
+\end{lstlisting}
+
+Actually, the built-in type |Boolean| is an enumeration type; it behaves exactly as if it was
+defined as:
+
+\begin{lstlisting}
+type Boolean is (False, True);
+\end{lstlisting}
+
+\noindent Even the built-in type |Character| is an enumeration type where the enumerators are
+the character literals.
+
+\subsection{Discrete Types}
+
+The integer types and enumeration types are \newterm{discrete types} because they each represent
+only a finite set of (ordered) values. All discrete types share some common properties and it is
+enlightening to describe those properties in a uniform way.
+
+Ada makes extensive use of \newterm{attributes}. You reference an attribute of a type using an
+apostrophe (or ``tick'') immediately following the type name. For example, |Day_Type'First|
+represents the first value in the |Day_Type| enumeration and |Integer'First| represents the
+first (smallest) allowed value of |Integer|. There is also a |Last| attribute to access the last
+allowed value. Some attributes behave like functions. For example |Day_Type'Succ(Sun)| returns
+|Mon|, the successor of |Sun| in the |Day_Type| enumeration. There is also a |Pred| attribute
+for finding the predecessor value.
+
+In addition there is a |Pos| attribute that returns the integer position of a particular
+enumerator and a |Val| attribute that does the reverse. For example |Day_Type'Pos(Mon)| is one
+(the position values start at zero) and |Day_Type'Val(1)| is |Mon|. Ada defines many attributes
+and we will see others later in this tutorial.
+
+Ranges of discrete types can be defined in a uniform way and used, for example, as cases in
+|case| statements and ranges of |for| loops. The following listing shows a contrived example:
+
+\begin{lstlisting}
+for Day in Sun .. Fri loop
+  case Day in
+    when Sun        => -- etc...
+    when Mon | Tue  => -- etc...
+    when Wed .. Fri => -- etc...
+  end case;
+end loop;
+\end{lstlisting}
+
+\noindent Notice that despite Ada's full coverage rules it is not necessary to specify a case
+for |Sat|. This is because the compiler can see |Day| is limited to |Sun .. Fri| and thus will
+never take on the value |Sat|. Recall that the loop index variable of a |for| loop can not be
+modified inside the loop so there is no possibility of the programmer setting |Day| to |Sat|
+before the |case| statement is reached.
+
+\subsection{Subtypes}
+
+As we have seen, when a new type is defined using |type|, the compiler regards it as distinct
+from all other types. This is strong typing. However, sometimes it is better to define a
+constraint on an existing type rather than introduce an entirely new type. There are several
+different kinds of constraints one might define depending on the type being constrained. In this
+section I will talk about range constraints on discrete types. As an example, consider the
+definition:
+
+\begin{lstlisting}
+subtype Weekday is Day_Type range Mon .. Fri;
+\end{lstlisting}
+
+\noindent This introduces a \newterm{subtype} named |Weekday| that only contains the values
+|Mon| through |Fri|. It is important to understand that a subtype is not a new type, but just a
+name for a constrained version of the parent type. The compiler allows variables of a subtype to
+be mixed freely with variables of the parent type. Runtime checks are added if necessary to
+verify that no value is ever stored in a variable outside the range of its subtype. If an
+attempt is made to do so, the |Constraint_Error| exception is raised. The following listing
+shows an example:
+
+\begin{lstlisting}
+procedure Demonstrate_Subtypes
+  (Lower, Upper : in Day_Type; Day : in out Day_Type) is
+
+  subtype Interval is Day_Type range Lower .. Upper;
+  X : Interval := Interval'First;
+begin
+  Day := X;  -- No run time check. Will definitely succeed.
+  X := Day;  -- Run time check. Day might be out of range.
+End Demonstrate_Subtypes;
+\end{lstlisting}
+
+In this example a subtype |Interval| is defined in the procedure's declarative part. The
+variable |X| of type |Interval| is given |Interval|'s first value. Mixing |Interval| and
+|Day_Type| variables in the later assignment statements is allowed because they are really both
+of the same type. Because |Interval| is a subtype of |Day_Type| the assignment of |X| to |Day|
+must succeed. Thus the compiler does not need to include any runtime checks on the value of |X|.
+However, the value of |Day| might be outside the allowed range of the subtype and so the
+compiler will need to insert a runtime check on |Day|'s value before assigning it to |X|. If
+that check fails, the |Constraint_Error| exception is raised. Under no circumstances can an out
+of bounds value be stored in a variable.
+
+I should point out that in this particular (simplistic) example the compiler's optimizer may be
+able to see that the value in |Day| will be in bounds of the subtype since in the assignment
+just before it was given a value from the subtype. In that case the compiler is allowed, and
+encouraged, to optimize away the run time check that would normally be required. In general Ada
+allows any check to be optimized away if the compiler can prove the check will never fail since
+doing so will cause no observable change to the program's behavior.
+
+This example also illustrates another important aspect of subtypes: unlike full type, subtypes
+can be dynamically defined. Notice that the range on the subtype is taken from the procedure's
+parameters. Each time the procedure is called that range might be different. In contrast, as
+mentioned previously, the range specified on full type definitions must be static.
+
+A range such as |1 .. 10| is really an abbreviation for the specification of a subtype:
+
+\begin{lstlisting}
+Integer range 1 .. 10
+\end{lstlisting}
+
+\noindent Thus a |for| loop header such as |for I in 1 .. 10| is really just an abbreviation for
+the more specific |for I in Integer range 1 .. 10|. In general the |for| loop specifies a
+subtype over which the loop index variable ranges. This is why above it was not necessary to
+provide a case for |Sat|. The loop parameter |Day| implicitly declared in the loop header has
+the subtype |Day_Type range Sun .. Fri|. The |case| statement contains alternatives for all
+possible values in that subtype so the full coverage rules were satisfied.
+
+The Ada environment predefines two important and useful subtypes of |Integer|. Although you
+never have to explicitly define these types yourself, the compiler behaves as if the following
+two subtype definitions were always directly visible:
+
+\begin{lstlisting}
+subtype Natural is Integer range 0 .. Integer'Last;
+subtype Positive is Integer range 1 .. Integer'Last;
+\end{lstlisting}
+
+\noindent The subtype |Natural| is often useful for counters of various kinds. Since counts
+can't be negative the run time checking on |Natural|'s range constraint can help you find
+program errors. The subtype |Positive| is useful for cases where zero is a nonsensical value
+that should never arise. It is also often used for array indexes as you will see.
+
+\subsection*{Exercises}
+
+\begin{enumerate}
+\item Using the definition of |Day_Type| presented earlier would you guess that the following
+  works or produces a compiler error: |for Day in Day_Type loop ...|? Write a short program to
+  see how the compiler behaves when presented with a loop like this.
+
+\item In the discussion above separate |X_Coordinate_Type| and |Y_Coordinate_Type| definitions
+  where introduced. What disadvantage is there to keeping these concepts distinct? Would it be
+  better to use a single |Coordinate_Type| for both X and Y coordinates instead? Discuss the
+  advantages and disadvantages of both approaches.
+
+\item One question that often comes up in the design of Ada programs is if a certain concept
+  should get a distinct type or be defined as a subtype of some other type. What are the
+  relative advantages and disadvantages of full types versus subtypes? Think of an example
+  (other than the ones discussed here) where two concepts are best represented as separate
+  types, and an example where two concepts are best represented by one being a subtype of the
+  other.
+
+\item Pick a program you've written in some other language and identify the different ways in
+  which the integer type is used. If you were to translate your program to Ada, which of those
+  ways would best get new types and which would best be subtypes? Show appropriate type/subtype
+  definitions.
+\end{enumerate}
+

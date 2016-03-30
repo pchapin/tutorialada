@@ -1,0 +1,180 @@
+\section{Control Structures}
+\label{sec:control-structures}
+
+Ada contains all the usual control structures you would expect in a modern language. The program
+in Listing~\ref{lst:prime-program} illustrates a few of them, along with several other features.
+This program accepts an integer from the user and checks to see if it is a prime number.
+
+\begin{figure}[tbhp]
+\begin{lstlisting}[
+  frame=single,
+  xleftmargin=0in,
+  caption={Prime Checking Program},
+  label=lst:prime-program]
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+procedure Prime is
+   Number : Integer;
+begin
+   Put("Enter an integer: ");
+   Get(Number);
+   if Number < 2 then
+      Put("The value "); Put(Number, 0); Put_Line(" is bad.");
+   else
+      Put("The value "); Put(Number, 0);
+      for I in 2 .. (Number - 1) loop
+         if Number rem I = 0 then
+            Put_Line(" is not prime.");
+            return;
+         end if;
+      end loop;
+      Put_Line(" is prime.");
+   end if;
+end Prime;
+\end{lstlisting}    
+\end{figure}
+
+The program declares a local variable named |Number| of type |Integer| in its declarative part.
+Notice that the type appears after the name being declared (the opposite of C family languages),
+separated from that name with a colon.
+
+Procedure |Get| from package |Ada.Integer_Text_IO| is used to read an integer from the console.
+If the value entered is less than two an error message is displayed. Notice that there are two
+different |Put| procedures being used: one that outputs a string and another that outputs an
+integer. Like C++, Java, and some other modern languages, Ada allows procedure names to be
+overloaded distinguishing one procedure from another based on the parameters. In this case the
+two different |Put| procedures are also in different packages but that fact is not immediately
+evident because of the |use| statements.
+
+If the value entered is two or more, the program uses a |for| loop to see if any value less than
+the given number divides into it evenly (that is, produces a zero remainder after division, as
+calculated with the |rem| operator). Ada |for| loops scan over the given range assigning each
+value in that range to the loop parameter variable (named |I| in this case) one at a time.
+Notice that it is not necessary to explicitly declare the loop parameter variable. The compiler
+deduces its type based on the type used to define the loop's range. It is also important to
+understand that if the start of the range is greater than the end of the range, the result is an
+empty range. For example, the range |2 .. 1| contains no members and a loop using that range
+won't execute at all. It does not execute starting at two and counting down to one. You need to
+use the word |reverse| to get that effect:
+
+\begin{lstlisting}
+for I in reverse 1 .. 2 loop
+\end{lstlisting}
+
+Notice also that |if| statements require the word |then| and that each |end| is decorated by the
+name of the control structure that is ending. Finally notice that a single equal sign is used to
+test for equality. There is no ``=='' operator in Ada.
+
+The program in Listing~\ref{lst:vowel-program} counts the vowels in the text at its standard
+input. You can provide data to this program either by typing text at the console where you run
+it or by using your operating system's I/O redirection operators to connect the program's input
+to a text file.
+
+\begin{figure}[tbhp]
+\begin{lstlisting}[
+  frame=single,
+  xleftmargin=0in,
+  caption={Vowel Counting Program},
+  label=lst:vowel-program]
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+procedure Vowels is
+   Letter      : Character;
+   Vowel_Count : Integer := 0;
+   Y_Count     : Integer := 0;
+begin
+   while not End_Of_File loop
+      Get(Letter);
+      case Letter is
+         when 'A'|'E'|'I'|'O'|'U' |
+              'a'|'e'|'i'|'o'|'u' =>
+            Vowel_Count := Vowel_Count + 1;
+            
+         when 'Y'|'y' =>
+            Y_Count := Y_Count + 1;
+            
+         when others =>
+            null;
+      end case;
+   end loop;
+   Put("Total number of vowels = "); Put(Vowel_Count); New_Line;
+   Put("Total number of Ys = "); Put(Y_Count); New_Line;
+end Vowels;
+\end{lstlisting}
+\end{figure}
+
+This program illustrates |while| loops and |case| structures (similar to C's switch statement).
+There are quite a few things to point out about this program. Let's look at them in turn.
+
+\begin{itemize}
+\item Variables can be initialized when they are declared. The |:=| symbol is used to give a
+  variable its initial value (and also to assign a new value to a variable). Thus like C family
+  languages, Ada distinguishes between test for equality (using |=|) and assignment (using
+  |:=|). Unlike C family languages you'll never get them mixed up because the compiler will
+  catch all incorrect usage as an error.
+
+\item In this program the condition in the |while| loop involves calling the function
+  |End_Of_File| in package |Ada.Text_IO|. This function returns |True| if the standard input
+  device is in an end-of-file state. Notice that Ada does not require (or even allow) you to use
+  an empty parameter list on functions that take no parameters. This means that function
+  |End_Of_File| looks like a variable when it is used. This is considered a feature; it means
+  that read-only variables can be replaced by parameterless functions without requiring any
+  modification of the source code that uses that variable.
+
+\item The program uses the logical operator |not|. There are also operators |and| and |or| that
+  can be used in the expected way.
+
+\item The |case| statement branches to the appropriate |when| clause depending on the value in
+  the variable |Letter|. The two |when| clauses in this program show multiple alternatives
+  separated by vertical bars. If any of the alternatives match, that clause is executed. You can
+  also specify ranges in a |when| clause such as, for example, |when 1 .. 10 => etc|.
+
+\item Unlike C family languages there is no ``break'' at the end of each |when| clause. The flow
+  of control does \emph{not} fall through to the next |when| clause.
+
+\item Ada has what are called \newterm{full coverage rules}. In a |case| statement you must
+  account for every possible value that might occur. Providing |when| clauses for just the
+  vowels would be an error since you would not have fully covered all possible characters (the
+  type of |Letter| is |Character|). In this program I want to ignore the other characters. To do
+  this, I provide a |when others| clause that executes the special |null| statement. This lets
+  future readers of my program know that I am ignoring the other characters intentionally and
+  it's not just an oversight.
+
+\item |New_Line| is a parameterless procedure in package |Ada.Text_IO| that advances the output
+  to the next line. More accurately, |New_Line| is a procedure with a default parameter that can
+  be used to specify the number of lines to advance, for example: |New_Line(2)|.
+\end{itemize}
+
+\subsection*{Exercises}
+
+\begin{enumerate}
+\item The prime number program in Listing~\ref{lst:prime-program} is not very efficient. It can
+  be improved by taking advantage of the following observation: If |Number| is not divisible by
+  any value less than |I|, then it can't be divisible by any value greater than |Number/I|. Thus
+  the upper bound of the loop can be reduced as |I| increases. Modify the program to use this
+  observation to improve its performance. Note: You will have to change the |for| loop to a
+  |while| loop (try using a |for| loop first and see what happens).
+
+\item Modify the prime number program again so that it loops repeatedly accepting numbers from
+  the user until the user types -1. You can program an infinite loop in Ada as shown below. Have
+  your program print different error messages for negative numbers (other than -1) than for the
+  values zero and one. Use an |if| \ldots\ |elsif| chain (note the spelling of |elsif|). Write a
+  version that uses a |case| statement instead of an |if| \ldots\ |elsif| chain. You can use
+  |Integer'First| in a range definition to represent the first (smallest) |Integer| value the
+  compiler can represent.
+
+  \begin{lstlisting}[escapechar=\@]
+  loop
+     ...
+     exit when @\textit{condition}@
+     ...
+  end loop;
+  \end{lstlisting}
+
+\item \textit{Challenging}. The vowel counting program in Listing~\ref{lst:vowel-program} counts
+  `Y' separately because in English `Y' is sometimes a vowel and sometimes not. Modify the
+  program so that it adds occurrences of `Y' to the vowel counter only when appropriate.
+\end{enumerate}
+

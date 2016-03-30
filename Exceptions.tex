@@ -1,0 +1,131 @@
+\section{Exceptions}
+
+Like many modern programming languages, Ada allows subprograms to report error conditions using
+exceptions. When an error condition is detected an exception is raised. The exception propagates
+to the dynamically nearest handler for that exception. Once the handler has executed the
+exception is said to have been handled and execution continues after the handler. Exceptions are
+not resumable. This model is largely the same as that used by C++ although the terminology is
+different. However, unlike C++, Ada exceptions are not ordinary objects with ordinary types. In
+fact, Ada exceptions don't have a type at all and exist outside the language's type system.
+
+Exceptions are typically defined in a package specification. They are then raised in the package
+body under appropriate conditions and handled by the package users. The following example shows
+part of a specification for a |Big_Number| package that supports operations on arbitrary
+precision integers.
+
+\begin{lstlisting}
+package Big_Number is
+  type Number_Type is private;
+
+  Divide_By_Zero : exception;
+
+  function "+"(Left, Right : Number_Type) return Number_Type;
+  function "-"(Left, Right : Number_Type) return Number_Type;
+  function "*"(Left, Right : Number_Type) return Number_Type;
+  function "/"(Left, Right : Number_Type) return Number_Type;
+
+private
+  -- Not shown.
+end Big_Number;
+\end{lstlisting}
+
+Notice that Ada, like C++, allows operators to be overloaded. In Ada this is done by defining
+functions with names given by the operator names in quotation marks. This package also defines
+an exception that will be raised when one attempts to use |Big_Number."/"| with a zero divisor.
+
+The implementation of the division operation might look, in part, as follows:
+
+\begin{lstlisting}
+function "/"(Left, Right : Number_Type) return Number_Type is
+begin
+  -- Assume there is a suitable overloaded “=” operator.
+  if Right = 0 then
+    raise Divide_By_Zero;
+  end if;
+
+  -- Proceed knowing that the divisor is not zero.
+end "/";
+\end{lstlisting}
+
+\noindent As you might guess, the |raise| statement aborts execution of the function
+immediately. A procedure that wishes to use |Big_Number| might try to handle this exception in
+some useful way. The following example shows the syntax:
+
+\begin{lstlisting}
+procedure Example is
+  use type Big_Number.Number_Type;
+  X, Y, Z : Big_Number.Number_Type;
+begin
+  -- Fill Y and Z with interesting values.
+  X : = Y / Z;
+
+exception
+  when Big_Number.Divide_By_Zero =>
+    Put_Line("Big Number division by zero!");
+
+  when others =>
+    Put_Line("Unexpected exception!");
+end Example;
+\end{lstlisting}
+
+\noindent The block delimited by |begin| and |end| can contain a header |exception|. After that
+header a series of |when| clauses specify which exceptions the block is prepared to handle. The
+special clause |when others| is optional and is used for all exceptions that are otherwise not
+mentioned.
+
+If the normal statements in the block execute without exception, control continues after the
+block (skipping over the exception clauses). In the previous example the procedure returns at
+that point. If an exception occurs in the block, that exception is matched against those
+mentioned in the when clauses. If a match is found the corresponding statements are executed and
+then control continues after the block. If no match is found, the block is aborted and the next
+dynamically enclosing block is searched for a handler instead. If you are familiar with C++ or
+Java exceptions none of this should be surprising.
+
+The previous example also shows an interesting detail related to operator overloading. The
+example assumes that there is a context clause of |with Big_Number| (not shown) but no |use|
+statement. Thus the division operator is properly named |Big_Number."/"|. Unfortunately it can't
+be called using the infix operator notation with that name. There are several ways to get around
+this. One could include a |use Big_Number| in the context clause or in the procedure's
+declarative part. However that would also make all the other names in package |Big_Number|
+directly visible and that might not be desired. An alternative is to introduce a local function
+named |"/"| that is just a renaming (essentially an alias) of the function in the other package.
+As we have seen Ada allows such renaming declarations in many situations, but in this case,
+every operator function would need a corresponding renaming and that could be tedious.
+
+Instead the example shows a more elegant approach. The |use type| declaration tells the compiler
+that the primitive operations of the named type should be made directly visible. I will discuss
+primitive operations in more detail in the section on object oriented programming. In this case,
+the operator overloads that are declared in package |Big_Number| are primitive operations. This
+method allows all the operator overloads to be made directly visible with one easy statement,
+and yet does not make every name in the package directly visible.
+
+The Ada language specifies four predefined exceptions. These exceptions are declared in package
+|Standard| (recall that package |Standard| is effectively built into the compiler) and thus
+directly visible at all times. The four predefined exceptions with their use are described as
+follows:
+
+\begin{itemize}
+
+\item |Constraint_Error|. Raised whenever a constraint is violated. This includes going outside
+  the bounds of a subtype (or equivalently the allowed range of an array index) as well as
+  various other situations.
+
+\item |Program_Error|. Raised when certain ill formed programs that can't be detected by the
+  compiler are executed. For example, if a function ends without executing a return statement,
+  |Program_Error| is raised.
+
+\item |Storage_Error|. Raised when the program is out of memory. This can occur during dynamic
+  memory allocation, or be due to a lack of stack space when invoking a subprogram. This can
+  also occur during the elaboration of a declarative part (for example if the dynamic bounds
+  on an array are too large).
+
+\item |Tasking_Error|. Raised in connection with certain tasking problems.
+
+\end{itemize}
+
+Most of the time the predefined exceptions are raised automatically by the program under the
+appropriate conditions. It is legal for you to explicitly raise them if you choose, but it is
+recommended that you define your own exceptions for your code. Note that the Ada standard
+library defines some additional exceptions as well. Those exceptions are not really predefined
+because, unlike the four above, they are not built into the language itself.
+

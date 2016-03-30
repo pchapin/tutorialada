@@ -1,0 +1,115 @@
+\section{Generics}
+
+Statically checked strongly typed languages like Ada force subprogram argument types and
+parameter types to match at compile time. This is awkward in situations where the same sequence
+of instructions could be applied to several different types. To satisfy the compile time type
+checking requirements, it is necessary to duplicate those instructions for each type being used.
+To get around this problem, Ada allows you to define generic subprograms and generic packages
+where the types used are parameters to the generic unit. Whenever a new version of the generic
+unit is needed, it is \newterm{instantiated} by the compiler for specific values of the type
+parameters.
+
+Ada generics are very similar in concept and purpose to C++ templates. Like C++ templates,
+generics are handled entirely at compile time; each instantiation generates code that is
+specialized for the types used to instantiate it. This is different than generics in Java which
+are resolved at run time and that use a common code base for all instances. However, Ada
+generics and C++ templates also differ in some important ways. First Ada requires the programmer
+to explicitly instantiate a generic unit using special syntax. In C++ instantiations are done
+implicitly. In addition, Ada generics do not support explicit specialization or partial
+specialization, two features of C++ templates that are used in many advanced template libraries.
+
+There are pros and cons to Ada's approach as compared to C++'s method. With Ada, it is very
+clear where the instantiation occurs (since it is shown explicitly in the source code). However,
+C++'s method enables advanced programming techniques (template meta-programming) that Ada can't
+easily replicate.
+
+The other major difference between Ada generics and C++ templates is that Ada allows the
+programmer to specify the necessary properties of the types used to instantiate a generic unit.
+In contrast in C++ one only says that the parameter is a type. If a type is used to instantiate
+a template that doesn't make sense, the compiler only realizes that when it is actually doing
+the instantiation. The resulting error messages can be very cryptic. In contrast the Ada
+compiler can check before it begins the instantiation if the given types are acceptable. If they
+are not, it can provide a much clearer and more specific error message.
+
+To illustrate how Ada generics look, consider the following example that shows the specification
+of a generic package containing a number of sorting procedures.
+
+\begin{lstlisting}
+generic
+  type Element_Type is private;
+  with function "<"(Left, Right : Element_Type) return Boolean is <>;
+package Sorters is
+  type Element_Array is array(Natural range <>) of Element_Type;
+
+  procedure Quick_Sort(Sequence : in out Element_Array);
+  procedure Heap_Sort(Sequence : in out Element_Array);
+  procedure Bubble_Sort(Sequence : in out Element_Array);
+end Sorters;
+\end{lstlisting}
+
+Notice that the specification has a generic header that defines the parameters to this generic
+unit. The first such parameter is a type that will be called |Element_Type| in the scope of the
+generic package. It is declared as a private type to indicate that the package will only (by
+default) be able to assign and compare for equality objects of that type. It is thus possible to
+instantiate this package for private types, but non-private types like |Integer|, arrays, and
+records also have the necessary abilities and can be used. However, a limited type (for example,
+a type declared as |limited private| in some other package) can not be used.
+
+This generic package also requires its user to provide a function that can compare two
+|Element_Type| objects. That function is called |"<"| in the scope of the package, but it could
+be called anything by the user. It must, however, have the same profile (the same number and
+type of parameters). The |<>| symbol at the end of the function parameter indicates that the
+compiler should automatically fill in the required function if one is available at the
+instantiation point. This allows the user to instantiate the package using just one type
+argument if the default |"<"| for that type is acceptable.
+
+Inside the implementation of the generic package, |Element_Type| can be used as a private type
+except that it is also permitted to use |"<"| to compare two |Element_Type| objects. No other
+operations on |Element_Type| objects are allowed to guarantee the package will instantiate
+correctly with any type the user is allowed to use.
+
+The following example shows how this package might be used:
+
+\begin{lstlisting}
+with Sorters;
+
+procedure Example is
+  package Integer_Sorters is
+    new Sorters(Element_Type => Integer, "<" => Standard."<");
+
+  Data : Integer_Sorters.Element_Array;
+begin
+  -- Fill Data with interesting information.
+
+  Integer_Sorters.Quick_Sort(Data);
+end Example;
+\end{lstlisting}
+
+Notice the first line in the declarative region that instantiates the generic unit. In the
+example, named parameter association is used to bind the generic unit's arguments to its
+parameters. The strange looking construction |"<" => Standard."<"| is an association between the
+generic parameter |"<"| (the comparison function) and the operator $<$ that applies to integers
+(declared in package |Standard|). It would be more typical for the right side of this
+association (and even the left side as well) to be named functions.
+
+In fact the second parameter of the instantiation is not actually necessary in this case
+because, due to the |<>| symbol used in the generic parameter declaration, the compiler will
+fill in the proper function automatically. However, it is still possible to provide the function
+explicitly in cases where some different function is desired.
+
+The name |Integer_Sorters| is given to the specific instance created. That name can then be used
+like the name of any other package. In fact, it is legal (and common) to follow a generic
+instantiation with a |use| statement to make the contents of the newly instantiated package
+directly visible.
+
+Ada also allows procedures and functions to be generic using an analogous syntax.
+
+This example is fairly simple in that the generic type parameter has very limited abilities. It
+is also possible to specify that the parameter is a discrete type (thus allowing the use of
+|'First|, |'Last|, |'Succ| and |'Pred| attributes), an access type, a tagged type, a modular
+type, a floating point type, and various other possibilities. In addition, Ada's generic
+facility allows generic units to be parameterized on values (so called ``non-type'' parameters
+in C++) and variables. I refer you to one of the references for more information on generic
+units in Ada. The discussion here is only scratching the surface of this large and important
+topic.
+

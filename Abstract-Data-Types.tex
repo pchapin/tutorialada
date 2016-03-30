@@ -1,0 +1,72 @@
+\section{Abstract Data Types}
+
+Often it is desirable to hide the internal structure of a type from its users. This allows the
+designer of that type to change its internal structure later without affecting the code that
+uses that type. Ada supports this concept by way of private types. A type can be declared as
+private in the visible part of a package specification. Users can then create variables of that
+type and use the built in assignment and equality test operations on that type. All other
+operations, however, must be provided in the package where the type is defined. Subprograms in
+the same package as the type have access to the type's internal representation. The following
+example shows a hypothetical package that provides a type representing calendar dates.
+
+\begin{lstlisting}
+package Example is
+   type Date is private;
+
+   function Make(Year, Month, Day : Integer) return Date;
+   function Get_Year(Today : Date) return Integer;
+   -- etc...
+   function Day_Difference(Future, Past : Date) return Integer;
+   -- etc...
+
+private
+   type Date is
+      record
+         Y : Integer;
+         M : Integer;
+         D : Integer;
+      end record;
+end Example;
+\end{lstlisting}
+
+Note that in a more realistic version of this package, one might introduce different types for
+year, month, and day values in order to prevent programs from accidentally mixing up those
+concepts. However, in the interest of brevity I do not show that in this example. The type
+|Date| is declared private in the visible part of the specification. It is then later fully
+defined as a record in the private part.
+
+Theoretically the full view of a type should not be in the specification at all; it is part of
+the package's implementation and thus should only be in the package body. However, Ada requires
+that private types be fully defined in package specifications as a concession to limited
+compiler technology. When the compiler translates code that declares variables of the private
+type, it needs to know how much memory to set aside for such variables. Thus while the
+programmer is forbidden to make use of the private type's internal structure, the compiler needs
+to do so. Note that some programming languages go further than Ada in this regard and move all
+such private information out of the interface definition. However, there is generally an
+execution performance penalty involved in doing this. In Ada it is possible to simulate such a
+feature using the so called ``pimpl idiom.'' This method involves access types and controlled
+types and so is not described further here.
+
+Note also that the full view of a private type does not need to be a record type. Although
+records are common in this situation, private types can be implemented as arrays or even just
+simple scalars like |Integer| or |Float|.
+
+Private types do allow assignment and equality tests. However, in some cases it is desirable to
+disallow those things. Ada makes this possible using limited private types. A declaration such
+as:
+
+\begin{lstlisting}
+type Date is limited private;
+\end{lstlisting}
+
+\noindent tells the compiler to disallow built in assignment and equality tests for the
+specified type. This does not mean assignment is impossible; it only means that the package
+author must now provide a procedure to do assignment---if support for assignment is desired.
+Presumably that procedure would take whatever steps were necessary to make the assignment work
+properly. Calendar dates are not good candidates to make into a limited type. The component-wise
+assignment of one date to another is exactly the correct way to assign dates. Thus the built in
+record assignment operation is fine. Similar comments apply to the built in test for equality
+operation. However, types that represent resources outside the computer system (for example a
+network connection) can't reasonably be assigned. They should be declared limited private
+instead.
+

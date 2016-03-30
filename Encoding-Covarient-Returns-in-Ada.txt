@@ -1,0 +1,127 @@
+Newsgroups: comp.lang.ada
+Date: Tue, 12 Aug 2014 00:50:41 -0700 (PDT)
+MIME-Version: 1.0
+Message-ID: <6ef86b67-17ae-449f-93d2-7fdf8ce6bd85@googlegroups.com>
+Subject: Re: A bad counterintuitive behaviour of Ada about OO
+From: Maciej Sobczak <see.my.homepage@gmail.com>
+Injection-Date: Tue, 12 Aug 2014 07:50:41 +0000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Bytes: 5839
+Lines: 122
+Xref: number.nntp.dca.giganews.com comp.lang.ada:188377
+
+>> And there is no way to make *both* work in Ada. You can get one or the other but not both.
+>
+> Of course there is a way. If you have two operations with different profiles you can overload
+> them.
+
+Hm... And then one overloaded version would delegate to another one. I have to admit that this
+sounds like a plausible work-around. It requires more scaffolding than in C++ or Java (there are
+additional functions that exist only for technical reasons and that do not represent any
+design-level concepts), but it allows seamless integration at the call side, which was the
+actual goal.
+
+I have learned something from this discussion. For future reference I paste the complete example
+program that shows the concepts in action:
+
+with Ada.Text_IO;
+
+procedure Test is
+
+   package Products is
+      type Any_Product is interface;
+
+      type A_Product is new Any_Product with null record;
+      type B_Product is new Any_Product with null record;
+   end Products;
+
+   package Factories is
+      type Any_Factory is interface;
+      function Make (F : in Any_Factory)
+                    return Products.Any_Product'Class is abstract;
+
+      type A_Factory is new Any_Factory with null record;
+      overriding function Make (F : in A_Factory)
+                    return Products.Any_Product'Class;
+      function Make (F : in A_Factory)
+                    return Products.A_Product;
+
+      type B_Factory is new Any_Factory with null record;
+      overriding function Make (F : in B_Factory)
+                    return Products.Any_Product'Class;
+      function Make (F : in B_Factory)
+                    return Products.B_Product;
+   end Factories;
+
+   package body Factories is
+
+      overriding
+      function Make (F : in A_Factory)
+                    return Products.Any_Product'Class is
+      begin
+         -- delegates to actual maker:
+         return Products.A_Product'(F.Make);
+      end Make;
+
+      function Make (F : in A_Factory)
+                    return Products.A_Product is
+         Result : Products.A_Product;
+      begin
+         Ada.Text_IO.Put_Line ("Making A_Product");
+         return Result;
+      end Make;
+
+      overriding
+      function Make (F : in B_Factory)
+                    return Products.Any_Product'Class is
+      begin
+         -- delegates to actual maker:
+         return Products.B_Product'(F.Make);
+      end Make;
+
+      function Make (F : in B_Factory)
+                    return Products.B_Product is
+         Result : Products.B_Product;
+      begin
+         Ada.Text_IO.Put_Line ("Making B_Product");
+         return Result;
+      end Make;
+
+   end Factories;
+
+   procedure Use_Any_Factory (F : in Factories.Any_Factory'Class) is
+      P : Products.Any_Product'Class := F.Make;
+   begin
+      null;
+   end Use_Any_Factory;
+
+   A_F : Factories.A_Factory;
+   B_F : Factories.B_Factory;
+
+begin
+   Ada.Text_IO.Put_Line ("Using A_Factory (via class-wide)");
+   Use_Any_Factory (A_F);
+
+   Ada.Text_IO.Put_Line ("Using B_Factory (via class-wide)");
+   Use_Any_Factory (B_F);
+
+   Ada.Text_IO.Put_Line ("Using A_Factory (specific)");
+   declare
+      A_P : Products.A_Product := A_F.Make;
+   begin
+      null;
+   end;
+
+   Ada.Text_IO.Put_Line ("Using B_Factory (specific)");
+   declare
+      B_P : Products.B_Product := B_F.Make;
+   begin
+      null;
+   end;
+end Test;
+
+All calls do what I wanted.
+
+--
+Maciej Sobczak * http://www.msobczak.com * http://www.inspirel.com

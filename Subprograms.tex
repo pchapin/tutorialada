@@ -1,0 +1,149 @@
+\section{Subprograms}
+
+Unlike C family languages, Ada distinguishes between procedures and functions. Specifically,
+functions must return a value and must be called as part of a larger expression. Procedures
+never return a value (in the sense that functions do) and must be called in their own
+statements. Collectively procedures and functions are called subprograms in situations where
+their differences don't matter.
+
+Subprograms can be defined in any declarative part. Thus it is permissible to nest subprogram
+definitions inside each other. A nested subprogram has access to the parameters and local
+variables in the enclosing subprogram that are defined above the nested subprogram. The scope
+rules are largely what you would expect. Listing~\ref{lst:prime-program2} shows a variation of
+the prime number checking program first introduced on page~\pageref{lst:prime-program}. This
+variation introduces a nested function |Is_Prime| that returns |True| if its argument is a prime
+number.
+
+\begin{figure}[tbhp]
+\begin{lstlisting}[
+  frame=single,
+  xleftmargin=0in,
+  caption={Prime Checking Program, Version 2},
+  label=lst:prime-program2]
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+procedure Prime2 is
+   Number : Positive;
+
+   -- This function returns True if N is prime; False otherwise.
+   function Is_Prime(N : Positive) return Boolean is
+   begin
+      for I in 2 .. (N – 1) loop
+         if N mod I = 0 then
+            return False;
+         end if;
+      end loop;
+      return True;
+   end Is_Prime;
+
+begin
+   Put("Enter an positive integer: ");
+   Get(Number);
+   if Number < 2 then
+      Put("The value "); Put(Number, 0); Put_Line(" is bad.");
+   else
+      Put("The value "); Put(Number, 0);
+      if Is_Prime(Number) then
+         Put_Line(" is prime.");
+      else
+         Put_Line(" is not prime.");
+      end if;
+   end if;
+end Prime2;
+\end{lstlisting}
+\end{figure}
+
+In this case |Is_Prime| has been declared to take a parameter |N| of type |Positive|. It could
+have also accessed the local variable |Number| directly. However, it is usually better style to
+pass parameters to subprograms where it makes sense. In this case I also wanted to illustrate
+the syntax for parameter declarations. Note that because |Is_Prime| is a function, a return type
+must be specified and it must be called in the context of an expression, such as in the
+condition of an |if| statement as is done in Listing~\ref{lst:prime-program2}.
+
+Procedure declarations are similar except that no return type is mentioned. Also when a
+procedure is called it must not be part of an expression, but rather stand by itself as a single
+statement. See the calls to procedures |Put| and |Put_Line| in the examples so far.
+
+The program above also shows the form of a comment. Ada comments start with |--| and run to the
+end of the line. As you know, it is good to include comments in your program. However, the
+examples in this tutorial do not include many comments in order to save space and because the
+programs are explained in the text anyway.
+
+Subprogram parameters can also have one of three possible ``modes.'' The listing below shows the
+definition of a procedure that illustrates this. Notice that a semicolon is used to separate
+parameter declarations and not a comma as is done in C family languages.
+
+\begin{lstlisting}
+procedure Mode_Example
+  (X : in Integer; Y : out Integer; Z : in out Integer) is
+begin
+  X := 1;      -- Error. Can't modify an in parameter.
+  Y := X;      -- Okay. Can read X and modify Y.
+  Z := Z + 1;  -- Okay. Can read and write an in out parameter.
+end Mode_Example;
+\end{lstlisting}
+
+The first parameter declared above has mode |in|. Parameters with this mode are initialized with
+the argument provided by the caller, but treated as constants inside the procedure. They can be
+read, but not modified.
+
+The second parameter has mode |out|. Parameters with this mode are effectively in an
+uninitialized state when the procedure begins, but they can be used otherwise as ordinary
+variables inside the procedure. In particular |out| parameters can be read provided you first
+write a value into them. Whatever value is assigned to an |out| parameter by the time the
+procedure ends is sent back to the calling environment.
+
+The third parameter has mode |in out|. Parameters with this mode are initialized with the
+argument provided by the caller, and can also be modified inside the procedure. The changed
+value is then returned to the caller to replace the original value. Keep in mind that, unlike in
+C, modifications to parameters in Ada (when allowed by the parameter mode) affect the arguments
+used when the procedure is called.
+
+The mode |in| is the default. In versions of Ada prior to Ada 2012, functions parameters could
+also only have mode |in|, and thus it is common to leave the mode specification off when
+defining function parameters. Modern Ada allows function parameters with any of the three modes.
+My recommendation, however, is to always specify the mode when declaring procedure parameters
+but accept the default of |in|, except under special circumstances, when declaring function
+parameters. Functions with parameters of mode |out| or |in out| should be rare. Reasoning about
+a program where functions modify their arguments can be difficult.
+
+Like C++, Ada also allows you to define default values for subprogram parameters. This is
+accomplished by initializing the parameter (using the |:=| assignment symbol) when the parameter
+is declared. If no argument is provided for that parameter when the subprogram is called the
+default value is used instead.
+
+Ada also allows you to call subprograms using \newterm{named parameter associations}. This
+method allows you to associate arguments with the parameters in any order, and it can also
+greatly improve the readability of your code---particularly if you've chosen good names for the
+parameters. The listing below shows how the procedure defined above might be called. Assume that
+the variables |Accumulator|, |N|, and |Output| have been previously declared as integers.
+
+\begin{lstlisting}
+Mode_Example(Z => Accumulator, X => N+15, Y => Output);
+\end{lstlisting}
+
+\noindent Notice that the order in which the arguments are provided is not the same as the order
+in which the parameters are declared. When named association is used, the order is no longer
+significant. Notice also that you can use any expression as the argument associated with an |in|
+parameter. However, |out| and |in out| parameters must be associated with variables and not
+arbitrary expressions since putting a value into the result of an expression doesn't really make
+sense. The result of an expression is an anonymous temporary variable, and there is no way for
+you to access its value.
+
+\subsection*{Exercises}
+
+\begin{enumerate}
+\item Write a procedure |Count_Primes| that accepts a range of positive integers and returns the
+  number of primes, the smallest prime, and the largest prime in that range. Your implementation
+  should use |out| parameters to return its results. It should also make use of the |Is_Prime|
+  function defined earlier. Wrap your procedure in a main program that accepts input values from
+  the user and outputs the results. Use named parameter association when calling |Count_Primes|.
+
+\item Implement |Count_Primes| from the previous question as a function (or a collection of
+  functions) instead. What are the advantages and disadvantages of each approach? After reading
+  the following section on records in Ada, implement |Count_Primes| to return a record
+  containing the three result values. What are the advantages and disadvantages of this
+  approach?
+\end{enumerate}
+

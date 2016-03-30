@@ -1,0 +1,151 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FILE    : AdaCrash.tex
+% SUBJECT : A short(?) Ada tutorial.
+% AUTHOR  : (C) Copyright 2015 by Peter Chapin <PChapin@vtc.vsc.edu>
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ++++++++++++++++++++++++++++++++
+% Preamble and global declarations
+% ++++++++++++++++++++++++++++++++
+\documentclass{scrreprt}
+
+% --------
+% Packages
+% --------
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage[pdftex]{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{url}
+
+\newcommand{\SPARK}{\textsc{Spark}}   % For ease of small capping SPARK.
+
+% Redefine the underscore command so latex will break words at underscores. Found this trick at
+% http://mrtextminer.wordpress.com/2009/02/26/break-a-long-word-containing-underscores-in-latex/
+%
+\let\underscore\_
+\newcommand{\myunderscore}{\renewcommand{\_}{\underscore\hspace{0pt}}}
+
+% Issue the changed underscore command to the whole document.
+\myunderscore
+
+% Define a new 'leo' style for the package that will use a smaller font for URLs. It also allows
+% LaTEX to break a URL across lines. From Jérôme Hugues.
+%
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+
+% Now actually use the newly defined style.
+\urlstyle{leo}
+
+%% The following are settings for the listings package. See the listings package documentation
+%% for more information.
+%%
+%\lstset{language=C,
+%        basicstyle=\small,
+%        stringstyle=\ttfamily,
+%        commentstyle=\ttfamily,
+%        xleftmargin=0.25in,
+%        showstringspaces=false}
+
+% Define listing parameters for Ada 2012. Base it on Ada 2005.
+\lstdefinelanguage{Ada2012}[2005]{Ada}
+{
+  morekeywords={some},
+  sensitive=false,
+  breaklines=false,
+  showstringspaces=false,
+  xleftmargin=0.25in,
+  basicstyle=\small\sffamily,
+  columns=flexible,
+}
+\lstset{language=Ada2012, showlines=true}
+
+% Wide equivalent of the listings package lstset. The parameter is the amount to indent the code
+% (may be negative).
+%
+\lstnewenvironment{widelisting}[1]
+   {\lstset{language=Ada2012,xleftmargin=#1}}
+   {}
+   
+% Wide listing from a file using the Listings package lstinputlisting. First parameter is
+% path name to file (can be relative). Second parameter is the amount to indent the code (may
+% be negative).
+%
+\newcommand{\wideinputlisting}[2]{%
+   \lstinputlisting[language=Ada2012,xleftmargin=#2]{#1}}
+
+% ------------------
+% Layout adjustments
+% ------------------
+% Avoid changing the layout; it is usually set via the document class (or in packages).
+%
+% \pagestyle{headings}
+%
+% The following create block paragraphs (no indentation, extra separation).
+% \setlength{\parindent}{0em}
+% \setlength{\parskip}{1.75ex plus0.5ex minus0.5ex}
+
+
+% ------
+% Macros
+% ------
+\newcommand{\command}[1]{\texttt{#1}}  % For commands typed at a console/terminal prompt.
+\newcommand{\filename}[1]{\texttt{#1}} % For the names of files in the file system.
+\newcommand{\newterm}[1]{\textit{#1}}  % For the first time introduction of a term.
+
+% +++++++++++++++++++
+% The document itself
+% +++++++++++++++++++
+\begin{document}
+
+% ----------------------
+% Title page information
+% ----------------------
+\titlehead{\centering\includegraphics[scale=0.05]{Ada-Mascot.pdf}}
+\title{Ada--A Crash Course}
+\author{Peter Chapin\thanks{PChapin@vtc.vsc.edu}\\
+  Vermont Technical College}
+\date{Generated: \today}
+\maketitle
+
+\tableofcontents
+
+%\lstMakeShortInline[basicstyle=\ttfamily]|
+\lstMakeShortInline|
+
+% ------------
+% Main Content
+% ------------
+
+\input{Tutorial}
+
+\lstDeleteShortInline|
+
+% At some point these references must make it into the bibliography for this document.
+%
+% 1. High Integrity Software. The SPARK Approach to Safety and Security by John Barnes.
+% Addison-Wesley, 2003. ISBN=0-321-13616-0. This book describes a specialized subset of the Ada
+% language called SPARK that is used for the construction of ultra-reliable software.
+%
+% 2. WikiBook on Ada: http://en.wikibooks.org/wiki/Ada_Programming. This is one of the better of
+% the WikiBooks. As always anything on-line is a work in progress. Nevertheless many aspects of
+% Ada are well described.
+%
+% 3. Ada Newsgroup: news://comp.lang.ada. An active newsgroup where you can post questions and
+% talk with Ada experts.
+%
+% 4. Ada IRC channel: irc://irc.freenode.net/#ada. Although often quiet there are usually a few
+% people there who can answer questions.
+%
+% 5. There are several Ada web sites. The Ada Information Clearinghouse (http://www.adaic.com/),
+% site is a good place to start.
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

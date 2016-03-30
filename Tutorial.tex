@@ -1,0 +1,59 @@
+
+\chapter{Tutorial}
+\label{chapt:tutorial}
+
+Welcome to the Ada programming language! The purpose of this tutorial is to give you an overview
+of Ada so that you can start writing Ada programs quickly. This tutorial does not attempt to
+cover the entire language. Ada is very large, so complete coverage of all its features would
+take many more pages than are contained in this document. However, it is my hope that after
+reading this tutorial you will have a good sense of what Ada is like, appreciate some of its
+nicer features, and feel interested in learning more
+\cite{Barnes2014,McCormick2011,Ben-Ari2009,Burns2007,Dale2007}.
+
+This tutorial assumes you are already familiar with one or more languages in the C family: C,
+C++, Java, C\#, or something similar. It is not my intention to teach you how to program. I
+assume you already understand concepts such as loops, data types, functions, and so forth.
+Instead this tutorial describes how to use these things in Ada. In cases where Ada provides
+features that might be unfamiliar to you (such as subtypes, discriminated types, and tasking) I
+will discuss those features a bit more comprehensively.
+
+Ada is a powerful language designed to address the following issues:
+
+\begin{itemize}
+\item The development of very large programs by multiple, loosely connected teams. The language
+  has features to help manage a large number of program components, and to help ensure those
+  components are used consistently.
+
+\item The development of long lived programs that spend most of their time in the maintenance
+  phase of the software life cycle. The language is designed to promote the readability of
+  programs. You may find Ada code to be rather verbose and tedious to write. However, that extra
+  work pays off later by making the code clearer and easier to read when bugs must be fixed or
+  enhancements written.
+
+\item The development of robust programs where correctness, security, and reliability are
+  priorities. The language has features designed to make programming safer and less error prone.
+  Some of these features involve extra run time checking and thus entail a performance penalty.
+  However, Ada's design is such that the performance penalty is normally not excessive.
+
+\item The development of embedded systems where low level hardware control, multiple concurrent
+  tasks, and real time requirements are common. The language has features designed to support
+  these things while still retaining as much safety as feasible.
+\end{itemize}
+
+\input{Hello-Ada}
+\input{Control-Structures}
+\input{Types-and-Subtypes}
+\input{Subprograms}
+\input{Arrays-and-Records}
+\input{Packages}
+\input{Abstract-Data-Types}
+\input{Strings}
+\input{Exceptions}
+\input{Discriminated-Types}
+\input{Generics}
+\input{Access-Types}
+\input{Command-Line-Arguments}
+\input{Object-Oriented-Programming}
+\input{Tasking}
+\input{Container-Library}
+\input{Low-Level-Programming}

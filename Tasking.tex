@@ -1,0 +1,79 @@
+\section{Tasking}
+
+Many programs can be naturally described as multiple, interacting, concurrent threads of
+execution. Programming environments that provide direct support for concurrency are thus very
+useful. Such support can be offered by the operating system or by the programming language or
+some combination of the two.
+
+The classic way in which operating systems support concurrency is by allowing multiple
+independent processes to run simultaneously. This method has the advantage of offering good
+isolation between the processes so that if one crashes the others are not necessarily affected.
+On the other hand, communication between processes tends to have high overhead. Modern operating
+systems also usually allow programs to be written that have multiple threads of control
+executing in the same process. This \newterm{thread level concurrency} is harder to program
+correctly but has reduced overhead as compared to the older style \newterm{process level
+  concurrency}.
+
+In some environments offering thread level concurrency the programmer must invoke subprograms in
+a special library to create and synchronize threads. Such an approach requires relatively little
+support from the programming language but it tends to be error prone. Another approach is to
+build support for thread level concurrency into the programming language itself. This allows the
+compiler to take care of the low level details of thread management, freeing the programmer to
+focus on other aspects of the program's design. Ada uses this second approach and supports
+concurrent programming as a language feature.
+
+The unit of execution in Ada is called a \newterm{task}. The main program executes in a task
+called the \newterm{environment task}. You can create additional tasks as appropriate to meet
+your application's needs. Like a package each task has a specification and a body. In the
+simplest case a task specification only needs to declare that the task exists. The following
+example illustrates the basic syntax.
+
+\begin{lstlisting}
+with Ada.Text_IO;
+with Helper;
+
+procedure Main is
+
+  – Specification of nested task.
+  task Nag;
+
+  – Body of nested task.
+  task body Nag is
+  begin
+    for I in 1 .. 100 loop
+      Ada.Text_IO.Put_Line("Hello");
+      delay 10.0;
+    end loop;
+  end Nag;
+
+begin
+  Helper.Something_Useful;
+end Main;
+\end{lstlisting}
+
+In this example a task |Nag| is both specified and defined in the declarative part of the main
+program. The task simply prints ``Hello'' one hundred times with a 10 second delay between each
+line of output. While the task does this important work, the main program simultaneously
+executes the useful function of the program.
+
+It is important to understand that the task starts executing automatically as soon as the
+enclosing subprogram begins. It is not necessary to explicitly start the task. Furthermore the
+enclosing subprogram will not return until the task has completed. Care must be taken to ensure
+that the task eventually ends. If the task never ends the enclosing subprogram will never
+return.
+
+Because the task is nested inside another program unit it has access to the local variables and
+other entities declared in the enclosing unit above the task's definition. This gives a way for
+the task to share information with the enclosing unit but beware that sharing data in this
+manner is difficult and error prone. As I will describe shortly Ada provides much more robust
+ways for tasks to communicate.
+
+The example above shows a task nested inside a procedure. Tasks can also be nested inside
+functions or even inside each other. This allows you to create a task to assist in the execution
+of any subprogram without anyone outside your subprogram being aware that tasks are involved.
+You can also create tasks inside a package body that support the operation of that package. Be
+aware, however, that if you do create a task inside a library package body you need to arrange
+for that task to eventually end or else the program will never terminate.
+
+\textit{Finish me\ldots}
+

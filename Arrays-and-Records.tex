@@ -1,0 +1,201 @@
+\section{Arrays and Records}
+
+Unlike in C, arrays in Ada are first class objects. This means you can assign one array to
+another, pass arrays into subprograms and return arrays from functions. Every array has a type.
+However, the type of an array does not need to be named. For example:
+
+\begin{lstlisting}
+Workspace : array(1 .. 1024) of Character;
+\end{lstlisting}
+
+\noindent defines |Workspace| to be an array of characters indexed using the integers 1 through
+1024. Note that although |Workspace| has an array type, the name of that type is not specified.
+
+In fact, you can define arrays using any discrete subtype for the index Recall that |1 .. 1024|
+is really an abbreviation for an integer subtype specification. It is not possible to access an
+array out of bounds for exactly the same reason it's not possible to store an out of bounds
+value into a variable. The compiler raises the |Constraint_Error| exception in precisely the
+same way.
+
+The following example:
+
+\begin{lstlisting}
+procedure Example is
+  type Day_Type is (Sun, Mon, Tue, Wed, Thu, Fri, Sat);
+  Work_Hours : array(Day_Type) of Natural;
+
+  function Adjust_Overtime
+    (Day : Day_Type; Hours : Natural) return Natural is
+  begin
+    -- Not shown.
+  end Adjust_Overtime;
+
+begin
+  Work_Hours := (0, 8, 8, 8, 8, 0);
+  for Day in Day_Type loop
+    Work_Hours(Day) := Adjust_Overtime(Day, Work_Hours(Day));
+  end loop;
+end Example;
+\end{lstlisting}
+
+This example illustrates several important features.
+
+\begin{enumerate}
+
+\item Arrays are accessed using parenthesis and not square brackets as in C family languages.
+  Thus array access has a syntax similar to that of a function call. An array of constant values
+  and can be replaced with a function later without clients needing to be edited.
+
+\item Any discrete subtype, including enumeration subtypes, can be used for an array index. In
+  the preceding example the array |Work_Hours| has elements |Work_Hours(Sun)| and so forth.
+
+\item The nested function |Adjust_Overtime| uses a type defined in the enclosing procedure. This
+  is perfectly acceptable. The visibility of all names is handled uniformly.
+
+\item It is possible to use an \newterm{array aggregate} in a expression where an array is
+  expected. |Work_Hours| is assigned a value that specifies every element of the array in one
+  step. The compiler deduces the type of the aggregate from its context.
+
+\item Notice that in the preceding example the same subtype is used for both the loop index
+  variable and the array index. This is a common situation and it means the compiler can
+  optimize out the run time checks normally required when accessing an array element. Since the
+  value of |Day| can't possibly be outside the range of allowed array indexes, there is no need
+  to check that |Work_Hours(Day)| is in bounds.
+
+\end{enumerate}
+
+In many cases it is appropriate to give a name to an array type. This is necessary if you want
+to assign one array to another, compare two arrays for equality, or pass arrays into or out of
+subprograms. These operations require matching types, and with no way to talk about the type of
+array it isn't possible to declare two arrays with the same type. The following example
+illustrates:
+
+\begin{lstlisting}
+procedure Example is
+  type Buffer_Type is array(0..1023) of Character;
+  B1 : Buffer_Type;
+  B2 : Buffer_Type;
+  B3 : array(0..1023) of Character;
+begin
+  B1 := B2;  -- Fine. Entire array assigned.
+  B1 := B3;  -- Error. Types don't match. B3 has anonymous type.
+end Example;
+\end{lstlisting}
+
+Because subtypes are defined dynamically the size and bounds of an array can also be defined
+dynamically. For example a declaration such as |A : array(1..N) of Natural| is allowed even if
+the value of |N| is not known at compile time. For example, it could be a subprogram parameter.
+This feature means that many places where dynamic allocation is necessary in, for example, C++
+can be handled in Ada without the use of explicit memory allocators.\footnote{In fairness, C++
+  programmers routinely use library containers that hide the dynamic memory allocation they
+  require.}
+
+\subsection{Unconstrained Array Types}
+
+One problem with the arrays I've described so far is that it is not possible to write a
+procedure that takes an array of unknown size. Arrays of different sizes have different types
+and strong typing will prevent them from being mixed. To get around this problem Ada has the
+concept of unconstrained array types. Such a type does not specify the bounds on the array as
+part of the type, allowing arrays with different bounds to be in the same type. However, the
+bounds must be specified when an actual array object is declared so the compiler knows how much
+memory to allocate for the object. The following example illustrates:
+
+\begin{lstlisting}
+procedure Unconstrained_Array_Example is
+  type Buffer_Type is array(Integer range <>) of Character;
+  B1 : Buffer_Type;  -- Error. Must specify array bounds.
+  B2 : Buffer_Type( 0..15);  -- Okay.
+  B3 : Buffer_Type( 0..15);
+  B4 : Buffer_Type(16..31);  -- Fine.
+  B5 : Buffer_Type( 0..63);  -- No problem.
+
+  procedure Process_Buffer(Buffer : in Buffer_Type) is
+  begin
+    for I in Buffer'Range loop
+      -- Do something with Buffer(I)
+    end loop;
+  end Process_Buffer;
+
+begin
+  B2 := B3;  -- Fine. Types match and bounds compatible.
+  B2 := B4;  -- Fine! Types match and lengths identical.
+  B2 := B5;  -- Constraint_Error. Lengths don't match.
+
+  Process_Buffer(B2);  -- Fine.
+  Process_Buffer(B4);  -- Fine.
+  Process_Buffer(B5);  -- Fine.
+end Unconstrained_Array_Example;
+\end{lstlisting}
+
+Again there are several points to make about this example.
+
+\begin{enumerate}
+
+\item The symbol |<>| (pronounced ``box'') is intended to be a placeholder for information that
+  will be filled in later. In this case it specifies that the index bounds on the array type
+  |Buffer_Type| is unconstrained.
+
+\item It is illegal to declare a variable with an unconstrained type without providing
+  constraints. This is why the declaration of |B1| is an error. However, the missing array
+  bounds are specified in the other declarations. Notice that it is not necessary for array
+  bounds to start at zero or one. Any particular value is fine as long as it is part of the
+  index type mentioned in the array declaration.
+
+\item It is fine to declare a subprogram, such as |Process_Buffer|, taking an unconstrained
+  array type as an parameter. However, such a subprogram can't safely access the elements of the
+  given array using specific index values like 1 or 2 because those values might not be legal
+  for the array. Instead you need to use special array attributes. For example, |Buffer'First|
+  is the first index value that is valid for array |Buffer|, and similarly for
+  |Buffer'Last|.\footnote{These attributes only return valid indexes if the array has a non-zero
+    length}. The attribute |Range| is shorthand for |Buffer'First .. Buffer'Last| and is quite
+  useful in for loops as the example illustrates.
+
+\item You might find it surprising that the assignment |B2 := B4| is legal since the array
+  bounds do not match. However, the two arrays have the same length so corresponding elements of
+  the arrays are assigned. This is called \newterm{sliding semantics} because you can imagine
+  sliding one array over until the bounds do match.
+
+\item All the calls to |Process_Buffer| are fine. Inside the procedure |Buffer'Range| adapts
+  itself to whatever array it is given and, provided the code is written with this in mind, the
+  procedure works for arrays of any size.
+
+\end{enumerate}
+
+\subsection{Records}
+
+In C family languages composite objects containing components with different types are called
+structures. In Ada, and in many other languages, they are called records. All record types must
+have a name and thus must be declared before any objects of that type can be created. An example
+follows:
+
+\begin{lstlisting}
+procedure Example is
+  type Date is
+    record
+      Day   : Integer range 1 .. 31;
+      Month : Integer range 1 .. 12;
+      Year  : Natural;
+    end record;
+
+  Today    : Date := (Day => 1, Month => 7, Year => 2007);
+  Tomorrow : Date;
+begin
+  Tomorrow := Today;
+  Tomorrow.Day := Tomorrow.Day + 1;
+end Example;
+\end{lstlisting}
+
+This procedure defines a type |Date| as a collection of three named components. Notice that the
+|Day| and |Month| components are defined as subtypes of |Integer| without the bother of naming
+the subtypes involved (anonymous subtypes are used). |Today| is declared to be a |Date| and
+initialized with a \newterm{record aggregate}. In this case named association is used to make it
+clear which component gets which initial value, however positional association is also legal.
+
+Records can be assigned as entire units and their components accessed using the dot operator.
+Notice that if |Tomorrow.Day + 1| creates a value that is outside the range |1 .. 31|, a
+|Constraint_Error| exception will be raised, as usual when that out of bounds value is assigned
+to |Tomorrow.Day|. Obviously a more sophisticated procedure would check for this and adjust the
+month as necessary (as well as deal with the fact that not all months are 31 days long).
+
+% TODO: Add some exercises.
+

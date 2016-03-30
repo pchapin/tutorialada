@@ -1,0 +1,173 @@
+\section{Access Types}
+
+Ada, like many languages, allows you to create objects that refer to other objects. It also
+allows you to create objects that have a lifetime extending beyond that of the scope in which
+they are created. Both of these capabilities are important and many programming techniques
+depend on them. C and C++ allow the programmer to use arbitrary pointers, implemented as simple
+memory addresses, in any way desired. While this is very powerful, it is also very dangerous. C
+and C++ programs suffer from many bugs and security vulnerabilities related to the unrestricted
+use of pointers in those languages.
+
+In Ada pointer types are called \newterm{access types}. Like C and C++ pointer variables,
+\newterm{access variables} can be manipulated separately from the objects to which they point.
+However, unlike C and C++ pointer types, access types in Ada have a number of restrictions on
+their use that are designed to make them safer.
+
+Actually, the history of access types in Ada is quite interesting. In Ada 83 access types were
+very limited but also very safe. However, experience with Ada showed that the limitations were
+too great. Ada 95 removed some of the limitations while still managing to keep the safety (at
+the expense of complicating the language). Yet even after these changes, access types were still
+not as flexible as desired. Ada 2005 removed yet more limitations but required, in certain
+cases, run time checking to be done to ensure safety. In this tutorial I will not describe these
+issues in detail. My focus here is on the basic use of access types.
+
+Access types can be named or anonymous. I will only consider named access types; anonymous
+access types have special properties that are outside the scope of this tutorial.
+
+For example the declaration:
+
+\begin{lstlisting}
+type Integer_Access is access Integer;
+\end{lstlisting}
+
+\noindent declares |Integer_Access| as a type suitable for accessing, or pointing at, integers.
+Notice that in this tutorial I have used a suffix of ``Type'' when naming a type. In this case,
+however, I use a suffix of ``Access'' to emphasize the nature of the access type. This is, of
+course, just a convention.
+
+Once the access type has been declared, variables of that type can then be declared in the usual
+way.
+
+\begin{lstlisting}
+P : Integer_Access;
+\end{lstlisting}
+
+Ada automatically initializes access variables to the special value |null| if no other
+initialization is given. Thus access variables are either null or they point at some real
+object. Indeed, the rules of Ada are such that, under appropriate circumstances, dangling
+pointers are not possible. Access variables can be copied and compared like any other variable.
+For example if |P1| and |P2| are access variables than |P1 = P2| is true if they both point at
+the same object. To refer to the object pointed at by an access variable you must use the
+special |.all| operation.
+
+\begin{lstlisting}
+P.all := 1;
+\end{lstlisting}
+
+The |.all| syntax plays the same role in Ada as the indirection operator (the *) plays in C and
+C++. The use of |.all| may seem a little odd in this context, but understand that most of the
+time access types are pointers to aggregate entities such as arrays or records. In that case,
+the components of the array or record pointed at can be accessed directly by using the component
+selection operation on the access variable itself. This is shown as follows:
+
+\begin{lstlisting}
+type Date is
+  record
+    Day, Month, Year : Integer;
+  end record;
+type Date_Access is access Date;
+
+D1, D2 : Date_Access;
+
+...
+
+D1.Day := 1;      -- Accesses the Day member of referenced Date.
+D1     := D2;     -- Causes D1 to point at same object as D2.
+D1.all := D2.all; –- Copies Date objects.
+\end{lstlisting}
+
+In this case the |.all| syntax is very natural. It shows that you are accessing all the members
+of the referenced object at the same time. It is important to notice that Ada normally
+``forwards'' operations applied to the access variable to the referenced object. Thus |D1.Day|
+in the example means the |Day| component of the object pointed at by |D1|. Only operations that
+are meaningful for the access type itself are not forwarded. Thus |D1 := D2| copies the access
+values. To copy the objects pointed at by the access variables one must use the |.all| syntax. I
+should also note that syntax such as |D1.all.Day|, while verbose, is also legal. The |.all|
+dereferences |D1|. The result is a date record so the selection of the |Day| component is
+meaningful.
+
+Access variables that refer to arrays also allow the normal array operations to be forwarded to
+the referenced object as the following example illustrates:
+
+\begin{lstlisting}
+type Buffer_Type is array(0..1023) of Character;
+type Buffer_Access is access Buffer_Type;
+B1, B2 : Buffer_Access;
+
+...
+
+B1     := B2;     -- Copies only the access values.
+B1.all := B2.all  -- Copies arrays.
+B1(0)  := 'X'     -- Forwards index operation.
+for I in B1'Range loop    -- Forwards 'Range attribute.
+  ...
+end loop;
+\end{lstlisting}
+
+Because of forwarding, using access types is generally quite convenient in Ada. However, you
+must keep in mind that operations that are meaningful for the access types themselves will be
+applied directly to the access variable and are not forwarded.
+
+So far we've seen how to declare and use access types. How does one get an access variable to
+point at another object in the first place? In Ada 83 there was only one way: using the new
+operation. For example:
+
+\begin{lstlisting}
+P := new Integer'(0);
+\end{lstlisting}
+
+dynamically allocates an integer, initializes that integer to zero, and then assigns the
+resulting access value to |P|. Here I assume |P| has an access to integer type. Notice that the
+argument to new has the form of a qualified expression (the apostrophe is required). Also as
+with dynamically allocated objects in other languages, the lifetime of the object created in
+this way extends beyond the lifetime of the access variable used to point at it.
+
+\subsection{Garbage Collection?}
+
+In many languages dynamically allocated objects are automatically reclaimed when they can no
+longer be accessed. For example, in Ada parlance, when all access variables pointing at an
+object go out of scope the object that was pointed at by those variables can no longer be
+referenced and the memory it uses should be made available again. The process of reclaiming such
+memory is called \newterm{garbage collection}.
+
+In Ada garbage collection is optional. Implementations are allowed to provide it, but they are
+not required to do so. This may seem surprisingly wishy-washy for a language that endeavors to
+support reliable and portable programming. The problem is that Ada also endeavors to support low
+level embedded systems and real time programming. In such environments garbage collection is
+widely considered problematic. It is difficult to meet real time objectives if a complex garbage
+collection algorithm might run at any time. Also the space overhead of having a garbage
+collector in the run time system might be unacceptable for space constrained embedded devices.
+Advances in garbage collection technology and machine capabilities have made some of these
+concerns less pressing today than they were when Ada was first designed. However, these matters
+are still important. Thus Ada allows, but does not require garbage collection.
+
+This presents an immediate problem for programmers interested in portability. If the
+implementation does not collect its garbage and the programmer takes no steps to manually
+reclaim allocated objects, the program will leak memory. This is a disaster for long running
+programs like servers. Thus for maximum portability one must assume that garbage collection is
+not done and take steps accordingly. In fact, most Ada implementations do not provide garbage
+collection, so this is a very realistic concern.
+
+The Ada library provides a generic procedure named |Unchecked_Deallocation| that can be used to
+manually deallocate a dynamically allocated object. Unfortunately the use of
+|Unchecked_Deallocation| can violate important safety properties the language otherwise
+provides. In particular, if you deallocate an object while an access variable still points at
+it, any further use of that access variable will result in erroneous behavior. As a service
+|Unchecked_Deallocation| will set the access variable you give it to |null| causing future use
+of that access variable to result in a well defined exception. However, there might be other
+access variables that point at the same object and |Unchecked_Deallocation| cannot, in general,
+know about all of them.
+
+If your program never uses |Unchecked_Deallocation| then all access variables are either |null|
+or point at a real object; dangling pointers are impossible. However, your program might also
+leak memory if the Ada implementation does not provide garbage collection. Thus in most real
+programs |Unchecked_Deallocation| is used.
+
+This is an example of where Ada compromises safety for the sake of practical reality. In fact,
+there are several other ``Unchecked'' operations in Ada that are used to address certain
+practical concerns and yet introduce the possibility of unsafe programs. Since every such
+operation starts with the word ``Unchecked'' it is an simple matter to search an Ada program for
+occurrences of them. This feature makes reviewing the unchecked operations easier.
+
+\textit{Show an example of Unchecked\_Deallocation\ldots}
+

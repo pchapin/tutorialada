@@ -1,0 +1,266 @@
+\section{Packages}
+\label{sec:packages}
+
+A package is a named container into which you can place subprograms, type definitions, and other
+entities that are related to each other. Packages can even contain other packages. In Ada
+packages are the primary way to organize and manage the various parts of a program.
+
+Packages have two parts: a \newterm{specification} that declares the entities that are visible
+to the rest of the program, and a \newterm{body} that contains the implementation of those
+entities. The body can also contain private entities that can only be used inside the package.
+In most cases the specification is stored in a separate file from the body and can even be
+compiled separately. This makes the separation between a package's interface and implementation
+more rigorous in Ada than in many languages, encouraging the programmer to separate the process
+of software design from construction.
+
+This formal separation makes it easier for different groups of people to work on the design and
+construction of a program since those groups would be working with different sets of source
+files. At least that is the ideal situation. Alas, package specifications can have a private
+section, discussed later, that is technically part of the package's implementation. Thus, in
+some cases at least, interface and implementation end up in the same file after all.
+
+As an example, consider a simple package for displaying text on a character mode terminal. The
+following example shows what the specification might look like. When using the GNAT compiler,
+package specifications are stored in files with a \filename{.ads} extension using the same name
+as the name of the package. In this case, the file would be \filename{screen.ads}.
+
+\begin{lstlisting}
+package Screen is
+
+   type Row_Type is range 1..25;
+   type Column_Type is range 1..80;
+   type Color_Type is (Black, Red, Green, Blue, White);
+
+   procedure Set_Cursor_Position
+      (Row : in Row_Type; Column : in Column_Type);
+   procedure Get_Cursor_Position
+      (Row : out Row_Type; Column : out Column_Type);
+
+
+   procedure Set_Text_Color(Color : in Color_Type);
+   procedure Get_Text_Color(Color : out Color_Type);
+
+   procedure Print(Text : String);
+
+end Screen;
+\end{lstlisting}
+
+There is normally no executable code in the specification; it only contains
+declarations.\footnote{The initializer of a variable, however, can contain executable code.} The
+example above shows a few types being declared and then some procedures that make use of those
+types. Packages can also contain functions, of course.
+
+Once the specification has been written code that makes use of the package can be compiled. Such
+a compilation unit contains a statement such as |with Screen| in its context clause. It can
+then, for example, refer to the type |Screen.Row_Type| and call procedure |Screen.Print| as you
+might expect. Note that a package specification can contain a context clause of its own if it
+needs, for example, types defined in some other package.
+
+The package body, stored in a \filename{.adb} file, contains the implementation of the various
+subprograms declared in the specification. The Ada compiler checks for consistency between the
+specification and the body. You must implement all subprograms declared in the specification and
+you must even use exactly the same names for the parameters to those subprograms. However,
+the body can define types and subprograms that are not declared in the specification. Such
+entities can only be used inside the package body; they are not visible to the users of the
+package. The following example shows an abbreviated version of \filename{screen.adb}:
+
+\begin{lstlisting}
+package body Screen is
+
+   -- Not declared in the spec. This is for internal use only.
+   procedure Helper is
+   begin
+     -- Implementation not shown.
+   end Helper;
+
+   -- All subprograms declared in spec must be implemented.
+   procedure Set_Cursor_Position
+      (Row : in Row_Type; Column : in Column_Type) is
+   begin
+     -- Implementation not shown.
+   end Set_Cursor_Position;
+
+   -- etc...
+
+end Screen;
+\end{lstlisting}
+
+The package body does not need to include a with clause for its own specification, however it
+can |with| other packages as necessary in order to gain access to the resources provided by
+those packages.
+
+When building a large program the package specifications can all be written first, before any
+real coding starts. The specifications are thus the final output of the design phase of the
+software development life cycle. These specifications can be compiled separately to verify that
+they are free from syntax errors and that they are internally consistent. The compiler can
+verify that all the necessary dependencies are explicitly declared via appropriate |with|
+statements, and that all types are used in a manner that is consistent with their declarations.
+
+Once the specifications are in place, the bodies can be written. Because a package body only
+depends on the specifications of the packages it uses, the bodies can all be written in
+parallel, by different people, without fear of inconsistency creeping into the program.
+Programmers could be forbidden to modify any specification files, for example by using
+appropriate access control features on a file server or version control system, requiring any
+such modifications to first be cleared by a designer. Surprisingly few programming languages
+enjoy this level of rigor in the management of code, but Ada was designed for large software
+projects and so its features are strong in this area.
+
+\subsection{Package Initialization}
+
+Packages sometimes contain internal variables that need to be initialized in some complex way
+before the package can be used. The package author could provide a procedure that does this
+initialization, but then there is a risk that it won't get called when it should. Instead, a
+package can define some initialization code of arbitrary complexity by introducing an executable
+section in the package body. The following example shows how this can be done.
+
+\begin{lstlisting}
+with Other;
+pragma Elaborate_All(Other);
+
+package body Example is
+
+   Counter : Integer;  -- Internal variable.
+
+   procedure Some_Operation is
+   begin
+      -- Implementation not shown.
+   end Some_Operation;
+
+begin
+  Counter := Other.Lookup_Initial("database.vtc.vsc.edu");
+
+end Example;
+\end{lstlisting}
+
+% TODO: Is this the first time the word "elborate" is used? If so, it should be introduced.
+
+In this example, an internal variable |Counter| is initialized by calling a function in a
+supporting package |Other|. This initialization is done when the package body is elaborated.
+Notice that it is necessary in this example for the body of package |Other| to be elaborated
+first so that its initialization statements (if any) execute before the elaboration of the body
+of package |Example|. If that were not the case, then function |Lookup_Initial| might not work
+properly. An Ada program will raise the exception |Program_Error| at run time if packages get
+elaborated in an inappropriate order.
+
+To address this potential problem a pragma is included in the context clause of package
+|Example|'s body. Pragmas are commands to the compiler that control the way the program is
+built. The Ada standard defines a large number of pragmas and implementations are allowed to
+define others. In this case the use of pragma |Elaborate_All| forces the bodies of package
+|Other|, and any packages that package |Other| uses, to be elaborated before the body of package
+|Example|. Note that the |with| clauses will automatically cause the specifications of the
+withed packages to be elaborated first, but not necessarily the bodies. In this case it is
+essential to control the order in which the package bodies are elaborated. Hence the pragma is
+necessary.
+
+Notice that Ada does not provide any facilities for automatically cleaning up a package when the
+program terminates. If a package has shutdown requirements a procedure must be defined for this
+purpose, and arrangements must be made to call that procedure at an appropriate time. In
+embedded systems, one of the major target application areas for Ada, programs often never end.
+Thus the asymmetric handling of package initialization and cleanup is reasonable in that
+context. Other programming languages do provide ``module destructors'' of some kind to deal with
+this matter more uniformly.
+
+\subsection{Child Packages}
+
+Being able to put code into various packages is useful, but in a large program the number of
+packages might also be large. To cope with this Ada, like many languages, allows its packages to
+be organized into a hierarchy of packages, child packages, grand child packages, and so forth.
+This allows an entire library to be contained in a single package and yet still allows the
+various components of the library to be organized into different packages (or package
+hierarchies) as well. This is an essential facility for any language that targets the
+construction of large programs.
+
+As an example, consider a hypothetical data compression library. At the top level we might
+declare a package |Compress| to contain the entire library. Package |Compress| itself might be
+empty with a specification that contains no declarations at all (and no body). Alternatively one
+might include a few library-wide type definitions or helper subprograms in the top level
+package.
+
+One might then define some child packages of |Compress|. Suppose that |Compress.Algo| contains
+the compression algorithms and |Compress.Utility| contains utility subprograms that are used by
+the rest of the library but that are not directly related to data compression. Further child
+packages of |Compress.Algo| might be defined for each compression algorithm supported by the
+library. For example, |Compress.Algo.LZW| might provide types and subprograms related to the LZW
+compression algorithm and |Compress.Algo.Huffman| might provide types and subprograms related to
+the Huffman encoding compression algorithm. The following example shows a procedure that wishes
+to use some of the facilities of this hypothetical library.
+
+\begin{lstlisting}
+with Compress.Algo.LZW;
+
+procedure Hello is
+  Compressor : Compress.Algo.LZW.LZW_Engine;
+begin
+  Compress.Algo.LZW.Process(Compressor, "Compress Me!");
+end Hello;
+\end{lstlisting}
+
+In this example I assume the LZW package provides a type |LZW_Engine| that contains all the
+information needed to keep track of the compression algorithm as it works (presumably a record
+of some kind). I also assume that the package provides a procedure |Process| that updates the
+compressed data using the given string as input.
+
+Clearly a package hierarchy with many levels of child packages will produce very long names for
+the entities contained in those deeply nested packages. This can be awkward, but Ada provides
+two ways to deal with that. You have already met one way: the |use| statement. By including use
+|Compress.Algo.LZW| in the context clause, the contents of that package are made directly
+visible and the long prefixes can be deleted. However, Ada also allows you to rename a package
+to something shorter and more convenient. The following example shows how it could look.
+
+\begin{lstlisting}
+with Compress.Algo.LZW;
+
+procedure Hello is
+  package Squeeze renames Compress.Algo;
+  Compressor : Squeeze.LZW.LZW_Engine;
+begin
+  Squeeze.LZW.Process(Compressor “Compress Me!”);
+end Hello;
+\end{lstlisting}
+
+The package |Squeeze| is not a real package, but rather just a shorter, more convenient name for
+an existing package. This allows you to reduce the length of long prefixes without eliminating
+them entirely. Although the Ada community encourages the use of long, descriptive names in Ada
+programs, names that are local to a single procedure can sensibly be fairly short since they
+have limited scope. Using the renaming facility of the language you can introduce abbreviated
+names for packages (or other kinds of entities) with limited scope without compromising the
+overall readability of the program.
+
+Notice that the optimal names to use for entities in a package will depend on how the package
+itself is used. In the example above the package |LZW| provides a type |LZW_Engine|. In cases
+(such as shown) where fully qualified names are used the ``LZW'' in the name |LZW_Engine| is
+redundant and distracting. It might make sense to just name the type |Engine| yielding a fully
+qualified name of |Compress.Algo.LZW.Engine|. On the other hand, if use statements are used the
+name |Engine| by itself is rather ambiguous (what kind of engine is that?). In that case it
+makes more sense to keep the name |LZW_Engine|. Different programmers have different ideas about
+how much name qualification is appropriate and it leads to differences in the way names are
+selected.
+
+The problem is that the programmer who writes a package is often different from the programmer
+who uses it and so incompatible naming styles can arise. Ada's renaming facility gives the using
+programmer a certain degree of control over the names that actually appear in his or her code,
+despite the names selected by the author of a library. The following example shows a more
+radical approach to renaming.
+
+\begin{lstlisting}
+with Compress.Algo.LZW;
+
+procedure Hello is
+  subtype LZW_Type is Compress.Algo.LZW.LZW_Engine;
+  procedure Comp(Engine : LZW_Type; Data : String)
+       renames Compress.Algo.LZW.Process;
+  Compressor : LZW_Type;
+begin
+  Comp(Compressor "Compress Me!");
+end Hello;
+\end{lstlisting}
+
+Notice that while packages and subprograms (and also objects) can be renamed, types can not be
+renamed in this way. Instead you can introduce a subtype without any constraints as a way of
+effectively renaming a type.
+
+In this simple example, the renaming declarations bulk up the code more than they save. However,
+in a longer and more complex situation they can be useful. On the other hand, you should use
+renaming declarations cautiously. People reading your code may be confused by the new names if
+it is not clear what they represent.
+

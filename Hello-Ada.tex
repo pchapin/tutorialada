@@ -1,0 +1,121 @@
+\section{Hello, Ada}
+\label{sec:hello-ada}
+
+Whenever you begin to study a new language or software development environment you should start
+by writing the most trivial program possible in that language or environment. Thus I will begin
+this tutorial with a short but complete program that displays the string ``Hello, Ada!'' on the
+console.
+
+\label{lst:hello-ada}
+\begin{lstlisting}
+with Ada.Text_IO;
+
+procedure Hello is
+begin
+   Ada.Text_IO.Put_Line("Hello, Ada!");
+end Hello;
+\end{lstlisting}
+
+\noindent The program starts with a \newterm{context clause} consisting of a |with| statement.
+The context clause specifies the packages that will be used in this particular compilation unit.
+Although the compilation unit above contains just a single procedure, most Ada code is in
+packages. The standard library components are in child packages of the package |Ada|. In this
+case we will be using facilities in the child package |Ada.Text_IO|.
+
+The main program is the procedure named |Hello|. The precise name used for the main program can
+be anything; exactly which procedure is used as the program's entry point is specified when the
+program is compiled. The procedure consists of two parts: the part between |is| and |begin| is
+called the declarative part. Although empty in this simple case, it is here where you would
+declare local variables and other similar things. The part between |begin| and |end| constitute
+the executable statements of the procedure. In this case, the only executable statement is a
+call to procedure |Put_Line| in package |Ada.Text_IO|. As you can probably guess from its name,
+|Put_Line| prints the given string onto the program's standard output device. It also terminates
+the output with an appropriate end-of-line marker.
+
+Notice how the name of the procedure is repeated at the end. This is optional, but considered
+good practice. In more complex examples the readability is improved by making it clear exactly
+what is ending. Notice also the semicolon at the end of the procedure definition. C family
+languages do not require a semicolon here so you might accidentally leave it out.
+
+Spelling out the full name |Ada.Text_IO.Put_Line| is rather tedious. If you wish to avoid it you
+can include a |use| statement for the |Ada.Text_IO| package in the context clause (or in the
+declarative part of |Hello|). Where the |with| statement makes the names in the withed package
+\newterm{visible}, the |use| statement makes them \newterm{directly visible}. Such names can
+then be used without qualification as shown below:
+
+\begin{lstlisting}
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Hello is
+begin
+   Put_Line("Hello, Ada!");
+end Hello;
+\end{lstlisting}
+
+\noindent Many Ada programmers do this to avoid having to write long package names all the time.
+However, indiscriminate use of |use| can make it difficult to understand your program because it
+can be hard to tell in which package a particular name has been declared.
+
+Ada is a case insensitive language. Thus identifiers such as |Hello|, |hello|, and |hElLo| all
+refer to the same entity. It is traditional in modern Ada source code to use all lower case
+letters for reserved words. For all other identifiers, capitalize the first letter of each word
+and separate multiple words with an underscore.\footnote{This style is often called ``title
+  case.''} The Ada language does not enforce this convention but it is a well established
+standard in the Ada community so you should follow it.
+
+Before continuing I should describe how to compile the simple program above. I will assume you
+are using the freely available GNAT compiler. This is important because GNAT requires specific
+file naming conventions that you must follow. These conventions are not part of the Ada language
+and are not necessarily used by other Ada compilers. However, GNAT depends on these conventions
+in order to locate the files containing the various compilation units of your program.
+
+The procedure |Hello| should be stored in a file named \filename{hello.adb}. Notice that the
+name of the file must be in lower case letters and must agree with the name of the procedure
+stored in that file. The \filename{adb} extension stands for ``Ada body.'' This is in contrast
+with Ada specification files that are given an extension of \filename{ads}. You will see Ada
+specifications when I talk about packages in Section~\ref{sec:packages}. I will describe other
+GNAT file naming requirements at that time.
+
+To compile \filename{hello.adb}, open a console (or terminal) window and use the gnatmake
+command as follows
+
+\begin{Verbatim}
+> gnatmake hello.adb
+\end{Verbatim}
+
+\noindent The \command{gnatmake} command will compile the given file and link the resulting
+object code into an executable producing, in the above example, \filename{hello.exe} (on
+Windows). You can compile Ada programs without \command{gnatmake} by running the compiler and
+linker separately. There are sometimes good reasons to do that. However, for the programs you
+will write as a beginning Ada programmer, you should get into the habit of using
+\command{gnatmake}.
+
+Note that GNAT comes with a graphical Ada programming environment named GPS (GNAT Programming
+Studio). GPS is similar to other modern integrated development environments such as Microsoft's
+Visual Studio or Eclipse. Feel free to experiment with GPS if you are interested. However, the
+use of GPS is outside the scope of this tutorial.
+
+When the compilation has completed successfully you will find that several additional files have
+been created. The files \filename{hello.o} and \filename{hello.exe} (on Windows) are the object
+file and executable file respectively. The file \filename{hello.ali} is the Ada library
+information file. This file is used by GNAT to implement some of the consistency checking
+required by the Ada language. It is a plain text file; feel free to look at it. However, you
+would normally ignore the \filename{ali} files. If you delete them, they will simply be
+regenerated the next time you compile your program.
+
+\subsection*{Exercises}
+
+\begin{enumerate}
+\item Enter the trivial ``Hello, Ada'' program on page~\pageref{lst:hello-ada} into your system.
+  Compile and run it.
+
+\item Make a minor modification to the trivial program that results in an error. Try compiling
+  the program again. Try several different minor errors. This will give you a feeling for the
+  kinds of error messages GNAT produces.
+
+\item Experiment with the |use| statement. Try calling |Put_Line| without specifying its
+  package, both with and without the |use| statement. Try putting the |use| statement inside the
+  declarative part of the procedure. Try putting the |with| statement inside the declarative
+  part of the procedure.
+\end{enumerate}
+
