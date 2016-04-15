@@ -1,7 +1,6 @@
 # Various build artifacts from compiling the samples.
 ASIS/build
 GtkAda/build
-Huffman/build
 samples/build
 samples/channel/build
 samples/RavenSPARK/build
