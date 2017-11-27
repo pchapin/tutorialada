@@ -9,12 +9,12 @@ XMLAda/build
 
 # Build artifacts from compiling the tutorial itself.
 *.aux
-AdaCrash.bbl
-AdaCrash.blg
-AdaCrash.log
-AdaCrash.out
-AdaCrash.pdf
-AdaCrash.toc
+main.bbl
+main.blg
+main.log
+main.out
+main.pdf
+main.toc
 
 # Artifacts related to the web site.
 Ada-Mascot.png
