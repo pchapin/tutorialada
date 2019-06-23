@@ -214,7 +214,7 @@ procedure Hello is
   package Squeeze renames Compress.Algo;
   Compressor : Squeeze.LZW.LZW_Engine;
 begin
-  Squeeze.LZW.Process(Compressor “Compress Me!”);
+  Squeeze.LZW.Process(Compressor, "Compress Me!");
 end Hello;
 \end{lstlisting}
 

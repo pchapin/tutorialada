@@ -38,7 +38,7 @@ The implementation of the division operation might look, in part, as follows:
 \begin{lstlisting}
 function "/"(Left, Right : Number_Type) return Number_Type is
 begin
-  -- Assume there is a suitable overloaded “=” operator.
+  -- Assume there is a suitable overloaded "=" operator.
   if Right = 0 then
     raise Divide_By_Zero;
   end if;

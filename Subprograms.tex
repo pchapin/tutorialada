@@ -29,7 +29,7 @@ procedure Prime2 is
    -- This function returns True if N is prime; False otherwise.
    function Is_Prime(N : Positive) return Boolean is
    begin
-      for I in 2 .. (N – 1) loop
+      for I in 2 .. (N - 1) loop
          if N mod I = 0 then
             return False;
          end if;

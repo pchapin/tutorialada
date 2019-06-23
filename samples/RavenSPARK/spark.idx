@@ -1,7 +1,0 @@
-Consumer              specification is in consumer.ads
-Consumer              body          is in consumer.adb
-Epoch                 specification is in epoch.ads
-Producer              specification is in producer.ads
-Producer              body          is in producer.adb
-Work_Q                specification is in work_q.ads
-Work_Q                body          is in work_q.adb
