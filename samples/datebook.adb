@@ -2,12 +2,9 @@
 -- FILE    : datebook.adb
 -- SUBJECT : Package providing a simple datebook of events.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
-package body Datebook
-with
-   Refined_State => (State => Event_Array)
-is
+package body Datebook is
+
    use type Dates.Datetime;
 
    Maximum_Description_Length : constant := 128;
@@ -35,10 +32,6 @@ is
      (Description : in     String;
       Date        : in     Dates.Datetime;
       Status      :    out Status_Type)
-      with
-         Refined_Global  => (In_Out => Event_Array),
-         Refined_Depends => (Event_Array =>+ (Description, Date),
-                             Status      => (Description, Event_Array))
    is
       Found : Boolean;  -- Is there an available slot?
       Available : Event_Index_Type := Event_Index_Type'First;  -- Location of available slot.
@@ -74,11 +67,7 @@ is
    end Add_Event;
 
 
-   procedure Purge_Events_Before(Date : in Dates.Datetime)
-      with
-         Refined_Global  => (In_Out => Event_Array),
-         Refined_Depends => (Event_Array =>+ Date)
-   is
+   procedure Purge_Events_Before(Date : in Dates.Datetime) is
    begin
       for Index in Event_Index_Type loop
          if Event_Array(Index).Date < Date then
@@ -88,11 +77,7 @@ is
    end Purge_Events_Before;
 
 
-   procedure Get_Earliest_Event_Date(Date : out Dates.Datetime; Status : out Status_Type)
-      with
-         Refined_Global => (Input => Event_Array),
-         Refined_Depends => ((Date, Status) => Event_Array)
-   is
+   procedure Get_Earliest_Event_Date(Date : out Dates.Datetime; Status : out Status_Type) is
       Default_Datetime : Dates.Datetime;
    begin
       Status := No_Event;
@@ -121,9 +106,6 @@ is
      (Date        : in     Dates.Datetime;
       Description :    out String;
       Status      :    out Status_Type)
-      with
-         Refined_Global => (Input => Event_Array),
-         Refined_Depends => ((Description, Status) => (Event_Array, Date, Description))
    is
       Index : Event_Index_Type;
    begin
@@ -157,9 +139,6 @@ is
      (Current_Date : in     Dates.Datetime;
       Next_Date    :    out Dates.Datetime;
       Status       :    out Status_Type)
-      with
-         Refined_Global => (Input => Event_Array),
-         Refined_Depends => ((Next_Date, Status) => (Event_Array, Current_Date))
    is
 
       -- Returns True if D1 is after D2; False otherwise.
@@ -186,15 +165,10 @@ is
    end Get_Next_Event_Date;
 
 
-   function Event_Count return Event_Count_Type
-      with
-         Refined_Global => (Input => Event_Array)
-   is
+   function Event_Count return Event_Count_Type is
       Count : Event_Count_Type := 0;
    begin
       for Index in Event_Index_Type loop
-         pragma Loop_Invariant(Count < Index);
-
          if Event_Array(Index).Is_Used then
             Count := Count + 1;
          end if;

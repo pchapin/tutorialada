@@ -5,7 +5,6 @@
 -- This package is largely illustrative.
 -- A real package like this would need to use an unconstrained array type and be generic.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package Sorters is
 
@@ -18,22 +17,16 @@ package Sorters is
    -- A simple, but inefficient O(n^2) sorting algorithm.
    procedure Bubble_Sort(Values : in out Array_Type)
      with
-       Global => null,
-       Depends => (Values => Values),
        Post => (for all I in Values'First .. Values'Last - 1 => (Values(I) <= Values(I + 1)));
 
    -- Sorts the first part of array Values from Values'First to Limit.
    procedure Selection_Sort(Values : in out Array_Type; Limit : in Index_Type)
      with
-       Global => null,
-       Depends => (Values => (Values, Limit)),
        Post => (for all I in Values'First .. Limit - 1 => (Values(I) <= Values(I + 1)));
 
    -- An efficient O(n log(n)) sorting algorithm.
    procedure Merge_Sort(Values : in out Array_Type)
      with
-       Global => null,
-       Depends => (Values => Values),
        Post => (for all I in Values'First .. Values'Last - 1 => (Values(I) <= Values(I + 1)));
 
 end Sorters;

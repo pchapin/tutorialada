@@ -2,7 +2,6 @@
 -- FILE    : dates.adb
 -- SUBJECT : Package providing calendar dates.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package body Dates is
 
@@ -68,11 +67,7 @@ package body Dates is
 
 
    -- Advance the given date ahead by one day.
-   procedure One_Day_Forward(Current_Date : in out Date)
-   with
-     Depends => (Current_Date =>+ null),
-     Pre => Current_Date /= Maximum_Date
-   is
+   procedure One_Day_Forward(Current_Date : in out Date) is
    begin
       if Current_Date.Day < Get_Month_Length(Current_Date.Year, Current_Date.Month) then
          Current_Date.Day := Current_Date.Day + 1;
@@ -90,11 +85,7 @@ package body Dates is
 
 
    -- Backs up the given date by one day.
-   procedure One_Day_Backward(Current_Date : in out Date)
-   with
-     Depends => (Current_Date =>+ null),
-     Pre => Current_Date /= Minimum_Date
-   is
+   procedure One_Day_Backward(Current_Date : in out Date) is
    begin
       if Current_Date.Day /= 1 then
          Current_Date.Day := Current_Date.Day - 1;

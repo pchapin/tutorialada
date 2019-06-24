@@ -8,6 +8,7 @@ begin
       declare
          Line : String := Get_Line;  -- Function Ada.Text_IO.Get_Line gets a complete line.
       begin
+         -- Include whatever processing of Line is desired.
          Put_Line(Line);
       end;
    end loop;

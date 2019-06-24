@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE          : rot13.adb
--- LAST REVISION : 2007-12-19
 -- SUBJECT       : Program that does ROT13 transformation on a text file.
--- PROGRAMMER    : (C) Copyright 2007 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Electrical and Computer Engineering Technology
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO;      use Ada.Text_IO;

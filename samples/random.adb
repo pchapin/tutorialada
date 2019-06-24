@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE          : random.adb
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Implementation of a random number generator package.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 with Interfaces; use Interfaces;
 

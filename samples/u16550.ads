@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE          : u16550.ads
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Specification of a 16550 UART handling package.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 with System;
 
@@ -53,8 +43,7 @@ package U16550 is
 
    procedure Initialize_Port
       (Port : Port_Type; Baud : Baud_Type; Line_Parameters : Line_Control_Type);
-      
+
    -- Other subprograms to read/write the port, check its status, etc.
 
 end U16550;
-

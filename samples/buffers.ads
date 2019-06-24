@@ -1,15 +1,11 @@
 ---------------------------------------------------------------------------
 -- FILE    : buffers.ads
--- SUBJECT : Package providing various buffer manipulation subprograms.
+-- SUBJECT : Package providing various buffer manipulating subprograms.
 --
 -- A Buffer is essentially a string bounded in length to Maximum_Size. However, unlike the
--- Standard.String type, Buffer_Type has subprograms more in keeping with  use as a storage
+-- Standard.String type, Buffer_Type has subprograms more in keeping with use as a storage
 -- area for raw data.
---
--- This package demonstrates various SPARK aspects. All the subprograms it contains are proved
--- free of runtime error by the SPARK tools.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package Buffers is
 
@@ -20,46 +16,29 @@ package Buffers is
    type Buffer_Type is array(Buffer_Index_Type range <>) of Character;
 
    -- Fills Buffer with Fill_Character.
-   procedure Fill(Buffer : out Buffer_Type; Fill_Character : in Character)
-     with
-       Global => null,
-       Depends => (Buffer => (Buffer, Fill_Character));
+   procedure Fill(Buffer : out Buffer_Type; Fill_Character : in Character);
 
    -- Reverses contents of Buffer.
-   procedure Reverse_Buffer(Buffer : in out Buffer_Type)
-     with
-       Global => null,
-       Depends => (Buffer => Buffer);
+   procedure Reverse_Buffer(Buffer : in out Buffer_Type);
 
    -- Rotates Buffer contents right (toward higher index values).
-   procedure Rotate_Right(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type)
-     with
-       Global => null,
-       Depends => (Buffer => (Buffer, Distance));
+   procedure Rotate_Right(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type);
 
    -- Rotates Buffer contents left (toward lower index values);
-   procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type)
-     with
-       Global => null,
-       Depends => (Buffer => (Buffer, Distance));
+   procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type);
 
    -- Returns a count of the number of times the string Search appears in Buffer.
    -- For example if Buffer contains "ababab" and Search is "aba" this function should return 2.
-   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type
-     with Global => null;
+   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type;
 
    -- Returns the number of occurrences of Ch in Buffer.
-   function Count_Character(Buffer : Buffer_Type; Ch : Character) return Buffer_Count_Type
-     with Global => null;
+   function Count_Character(Buffer : Buffer_Type; Ch : Character) return Buffer_Count_Type;
 
    -- Returns the number of occurrences of Ch in Buffer and replaces those occurrences with ' '.
    procedure Count_And_Erase_Character
      (Buffer : in out Buffer_Type;
       Ch     : in  Character;
-      Count  : out Buffer_Count_Type)
-     with
-       Global => null,
-       Depends => ((Buffer, Count) => (Buffer, Ch));
+      Count  : out Buffer_Count_Type);
 
    -- Removes instances of Erase_Character, compacting Buffer as needed. New space at the end is
    -- filled with Fill_Character. After returning, Valid contains a count of the remaining valid
@@ -68,18 +47,11 @@ package Buffers is
      (Buffer          : in out Buffer_Type;
       Erase_Character : in     Character;
       Fill_Character  : in     Character;
-      Valid           :    out Buffer_Count_Type)
-     with
-       Global => null,
-       Depends => (Buffer => (Buffer, Erase_Character, Fill_Character),
-                   Valid  => (Buffer, Erase_Character));
+      Valid           :    out Buffer_Count_Type);
 
    -- Copies the source string into the buffer. If the source string is too short the buffer is
    -- padded with spaces. If the source string is too long, it is truncated.
-   procedure Copy_Into(Buffer : out Buffer_Type; Source : in String)
-     with
-       Global => null,
-       Depends => (Buffer => (Buffer, Source));
+   procedure Copy_Into(Buffer : out Buffer_Type; Source : in String);
 
    -- Copies the source string onto the buffer starting at position Point. At most Length
    -- characters are copied. If Point is outside the buffer, there is no effect. If the source
@@ -89,10 +61,7 @@ package Buffers is
      (Buffer : in out Buffer_Type;
       Source : in     String;
       Point  : in     Buffer_Index_Type;
-      Length : in     Buffer_Count_Type)
-     with
-       Global => null,
-       Depends => (Buffer => (Buffer, Source, Point, Length));
+      Length : in     Buffer_Count_Type);
 
    -- Returns a substring of the buffer starting at Point and of length Length. If Point is
    -- outside the buffer, an empty string is returned. If the requested length goes beyond the
@@ -100,7 +69,6 @@ package Buffers is
    function Substring
      (Buffer : Buffer_Type;
       Point  : Buffer_Index_Type;
-      Length : Buffer_Count_Type) return String
-     with Global => null;
+      Length : Buffer_Count_Type) return String;
 
 end Buffers;

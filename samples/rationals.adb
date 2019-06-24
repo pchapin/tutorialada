@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE          : rationals.adb
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Implementation of a rational number handling package.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 
 package body Rationals is
@@ -74,7 +64,7 @@ package body Rationals is
 
    function "+"(Left, Right : Rational) return Rational is
       Result : Rational;
-      Common : Numeric_Type := Left.Denominator * Right.Denominator;
+      Common : constant Numeric_Type := Left.Denominator * Right.Denominator;
    begin
       Result.Numerator :=
          (Left.Numerator * Right.Denominator) + (Right.Numerator * Left.Denominator);
@@ -85,7 +75,7 @@ package body Rationals is
 
    function "-"(Left, Right : Rational) return Rational is
       Result : Rational;
-      Common : Numeric_Type := Left.Denominator * Right.Denominator;
+      Common : constant Numeric_Type := Left.Denominator * Right.Denominator;
    begin
       Result.Numerator :=
          (Left.Numerator * Right.Denominator) - (Right.Numerator * Left.Denominator);
@@ -113,4 +103,3 @@ package body Rationals is
    end "/";
 
 end Rationals;
-

@@ -1,20 +1,10 @@
 ---------------------------------------------------------------------------
 -- FILE          : rationals.ads
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Specification of a rational number handling package.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
 --
 -- Note that it is common to give packages containing a single private type a name that is
 -- the plural form of the name used for the private type. Thus package Rationals contains
 -- a type Rational. This convention is not universal, but it is common.
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 
 generic
@@ -46,4 +36,3 @@ private
       end record;
 
 end Rationals;
-

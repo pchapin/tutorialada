@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE          : rationals_test.adb
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Program to exercise package Rational.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
@@ -47,4 +37,3 @@ begin
    Z := Make(6, 12);
    Put("6/12 reduced is "); Put(Z); New_Line;
 end Rationals_Test;
-

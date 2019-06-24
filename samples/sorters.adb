@@ -2,7 +2,6 @@
 -- FILE    : sorters.adb
 -- SUBJECT : Package providing various sorting procedures
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package body Sorters is
 
@@ -21,25 +20,17 @@ package body Sorters is
                Values(J) := Values(J + 1);
                Values(J + 1) := Array_Item;
             end if;
-
-            pragma Loop_Invariant
-              (for all K in Values'First .. J => (Values(K) <= Values(J + 1)));
          end loop;
       end Single_Pass;
 
    begin
       for I in reverse Values'First .. Values'Last - 1 loop
          Single_Pass(Limit => I);
-
-         pragma Loop_Invariant
-           (for all K in I .. Values'Last - 1 => (Values(K) <= Values(K + 1)));
       end loop;
    end Bubble_Sort;
 
 
-   procedure Selection_Sort(Values : in out Array_Type; Limit  : in Index_Type)
-     with SPARK_Mode => Off
-   is
+   procedure Selection_Sort(Values : in out Array_Type; Limit  : in Index_Type) is
 
       -- Swaps the values of two components in the array Values.
       procedure Swap(X : in Index_Type; Y : in Index_Type) is
@@ -61,11 +52,6 @@ package body Sorters is
       begin
          Min := Starting_At;
          for Index in Index_Type range Starting_At + 1 .. Limit loop
-            pragma Loop_Invariant
-              (Starting_At <= Min and Min <= Limit and
-               (for all J in Index_Type range Starting_At .. Index - 1 =>
-                    (Values(Min) <= Values(J))));
-
             if Values (Index) < Values (Min) then
                Min := Index;
             end if;
@@ -76,19 +62,11 @@ package body Sorters is
    begin -- Selection_Sort
       for Current in Index_Type range Values'First .. Limit loop
          Swap(Current, Index_Of_Minimum(Starting_At => Current));
-
-         pragma Loop_Invariant
-           ((for all J in Index_Type range Values'First .. Current - 1 =>
-                (Values(J) <= Values(J + 1))) and
-             (for all J in Index_Type range Current .. Limit =>
-                (Values(Current) <= Values(J))));
       end loop;
    end Selection_Sort;
 
 
-   procedure Merge_Sort(Values : in out Array_Type)
-     with SPARK_Mode => Off
-   is
+   procedure Merge_Sort(Values : in out Array_Type) is
 
       subtype Distance_Type is Count_Type range 1 .. Count_Type'Last;
       Region_Counter : Count_Type;
@@ -102,8 +80,6 @@ package body Sorters is
          B_Position : in     Index_Type;
          B_Distance : in     Distance_Type)
         with
-          Global => (In_Out => Values),
-          Depends => (Values =>+ (A_Position, A_Distance, B_Position, B_Distance)),
           Pre => B_Position = A_Position + A_Distance and
                  B_Position + (B_Distance - 1) <= Values'Last
       is
@@ -152,12 +128,6 @@ package body Sorters is
 
          -- Compute merged result.
          while A_Active or B_Active loop
-            pragma Loop_Invariant
-              (A_Side >= A_Position and
-               A_Side <= A_Position + (A_Distance - 1) and
-               B_Side >= B_Position and
-               B_Side <= B_Position + (B_Distance - 1));
-
             if not A_Active then
                Take_B;
             elsif not B_Active then

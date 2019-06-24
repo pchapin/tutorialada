@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE          : random_test.adb
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Simple demonstration/test program for package Random.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 with Ada.Text_IO;
 with Random;
@@ -37,4 +27,3 @@ begin
       Ada.Text_IO.New_Line;
    end loop;
 end Random_Test;
-

@@ -6,13 +6,9 @@
 -- appropriate to use than this package in most cases (because it is standard), this package
 -- illustrates a number of useful techniques.
 --
--- All the subprograms in this package prove free of runtime error using the SPARK tools.
---
 -- Exercise: Add a subprogram that computes the difference between two dates returning the
--- number of days apart the dates are using Day_Advance_Type. Can you prove your implementation
--- is free of runtime errors using SPARK?
+-- number of days apart the dates are using Day_Advance_Type.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package Dates is
    type Year_Type   is range 2000 .. 2099;
@@ -40,8 +36,7 @@ package Dates is
       Month    : in  Month_Type;
       Day      : in  Day_Type;
       New_Date : out Date;
-      Valid    : out Boolean)
-   with Depends => ( (New_Date, Valid) => (Year, Month, Day) );
+      Valid    : out Boolean);
 
    -- This subprogram can't fail so it doesn't need to return a Valid indicator.
    function Create_Time
@@ -68,8 +63,7 @@ package Dates is
    -- If an attempt is made to advance off the end of the valid range of dates, Valid is set to
    -- False and Current_Date is set to the last allowed date in the direction of advancement.
    --
-   procedure Advance(Current_Date : in out Date; By : in Day_Advance_Type; Valid : out Boolean)
-     with Depends => ( (Current_Date, Valid) => (Current_Date, By) );
+   procedure Advance(Current_Date : in out Date; By : in Day_Advance_Type; Valid : out Boolean);
 
    -- Returns True if Past comes before Future.
    function "<"(Past : Datetime; Future : Datetime) return Boolean;
@@ -97,13 +91,13 @@ private
       end record;
 
 
-   function Get_Year(Current_Date : Date) return Year_Type is (Current_Date.Year);
-   function Get_Month(Current_Date : Date) return Month_Type is (Current_Date.Month);
-   function Get_Day(Current_Date : Date) return Day_Type is (Current_Date.Day);
-   function Get_Hour(Current_Time : Time) return Hour_Type is (Current_Time.Hour);
+   function Get_Year  (Current_Date : Date) return Year_Type   is (Current_Date.Year);
+   function Get_Month (Current_Date : Date) return Month_Type  is (Current_Date.Month);
+   function Get_Day   (Current_Date : Date) return Day_Type    is (Current_Date.Day);
+   function Get_Hour  (Current_Time : Time) return Hour_Type   is (Current_Time.Hour);
    function Get_Minute(Current_Time : Time) return Minute_Type is (Current_Time.Minute);
    function Get_Second(Current_Time : Time) return Second_Type is (Current_Time.Second);
-   function Get_Date(Current_Moment : Datetime) return Date is (Current_Moment.Date_Part);
-   function Get_Time(Current_Moment : Datetime) return Time is (Current_Moment.Time_Part);
+   function Get_Date  (Current_Moment : Datetime) return Date  is (Current_Moment.Date_Part);
+   function Get_Time  (Current_Moment : Datetime) return Time  is (Current_Moment.Time_Part);
 
 end Dates;

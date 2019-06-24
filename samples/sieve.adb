@@ -1,17 +1,7 @@
 ---------------------------------------------------------------------------
 -- FILE          : sieve.adb
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Finds prime numbers.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
----------------------------------------------------------------------------
+--------------------------------------------------------------------------
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Command_Line;
@@ -53,4 +43,3 @@ begin -- Sieve
    end if;
    Ada.Command_Line.Set_Exit_Status(Ada.Command_Line.Success);
 end Sieve;
-

@@ -4,34 +4,23 @@ project Samples is
 
    for Object_Dir use "build";
    for Source_Dirs use (".", "Check");
-   type Runtime_Type is
-      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp", "soft-float", "xenomai", "zcx", "zfp");
-   Runtime : Runtime_Type := "full";
-   type Target_Type is
-      ("native");
-   Platform : Target_Type := "native";
-
-   case Runtime is
-      when others =>
-         case Platform is
-            when "native" =>
-               for Main use ("filter.adb", "hello.adb", "prime.adb", "prime2.adb", "prime_factors.adb", "samples_test.adb", "vowels");
-         end case;
-   end case;
-
+   for Main use
+     ("filter.adb",
+      "hello.adb",
+      "prime.adb",
+      "prime2.adb",
+      "prime_factors.adb",
+      "random_test.adb",
+      "rationals_test.adb",
+      "rot13.adb",
+      "samples_test.adb",
+      "sieve.adb",
+      "sieve_task.adb",
+      "vowels");
+   
    package Compiler is
-      case Runtime is
-         when others =>
-            case Platform is
-               when "native" =>
-                  for Default_Switches ("ada") use ("-gnata", "-fstack-check", "-gnat12");
-            end case;
-      end case;
+      for Default_Switches ("ada") use ("-g", "-gnatwa", "-gnata", "-fstack-check");
    end Compiler;
-
-   package Prove is
-      for Switches use ("-j2");
-   end Prove;
-
+   
 end Samples;
 

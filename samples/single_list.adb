@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE         : single_list.adb
 -- SUBJECT      : Implementation of a singly linked list package.
--- LAST REVISED : 2008-06-22
--- PROGRAMMER   : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 
 with Ada.Unchecked_Deallocation;
@@ -86,4 +76,3 @@ package body Single_List is
    end Finalize;
 
 end Single_List;
-

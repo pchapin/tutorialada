@@ -2,7 +2,6 @@
 -- FILE    : datebooks.ads
 -- SUBJECT : Package providing a simple datebook type.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 with Dates;
 
@@ -22,21 +21,15 @@ package Datebooks is
      (Book        : in out Datebook;
       Description : in     String;
       Date        : in     Dates.Datetime;
-      Status      :    out Status_Type)
-   with
-     Depends => ( Book => (Book, Description, Date), Status => (Book, Description) );
+      Status      :    out Status_Type);
 
    -- Removes all events before the given datetime. This procedure can't fail.
-   procedure Purge_Events_Before(Book : in out Datebook; Date : in Dates.Datetime)
-   with
-     Depends => (Book =>+ Date);
+   procedure Purge_Events_Before(Book : in out Datebook; Date : in Dates.Datetime);
 
    -- Returns the datetime associated with the earliest event.
    --   Fails with No_Event if the datebook is empty.
    procedure Get_Earliest_Event_Date
-     (Book : in Datebook; Date : out Dates.Datetime; Status : out Status_Type)
-   with
-     Depends => ( (Date, Status) => Book );
+     (Book : in Datebook; Date : out Dates.Datetime; Status : out Status_Type);
 
    -- Returns the description of the event at the given datetime. Although a Datebook allows
    -- multiple events at the same datetime, Get_Event will (currently) only return one of them.
@@ -46,9 +39,7 @@ package Datebooks is
      (Book        : in     Datebook;
       Date        : in     Dates.Datetime;
       Description :    out String;
-      Status      :    out Status_Type)
-   with
-     Depends => ( (Description, Status) => (Book, Date, Description) );
+      Status      :    out Status_Type);
 
    -- Returns the first datetime associated with an event after the Current_Date.
    --   Fails with No_Event if there is no later event.
@@ -56,9 +47,7 @@ package Datebooks is
      (Book         : in     Datebook;
       Current_Date : in     Dates.Datetime;
       Next_Date    :    out Dates.Datetime;
-      Status       :    out Status_Type)
-   with
-     Depends => ( (Next_Date, Status) => (Book, Current_Date) );
+      Status       :    out Status_Type);
 
    -- Returns the number of events currently in the datebook.
    function Event_Count(Book : in Datebook) return Event_Count_Type;

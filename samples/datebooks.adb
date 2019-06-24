@@ -2,7 +2,6 @@
 -- FILE    : datebooks.adb
 -- SUBJECT : Package providing a simple datebook type.
 ---------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package body Datebooks is
    use type Dates.Datetime;
@@ -155,8 +154,6 @@ package body Datebooks is
       Count : Event_Count_Type := 0;
    begin
       for I in Event_Index_Type loop
-         pragma Loop_Invariant(Count < I);
-
          if Book(I).Is_Used then
             Count := Count + 1;
          end if;

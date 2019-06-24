@@ -1,18 +1,8 @@
 ---------------------------------------------------------------------------
 -- FILE          : sieve_task.adb
--- LAST REVISION : 2008-06-22
 -- SUBJECT       : Finds prime numbers using a background task.
--- PROGRAMMER    : (C) Copyright 2008 by Peter C. Chapin
 --
 -- This program is contrived, but it illustrates the basics of Ada's tasking support.
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
@@ -92,4 +82,3 @@ begin -- Sieve_Task
       end if;
    end if;
 end Sieve_Task;
-

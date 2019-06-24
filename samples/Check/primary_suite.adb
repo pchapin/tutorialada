@@ -9,7 +9,6 @@
 ---------------------------------------------------------------------------
 with Check_Buffers;
 with Dates.Check_Dates;
-with Check_Number_Theory;
 with Check_Sorters;
 
 package body Primary_Suite is
@@ -21,8 +20,7 @@ package body Primary_Suite is
    -- The various tests in this suite.
    Test_1 : aliased Check_Buffers.Buffer_Test;
    Test_2 : aliased Dates.Check_Dates.Date_Test;
-   Test_3 : aliased Check_Number_Theory.Prime_Test;
-   Test_4 : aliased Check_Sorters.Sort_Test;
+   Test_3 : aliased Check_Sorters.Sort_Test;
 
    -- Function to return an access to the configured suite
    function Suite return Access_Test_Suite is
@@ -30,7 +28,6 @@ package body Primary_Suite is
       Add_Test(Suite_Object'Access, Test_1'Access);
       Add_Test(Suite_Object'Access, Test_2'Access);
       Add_Test(Suite_Object'Access, Test_3'Access);
-      Add_Test(Suite_Object'Access, Test_4'Access);
       return Suite_Object'Access;
    end Suite;
 

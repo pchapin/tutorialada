@@ -1,8 +1,3 @@
----------------------------------------------------------------------------
--- FILE    : buffers.adb
--- SUBJECT : Package providing various buffer manipulation subprograms.
----------------------------------------------------------------------------
-pragma SPARK_Mode(On);
 
 package body Buffers is
 
@@ -58,7 +53,6 @@ package body Buffers is
       if Search'Length > 0 and Buffer'Length >= Search'Length then
          Positions := (Buffer'Length - Search'Length) + 1;
          for I in 1 .. Positions loop
-            pragma Loop_Invariant(Result < I);
 
             -- Does Search match the buffer's contents starting at position I?
             Matched := True;
@@ -82,8 +76,6 @@ package body Buffers is
       Counter : Buffer_Count_Type := 0;
    begin
       for I in Buffer'Range loop
-         pragma Loop_Invariant(Counter <= (I - Buffer'First));
-
          if Buffer(I) = Ch then
             Counter := Counter + 1;
          end if;
@@ -99,8 +91,6 @@ package body Buffers is
    begin
       Count := 0;
       for I in Buffer'Range loop
-         pragma Loop_Invariant (Count <= (I - Buffer'First));
-
          if Buffer(I) = Ch then
             Count := Count + 1;
             Buffer(I) := ' ';
@@ -123,8 +113,6 @@ package body Buffers is
 
       -- Take interesting characters from the original buffer and pack them into Workspace.
       for I in Buffer'Range loop
-         pragma Loop_Invariant(Offset <= (I - Workspace'First));
-
          if Buffer(I) /= Erase_Character then
             Workspace(Workspace'First + Offset) := Buffer(I);
             Offset := Offset + 1;

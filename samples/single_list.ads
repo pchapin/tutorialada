@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------------
 -- FILE         : single_list.ads
 -- SUBJECT      : Specification of a singly linked list package.
--- LAST REVISED : 2008-06-22
--- PROGRAMMER   : (C) Copyright 2008 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Computer Information Systems
---      Vermont Technical College
---      Randolph Center, VT 05061
---      Peter.Chapin@vtc.vsc.edu
 ---------------------------------------------------------------------------
 
 with Ada.Finalization;
@@ -55,4 +45,3 @@ private
    type Iterator is new Node_Pointer;
 
 end Single_List;
-
