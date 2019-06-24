@@ -2,6 +2,7 @@
 ASIS/build
 Channel/build
 GtkAda/build
+Hexdump/build
 samples/build
 Win32Ada/build
 XMLAda/build

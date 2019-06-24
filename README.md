@@ -48,12 +48,16 @@ the future. The following examples are included:
   enough to be a little interesting, but it could benefit from more elaboration.
   
 * `GtkAda`. This program is intended to demonstrate the GtkAda graphical library. Right now it
-  is little more than a placeholder (it display a single button). A more interesting application
-  (like a hexdump utility?) would be welcome.
-  
+  is little more than a placeholder (it displays a single button). A more interesting
+  application (like a graphical version of the Hexdump example?) would be welcome.
+
+* `Hexdump`. This program is a simple command line hex viewer. It displays the contents of a
+  file as a sequence of bytes in hex, along with the offset of each byte and its ASCII
+  interpretation.
+
 * `Win32Ada`. This program is intended to demonstrate the Win32Ada library that allows Ada to
   interface directly to the Windows OS. Right now it is little more than a placeholder. A more
-  interesting application (again: a hexdump utility?) would be welcome.
+  interesting application (again: a graphical version of the Hexdump example?) would be welcome.
   
 * `XMLAda`. This program is nothing more than one of the samples in the XMLAda documentation. A
   more interesting application would be welcome.
