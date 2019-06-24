@@ -11,13 +11,6 @@
 -- could be enhanced to also investigate CRC checksums and parity (as well
 -- as other, more sophisticated techniques such as Hamming error correcting
 -- codes).
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Vermont Technical College
---      Randolph Center, VT 05061
---      pchapin@ecet.vtc.edu
 ---------------------------------------------------------------------------
 
 with Channel; use Channel;

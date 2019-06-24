@@ -1,14 +1,12 @@
-with "gtkada.gpr";
-
-project Hello is
+project Channel is
 
    for Object_Dir use "build";
    for Source_Dirs use (".");
-   for Main use ("hello.adb");
+   for Main use ("checksum.adb", "channel_test.adb");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-gnatwa", "-gnata", "-fstack-check");
    end Compiler;
 
-end Hello;
+end Channel;
 

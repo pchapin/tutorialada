@@ -8,13 +8,6 @@
 -- measure the bit error rate of the simulated channel and compare that to
 -- the configured rate. It should probably also attempt to verify that the
 -- channel's errors are random.
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Vermont Technical College
---      Randolph Center, VT 05061
---      pchapin@ecet.vtc.edu
 ---------------------------------------------------------------------------
 
 with Channel; use Channel;
@@ -147,4 +140,3 @@ begin -- Channel_Test
   end MAIN_LOOP;
 
 end Channel_Test;
-

@@ -7,7 +7,7 @@ project Saxexample is
    for Main use ("saxexample_main.adb");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnata", "-fstack-check");
+      for Default_Switches ("ada") use ("-g", "-gnatwa", "-gnata", "-fstack-check");
    end Compiler;
 
 end Saxexample;

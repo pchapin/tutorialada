@@ -3,13 +3,6 @@
 -- LAST REVISION : 2003-12-28
 -- SUBJECT       : Package body for simulated noisy channel.
 -- PROGRAMMER    : (C) Copyright 2003 by Peter C. Chapin
---
--- Please send comments or bug reports to
---
---      Peter C. Chapin
---      Vermont Technical College
---      Randolph Center, VT 05061
---      pchapin@ecet.vtc.edu
 ---------------------------------------------------------------------------
 
 with Ada.Numerics.Float_Random;
@@ -37,7 +30,7 @@ package body Channel is
    -- Corrupts bits in Data at rate given by Bit_Error_Rate.
    procedure Transceive(Data : IN OUT Octet) is
       Dice  : Float;
-      Masks : array(0..7) of Octet :=
+      Masks : constant array(0..7) of Octet :=
         ( 16#01#, 16#02#, 16#04#, 16#08#, 16#10#, 16#20#, 16#40#, 16#80# );
    begin
       for I in 0..7 loop
@@ -49,4 +42,3 @@ package body Channel is
    end Transceive;
 
 end Channel;
-

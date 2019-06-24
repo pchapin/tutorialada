@@ -25,8 +25,8 @@ procedure Print_Table(Results : IN Error_Table) is
       return Result;
    end Pad;
 
-   Separator_Length : Integer := 3*Integer'Width + Float'Width + 3*4;
-   Separator_Line   : String(1..Separator_Length) := (others => '=');
+   Separator_Length : constant Integer := 3*Integer'Width + Float'Width + 3*4;
+   Separator_Line   : constant String(1..Separator_Length) := (others => '=');
 
 begin -- Print_Table
 
