@@ -1,21 +1,14 @@
-# Various build artifacts from compiling the samples.
-ASIS/build
-Channel/build
-GtkAda/build
-Hexdump/build
-samples/build
-Win32Ada/build
-XMLAda/build
+# Various build artifacts from compiling the samples and examples.
+build
 
-
-# Build artifacts from compiling the tutorial itself.
+# Build artifacts from compiling LaTeX documents.
 *.aux
-main.bbl
-main.blg
-main.log
-main.out
-main.pdf
-main.toc
+*.bbl
+*.blg
+*.log
+*.out
+*.pdf
+*.toc
 
 # Artifacts related to the web site.
 Ada-Mascot.png

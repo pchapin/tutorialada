@@ -54,6 +54,9 @@ the future. The following examples are included:
 * `Hexdump`. This program is a simple command line hex viewer. It displays the contents of a
   file as a sequence of bytes in hex, along with the offset of each byte and its ASCII
   interpretation.
+  
+* `Huffman`. This program does a huffman encoding of the specified input file. It also displays
+  some interesting information about the encoding process. The program is incomplete.
 
 * `Win32Ada`. This program is intended to demonstrate the Win32Ada library that allows Ada to
   interface directly to the Windows OS. Right now it is little more than a placeholder. A more

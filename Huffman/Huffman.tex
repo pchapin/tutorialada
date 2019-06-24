@@ -1,0 +1,294 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FILE    : Huffman.tex
+% SUBJECT : A Huffman encoding case study in Ada.
+% AUTHOR  : (C) Copyright 2015 by Peter Chapin <PChapin@vtc.vsc.edu>
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ++++++++++++++++++++++++++++++++
+% Preamble and global declarations
+% ++++++++++++++++++++++++++++++++
+\documentclass{scrreprt}
+
+% --------
+% Packages
+% --------
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage[pdftex]{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{url}
+
+\newcommand{\SPARK}{\textsc{Spark}}   % For ease of small capping SPARK.
+
+% Redefine the underscore command so latex will break words at underscores. Found this trick at
+% http://mrtextminer.wordpress.com/2009/02/26/break-a-long-word-containing-underscores-in-latex/
+%
+\let\underscore\_
+\newcommand{\myunderscore}{\renewcommand{\_}{\underscore\hspace{0pt}}}
+
+% Issue the changed underscore command to the whole document.
+\myunderscore
+
+% Define a new 'leo' style for the package that will use a smaller font for URLs. It also allows
+% LaTEX to break a URL across lines. From Jérôme Hugues.
+%
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+
+% Now actually use the newly defined style.
+\urlstyle{leo}
+
+%% The following are settings for the listings package. See the listings package documentation
+%% for more information.
+%%
+%\lstset{language=C,
+%        basicstyle=\small,
+%        stringstyle=\ttfamily,
+%        commentstyle=\ttfamily,
+%        xleftmargin=0.25in,
+%        showstringspaces=false}
+
+% Define listing parameters for Ada 2012. Base it on Ada 2005.
+\lstdefinelanguage{Ada2012}[2005]{Ada}
+{
+  morekeywords={some},
+  sensitive=false,
+  breaklines=false,
+  showstringspaces=false,
+  xleftmargin=0.25in,
+  basicstyle=\small\sffamily,
+  columns=flexible,
+}
+\lstset{language=Ada2012, showlines=true}
+
+% Wide equivalent of the listings package lstset. The parameter is the amount to indent the code
+% (may be negative).
+%
+\lstnewenvironment{widelisting}[1]
+   {\lstset{language=Ada2012,xleftmargin=#1}}
+   {}
+   
+% Wide listing from a file using the Listings package lstinputlisting. First parameter is
+% path name to file (can be relative). Second parameter is the amount to indent the code (may
+% be negative).
+%
+\newcommand{\wideinputlisting}[2]{%
+   \lstinputlisting[language=Ada2012,xleftmargin=#2]{#1}}
+
+% ------------------
+% Layout adjustments
+% ------------------
+% Avoid changing the layout; it is usually set via the document class (or in packages).
+%
+% \pagestyle{headings}
+%
+% The following create block paragraphs (no indentation, extra separation).
+% \setlength{\parindent}{0em}
+% \setlength{\parskip}{1.75ex plus0.5ex minus0.5ex}
+
+
+% ------
+% Macros
+% ------
+\newcommand{\command}[1]{\texttt{#1}}  % For commands typed at a console/terminal prompt.
+\newcommand{\filename}[1]{\texttt{#1}} % For the names of files in the file system.
+\newcommand{\newterm}[1]{\textit{#1}}  % For the first time introduction of a term.
+
+% +++++++++++++++++++
+% The document itself
+% +++++++++++++++++++
+\begin{document}
+
+% ----------------------
+% Title page information
+% ----------------------
+\titlehead{\centering\includegraphics[scale=0.05]{../Ada-Mascot.pdf}}
+\title{Huffman Encoding--A Case Study}
+\author{Peter Chapin\thanks{pchapin@vtc.edu}\\
+  Vermont Technical College}
+\date{Generated: \today}
+\maketitle
+
+\tableofcontents
+
+%\lstMakeShortInline[basicstyle=\ttfamily]|
+\lstMakeShortInline|
+
+\chapter{Huffman Encoding}
+\label{chapt:huffman-encoding}
+
+To better understand the features of Ada, it is helpful to work through a small but realistic
+program using the language. In this section I will design and implement a simple file
+compression utility that uses the Huffman encoding compression algorithm. Although Huffman
+encoding is not particularly effective by itself, it is good enough to provide a usable utility
+for some applications. It also provides a good balance of complexity and simplicity for this
+exercise.
+
+\section{The Algorithm}
+
+Huffman encoding takes advantage of the fact that in most files some byte values are much more
+common than others. By assigning short binary codes to the most commonly occurring values the
+file can be made smaller. One consequence, however, of assigning short codes to some values is
+that other values must necessarily be assigned long binary codes. This is necessary in order to
+properly distinguish between all possible values.
+
+For example, assume that the most commonly occurring value is assigned a single bit code of 1.
+All other values must necessarily have codes starting with 0 so that they can be properly
+recognized. There could be as many as 255 such values, requiring 8 additional bits (for a total
+of nine bits) to distinguish those values among themselves.
+
+Huffman encoding finds a way to assign variable length codes to the byte values to minimize the
+overall file size. Specifically it uses byte value frequency information to make the code
+assignments. That is, commonly occurring bytes are assigned relatively short codes and
+infrequently occurring bytes are assigned correspondingly longer codes. Itt can be shown that
+Huffman encoding is optimal; no other compression method that does not take advantage of
+correlations can provide more compression. Huffman encoding is also an example of a greedy
+algorithm and is often discussed in algorithms textbooks as such.
+
+The algorithm has three phases:
+
+\begin{enumerate}
+
+\item Scan the input and count the number of times each byte value occurs.
+
+\item Construct a \newterm{code tree} that reflects the relative frequency of the byte values
+  and assign the variable length codes to each value.
+
+\item Rewrite the input substituting the codes assigned in step \#2 for the byte values.
+
+\end{enumerate}
+
+One significant disadvantage to Huffman encoding is that the input must be scanned completely to
+do the frequency analysis before any output can be written. In some applications the entire
+input is not known initially (for example: streaming data or user input) and that is a major
+problem for this method. In such cases the compressor can sometimes make an educated guess about
+the relative frequencies of the byte values, based perhaps on past observations of similar
+input, but the results will then be only approximate. This is not an issue in this case; I am
+interested in compressing files and I have access to the entire file before I have to compress
+any of it.
+
+The output of the first phase is, conceptually, a table with one entry for each byte value (256
+entries in all). Associated with each entry is a count of the number of times that value
+appeared in the input. For example, assume the algorithm is applied to a file containing only
+the letters `A' through `E'. The table output by the first phase might look as follows:
+
+\textit{Show table\ldots}
+
+The table elements become the leaves of a tree. Pseudo code for the tree building algorithm is
+shown below. Each pass of the while loop combines the counts from the active nodes with the
+smallest and next smallest count. Those nodes are then removed from the active list and the new
+node is added to the active list (where its combined count is then considered in later passes).
+Thus each pass of the while loop reduces the size of the active list by one. Eventually only a
+single active node is left and that node is the root of the code tree.
+
+\begin{Verbatim}
+WHILE <There is more than one active node> LOOP
+  <Find nodes x, y with the smallest and next smallest counts>
+  <Create a new node z that combines the count values;
+     Point z at x and y>
+  <Remove x and y from the set of active nodes>
+  <Add z to the set of active nodes>
+END
+\end{Verbatim}
+
+For example using the initial counts as shown above, the result after the first past of the
+while loop is as follows:
+
+\textit{Show figure\ldots}
+
+In the next pass of the while loop the nodes with counts 42 (smallest) and 45 (next smallest)
+will be combined. After the loop finishes executing in the sample above the code tree looks
+like:
+
+\textit{Show figure\ldots}
+
+Notice that the nodes with large counts, such as the node for `A' are combined late in the
+process. Such nodes thus end up being a short distance from the root of the code tree. This is
+the basis for their short codes. Notice also that the count in the root node ends up being the
+same as the total number of bytes in the input. This can be used as a validity check on the code
+tree construction process.
+
+After the code tree has been constructed, codes are assigned to the original byte values by
+assigning a 1 or 0 bit to each link in the code tree. The assignment can be arbitrary without
+affecting the correctness of the result, but for the sake of choosing something, I will assign a
+1 bit to the child node with the larger count value.  After the bit assignments, the code tree
+becomes:
+
+\textit{Show figure\ldots}
+
+The code for a byte value is then read from the root, assigning bits from left to right in the
+code as each link in the code tree is traversed. In my example this yields the codes as shown
+below:
+
+\textit{Show table of assigned codes\ldots}
+
+Notice how the codes for the most commonly occurring byte values (`A' and `C') are short while
+the codes for the most infrequently occurring byte values (`B' and `D') are long. Notice also
+that there is no ambiguity in the encoding. For example, a bit sequence such as 100110111000 can
+only be interpreted as the byte sequence ``ABCAAE.'' Notice also that if ordinary 8 bit bytes
+are used the string ``ABCAAE'' would consume 6 bytes of space. However, the bit sequence
+100110111000 is only 12 bits (1.5 bytes) long.
+
+\section{Implementation Notes}
+
+Before looking at the detailed design of the Huffman compression program I want to point out a
+few issues of interest. Keep these issues in mind when you review the program's design and the
+source code of the program itself.
+
+\begin{enumerate}
+
+\item Both the input and output files have to be processed as raw binary bytes without
+  structure. To make the program general, it should not concern itself with the meaning of the
+  input file's contents.
+
+\item The construction of the code tree can't start until the input file has been fully
+  analyzed. Similarly no output can be written until the code tree is fully constructed and code
+  sequences have been assigned. This means there is little opportunity for parallelism among
+  these phases of execution.
+
+\item The pointers in a code tree node sometimes point at other code tree nodes (presumably
+  allocated dynamically) and sometimes point at the original table of counter values.
+
+\item An auxiliary data structure of some kind will be necessary to keep track of which code
+  tree nodes are currently ``active.''
+
+\item Since the code sequences have variable length, writing the output file is tricky. A way
+  must be provided to write partial bytes and to write long bit sequences that span multiple
+  bytes.
+
+\item For the compressed file to be decompressed properly the receiver will need to build
+  exactly the same code tree as the sender. One way to allow the receiver to do this would be
+  for the sender to transmit the original counts in a header on the compressed file. If 32 bit
+  counts are used, this adds 1024 bytes of overhead to the compressed file.
+
+\item In a realistic example some code sequences can be very long (one or two hundred bits in an
+  extreme case). It may be appropriate to use a variable length data structure to handle them.
+
+\end{enumerate}
+
+\lstDeleteShortInline|
+
+% At some point these references must make it into the bibliography for this document.
+%
+% 1. WikiBook on Ada: http://en.wikibooks.org/wiki/Ada_Programming. This is one of the better of
+% the WikiBooks. As always anything on-line is a work in progress. Nevertheless many aspects of
+% Ada are well described.
+%
+% 2. Ada Newsgroup: news://comp.lang.ada. An active newsgroup where you can post questions and
+% talk with Ada experts.
+%
+% 3. Ada IRC channel: irc://irc.freenode.net/#ada. Although often quiet there are usually a few
+% people there who can answer questions.
+%
+% 4. There are several Ada web sites. The Ada Information Clearinghouse (http://www.adaic.com/),
+% site is a good place to start.
+%
+%\bibliography{references}
+%\bibliographystyle{plain}
+
+\end{document}
+
