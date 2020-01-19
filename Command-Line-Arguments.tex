@@ -1,4 +1,45 @@
 \section{Command Line Arguments}
 
-\textit{To be written\ldots}
+To access command line arguments, a program needs to use the |Ada.Command_Line| package. The
+number of arguments (not including the program name) can be retrieved by calling the function
+|Ada.Command_Line.Argument_Count|. If no command line arguments are given, |Argument_Count| will
+return 0.
+
+Once the number of arguments is known, a program can access the individual command line
+arguments by calling the function |Ada.Command_Line.Argument(n)| where |n| is a Positive (starts
+at 1) number indicating which argument is desired. This function returns a |String| that
+contains the command line argument. Any conversion (eg. to a numerical or enumerated type) will
+have to be done by the programmer.
+
+Unlike C based languages, there is no argument 0 to access the name of the program. Instead, Ada
+provides the function |Ada.Command_Line.Command_Name| which returns a string containing the name
+of the program.
+
+The program in Listing~\ref{lst:commandline-program}  prints the program name and its arguments.
+
+\begin{figure}[tbhp]
+\begin{lstlisting}[
+    frame=single,
+    xleftmargin=0in,
+    caption={Command Line Argument Program},
+    label=lst:commandline-program]
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Command_Line;
+
+procedure Commandline_Demo is
+   -- Allow use of the shorter ACL. instead of Ada.Command_Line.
+   package ACL renames Ada.Command_Line;
+begin
+   -- Print the program name and number of arguments.
+   Put_Line("Program Name : " & ACL.Command_Name);
+   Put_Line("Number of arguments : " & Natural'Image(ACL.Argument_Count));
+
+   -- Print all of the arguments in the order they were given.
+   Put_Line("Arguments :");
+   for I in 1..ACL.Argument_Count loop
+      Put_Line(ACL.Argument(I));
+   end loop;
+end Commandline_Demo;
+\end{lstlisting}
+\end{figure}
 

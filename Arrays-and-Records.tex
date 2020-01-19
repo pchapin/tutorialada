@@ -11,7 +11,7 @@ Workspace : array(1 .. 1024) of Character;
 \noindent defines |Workspace| to be an array of characters indexed using the integers 1 through
 1024. Note that although |Workspace| has an array type, the name of that type is not specified.
 
-In fact, you can define arrays using any discrete subtype for the index Recall that |1 .. 1024|
+In fact, you can define arrays using any discrete subtype for the index. Recall that |1 .. 1024|
 is really an abbreviation for an integer subtype specification. It is not possible to access an
 array out of bounds for exactly the same reason it's not possible to store an out of bounds
 value into a variable. The compiler raises the |Constraint_Error| exception in precisely the

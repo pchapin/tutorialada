@@ -250,9 +250,9 @@ end loop;
 
 \noindent Notice that despite Ada's full coverage rules it is not necessary to specify a case
 for |Sat|. This is because the compiler can see |Day| is limited to |Sun .. Fri| and thus will
-never take on the value |Sat|. Recall that the loop index variable of a |for| loop can not be
-modified inside the loop so there is no possibility of the programmer setting |Day| to |Sat|
-before the |case| statement is reached.
+never take on the value |Sat|. It is an Ada rule that the loop parameter variable of a |for|
+loop can not be modified inside the loop so there is no possibility of the programmer setting
+|Day| to |Sat| before the |case| statement is reached.
 
 \subsection{Subtypes}
 
@@ -271,9 +271,11 @@ subtype Weekday is Day_Type range Mon .. Fri;
 |Mon| through |Fri|. It is important to understand that a subtype is not a new type, but just a
 name for a constrained version of the parent type. The compiler allows variables of a subtype to
 be mixed freely with variables of the parent type. Runtime checks are added if necessary to
-verify that no value is ever stored in a variable outside the range of its subtype. If an
-attempt is made to do so, the |Constraint_Error| exception is raised. The following listing
-shows an example:
+verify that no value is ever stored in a variable outside the range of its subtype\footnote{This
+  is a simplification. Uninitialized variables may contain ``invalid'' values, but such values
+  should never be used. Compilers are free to track the validity of a variable and optimize away
+  checks on variables that might already contain an invalid value.}. If an attempt is made to do
+so, the |Constraint_Error| exception is raised. The following listing shows an example:
 
 \begin{lstlisting}
 procedure Demonstrate_Subtypes
@@ -295,7 +297,9 @@ must succeed. Thus the compiler does not need to include any runtime checks on t
 However, the value of |Day| might be outside the allowed range of the subtype and so the
 compiler will need to insert a runtime check on |Day|'s value before assigning it to |X|. If
 that check fails, the |Constraint_Error| exception is raised. Under no circumstances can an out
-of bounds value be stored in a variable.
+of bounds value be stored in a variable\footnote{Again, this is a simplification. An out of
+  bounds (or invalid) value could potentially be stored in a variable that already contains an
+  invalid value (for example, is uninitialized).}.
 
 I should point out that in this particular (simplistic) example the compiler's optimizer may be
 able to see that the value in |Day| will be in bounds of the subtype since in the assignment

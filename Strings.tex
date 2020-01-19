@@ -1,4 +1,298 @@
 \section{Strings}
 
-\emph{To be written\ldots}
+Ada has several string types which accommodate most uses for strings. This chapter will look at
+a couple of them, as well as noting some of the differences in behavior and usage when compared
+to C/C++/Java strings.
 
+The default string type is the fixed-length |String| defined in the Reference Manual as:
+
+\begin{lstlisting}
+type String is array(Positive range <>) of Character;
+\end{lstlisting}
+
+\noindent This is an unconstrained array type, but the use of Positive as the index type means
+that the smallest index available is 1. Any time a string is created, its index range will need
+to be provided, either explicitly or implicitly.
+
+\begin{lstlisting}
+Buffer   : String(1..32);     -- A buffer of 32 characters
+Message  : String := "ABCDE"; -- Constrained by initializer to (1..5)
+Message2 : String := Message & Message; -- Constrained by initializer to (1..10)
+\end{lstlisting}
+
+One important distinction between Ada's |String| type and strings found in other languages is
+that once a string has been declared to be a particular size, it cannot be resized. Also, you
+don't need to include an extra character position to hold a NULL character, as Ada doesn't use
+them to end strings. In fact, the NULL character is a valid character in the middle of an Ada
+string.
+
+It is common to want to work with a portion of a string. Fortunately this can easily be done
+using array slices. Since the |String| type is just an array of characters, techniques that
+apply to any array (e. g., slicing, concatenation) also work for strings.
+
+\begin{lstlisting}
+-- Using the Message variable declared earlier.
+Put_Line(Message);                       -- Prints "ABCDE"
+Put_Line(Message(2..4));                 -- Prints "BCD"
+Put_Line(Message(1..2) & Message(4..5)); -- Prints "ABDE"
+\end{lstlisting}
+
+\noindent Note the use of the |&| operator, which is used to concatenate arrays in Ada and
+proves convenient for joining strings.
+
+Another important detail is that, while Ada's Strings often start with 1, you should never
+assume they start with 1 unless you can see their declaration. This is actually true for any
+array type in Ada, as the indices are allowed to start at any value. The program in
+Listing~\ref{lst:string-program} is an example of a procedure that assumes its argument starts
+at 1 along with a better written version that does not make that assumption.
+
+\begin{figure}[tbhp]
+\begin{lstlisting}[
+    frame=single,
+    xleftmargin=0in,
+    caption={String Reversing Program},
+    label=lst:string-program]
+with Ada.Text_Io; use Ada.Text_Io;
+procedure String_Reverse is
+
+   -- A naive implementation that assumes string indices start at 1.
+   procedure naive_reverse_print(S: String) is
+   begin
+      for I in reverse 1 .. S'Length loop
+         Put(S(I));
+      end loop;
+   end naive_reverse_print;
+
+   -- A better implementation that makes no assumptions about the string.
+   procedure Reverse_Print(S: String) is
+   begin
+      for I in reverse S'Range loop
+         Put(S(I));
+      end loop;
+   end Reverse_Print;
+
+   Message : String := "ABCDE";
+begin
+   Naive_Reverse_Print(Message); -- Prints EDCBA
+   New_Line;
+   --Naive_Reverse_Print(Message(3..5)); -- Contraint error if uncommented
+   New_Line;
+   Reverse_Print(Message); -- Prints EDCBA
+   New_Line;
+   Reverse_Print(Message(3..5)); -- Prints EDC
+   New_Line;
+end String_Reverse;   
+\end{lstlisting}    
+\end{figure}
+
+
+Because Ada's String type is simply an array of Characters, all of the useful attributes for
+using arrays available:
+
+\emph{MyString'First} gives the First valid index.
+
+\emph{MyString'Last} gives Last valid index.
+
+\emph{MyString'Range} is equivalent to |(MyString'First .. MyString'Last)| and is useful for
+loops that index the entire array.
+
+\emph{MyString'Length} gives the length of the string. Do not use the length attribute to
+calculate an index. Always use 'First or 'Last instead.
+\\\\ % Force linebreak.
+There are also various helper procedures and functions available in the package
+|Ada.Strings.Fixed|, such as:
+
+\emph{Move} copies one string into another, including padding and truncating if they are
+different sizes.
+
+\emph{Index} returns the index of a substring within a string or 0 if not found.
+
+\emph{Insert, Delete, Replace\_Slice} modifies a string.
+
+\emph{Trim} removes extra spaces from a string.
+\\\\ % Force linebreak
+See the Ada Reference Manual (A.4.3) for the complete list as well as a description of what each
+one does. Many are available as either a function (returning the modified string) or a procedure
+(modifying the string you give it). Ada will look at how you call it to determine the correct
+one to use.
+
+In common usage, Ada's fixed length strings are often used to hold smaller strings. Because the
+NULL character is not considered special and does not end the string, a different method for
+keeping track of the end of a string is needed. The most common method is simply using a
+separate variable to keep track of the last valid index; Ada's built-in procedures use this
+method.
+
+If we want to read a string from the user, assuming we already have declared:
+\begin{lstlisting}
+Buffer : String(1..32);
+\end{lstlisting}
+
+\noindent We will also need to declare:
+
+\begin{lstlisting}
+Buffer_Last : Natural;
+\end{lstlisting}
+
+\noindent Note that the string indices are declared as type |Positive| (1 .. Integer'Max), but
+|Buffer_Last| is declared as type |Natural| (0 .. Integer'Max). This allows the use of the value
+0 to indicate that there is no valid index containing the last character (ie the string is
+``empty'' - none of the 32 characters in it have valid data).
+
+The program can now use the |Get_Line| procedure (available in the |Ada.Text_IO| package) like
+so:
+
+\begin{lstlisting}
+Get_Line(Buffer, Buffer_Last);
+\end{lstlisting}
+
+\noindent This will read characters from the standard input device until either the buffer is
+full (in which case |Buffer_Last| will be set to 32) or the ENTER key is pressed (in which case
+|Buffer_Last| will be set to the index of the last valid character input or to 0 if no
+characters were input before ENTER was pressed).
+
+If the program needs to print out the data we read in earlier, the code might look like:
+
+\begin{lstlisting}
+Put_Line(Buffer(1..Buffer_Last));
+\end{lstlisting}
+
+\noindent Here it is OK to assume the string |Buffer| starts at 1 because we can see where it is
+declared. If |Buffer_Last| is a 0, because nothing was entered before the ENTER was pressed, the
+resulting code will be:
+
+\begin{lstlisting}
+Put_Line(Buffer(1..0));
+\end{lstlisting}
+
+\noindent This results in an empty string (a valid string with no characters in it) that
+|Put_Line| happily prints the screen. Ada will always give you an empty array when the range for
+a slice has a starting point higher then the ending point, and this works for strings as well.
+
+Ada's fixed strings are fast and efficient, but can be inconvenient to use for data of unknown
+size. They also are not easy to append new data on to the end of an existing string variable.
+For these applications, the |Unbounded_String| type may be a better choice. This string type is
+similar to C++ and Java strings, but is a little more difficult to use because it is not the
+default string type.
+
+To use these strings, you will need to |with| the package |Ada.Strings.Unbounded| in your
+program. You can then declare variables of type |Ada.Strings.Unbounded.Unbounded_String|.
+Because that's quite a mouthful, many programs will rename the |Ada.Strings.Unbounded| package
+or add a |use| declaration at the top for simple programs. You may also want the package
+|Ada.Text_IO.Unbounded_IO| if you want to be able to |Get| and |Put| this type of string.
+Alternatively, you can use the |To_String| function to convert it to a |String| and then use
+|Ada.Text_IO| for |Get| and |Put|.
+
+A simple program to read a (possibly large) line of text and print it back out is shown in
+Listing~\ref{lst:unbounded-string-program}.
+
+\begin{figure}[tbhp]
+    \begin{lstlisting}[
+    frame=single,
+    xleftmargin=0in,
+    caption={Unbounded String Program},
+    label=lst:unbounded-string-program]
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO;
+
+procedure Unbounded_Example is
+   package UIO renames Ada.Text_IO.Unbounded_IO;
+
+   MyString : Unbounded_String;
+begin
+   -- Read a long line from the user.
+   Ada.Text_IO.Put("Enter a long line: ");
+   UIO.Get_Line(MyString);
+
+   -- Print it back out.  Concatenating a regular string
+   -- with the Unbounded_String results in an Unbounded_String,
+   -- so we are using the Put_Line in the Ada.Text_IO.Unbounded_IO
+   -- package here.
+   UIO.Put_Line("You entered: " & MyString);
+end Unbounded_Example;
+ \end{lstlisting}    
+\end{figure}
+
+
+It is possible to add use clauses for both |Ada.Text_IO| and |Ada.Text_IO.Unbounded_IO| to the
+same program; the compiler will determine which is the correct one to use by looking at the
+types of the arguments you pass.
+
+If you have one string type but need to pass it to a function or assign it to a variable of the
+other type, there are |To_String| and |To_Unbounded_String| helper functions available in
+|Ada.String.Unbounded| for doing this. One very common case is assigning a constant string to an
+|Unbounded_String|, like so:
+
+\begin{lstlisting}
+MyUnboundedString := To_Unbounded_String("Hello there!");
+\end{lstlisting}
+
+Another common need is to convert between string types and other basic types such as integer,
+floating point, and even enumeration types. Ada has a built-in facility for doing this, but you
+do need to be careful because it may thrown an exception if the text in the string does not look
+like the type of thing you are trying to convert it to.
+
+For all of Ada's basic types (including ones you create,) there is a |'Value| attribute that
+accepts a string and returns an item of that type. Using it might look like:
+
+\begin{lstlisting}
+MyInteger := Integer'Value(MyString);
+\end{lstlisting}
+
+\noindent Because this only accepts fixed strings, if you have your value in an
+|Unbounded_String|, you will need to convert it to a |String| first. This can be done with the
+|To_String| function like so:
+
+\begin{lstlisting}
+MyFloat := Float'Value(To_String(MyUnboundedString));
+\end{lstlisting}
+
+It also may be handy to have a string representation of a variable, and that can be done with
+the |'Image| attribute of the type. That might look like:
+
+\begin{lstlisting}
+Put_Line("The number is: " & Natural'Image(MyNaturalNumber));
+\end{lstlisting}
+
+\noindent In this case, we convert |MyNaturalNumber| to a |String| and then concatenate it to
+our message to print it out. This is handy for small programs, but if you do IO with a type
+often, you will want to instantiate one of the generic packages that come with the compiler (eg.
+|Ada.Text_IO.Integer_IO|, |Ada.Text_IO.Float_IO|, |Ada.Text_IO.Enumeration_IO|, etc.) with your
+type. Listing~\ref{lst:io-program} shows an example using a newly declared type.
+
+\begin{figure}[tbhp]
+    \begin{lstlisting}[
+    frame=single,
+    xleftmargin=0in,
+    caption={IO Program},
+    label=lst:io-program]
+with Ada.Text_IO;
+procedure IO_Example is
+   -- Create my own type.
+   type Channel is new Natural range 1..13;
+
+   -- Instantiate a version of Integer_IO for the Channel type.
+   package Channel_IO is new Ada.Text_IO.Integer_IO(Channel);
+
+   -- Declare a variable of this type.
+   MyChannel : Channel;
+begin
+   Ada.Text_IO.Put("Enter a channel: ");
+
+   -- Read in a value between 1 and 13 inclusive (or throw an exception)
+   Channel_IO.Get(MyChannel);
+
+   -- Print out a message with the value and move to the next line.
+   Ada.Text_IO.Put("You entered: ");
+   Channel_IO.Put(MyChannel);
+   Ada.Text_IO.New_Line;
+end IO_Example;
+    \end{lstlisting}    
+\end{figure}
+
+The advantage to instantiating one of the IO packages for each of your custom types is that the
+compiler will guarantee that the input converts to a valid value (eg. is within a range
+specified in the type definition) or will throw a |Data_Error| exception. One minor annoyance is
+that there is no |put_line| procedure in these generic packages. This means you will need to use
+|New_Line| from |Ada.Text_IO| if you want to print a value and move to the next line, as shown
+in Listing~\ref{lst:io-program}.

@@ -91,8 +91,10 @@ read, but not modified.
 The second parameter has mode |out|. Parameters with this mode are effectively in an
 uninitialized state when the procedure begins, but they can be used otherwise as ordinary
 variables inside the procedure. In particular |out| parameters can be read provided you first
-write a value into them. Whatever value is assigned to an |out| parameter by the time the
-procedure ends is sent back to the calling environment.
+write a value into them\footnote{Certain composite and aggregate objects, such as arrays, have
+  components that are initialized even when the data stored in the object is not. For example,
+  the bounds on arrays used as out parameters can always be read.}. Whatever value is assigned
+to an |out| parameter by the time the procedure ends is sent back to the calling environment.
 
 The third parameter has mode |in out|. Parameters with this mode are initialized with the
 argument provided by the caller, and can also be modified inside the procedure. The changed
@@ -128,8 +130,8 @@ in which the parameters are declared. When named association is used, the order 
 significant. Notice also that you can use any expression as the argument associated with an |in|
 parameter. However, |out| and |in out| parameters must be associated with variables and not
 arbitrary expressions since putting a value into the result of an expression doesn't really make
-sense. The result of an expression is an anonymous temporary variable, and there is no way for
-you to access its value.
+sense. The result of an expression is an anonymous temporary object, and there is no way for you
+to access its value.
 
 \subsection*{Exercises}
 

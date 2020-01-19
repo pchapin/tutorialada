@@ -141,12 +141,20 @@ Advances in garbage collection technology and machine capabilities have made som
 concerns less pressing today than they were when Ada was first designed. However, these matters
 are still important. Thus Ada allows, but does not require garbage collection.
 
-This presents an immediate problem for programmers interested in portability. If the
-implementation does not collect its garbage and the programmer takes no steps to manually
-reclaim allocated objects, the program will leak memory. This is a disaster for long running
-programs like servers. Thus for maximum portability one must assume that garbage collection is
-not done and take steps accordingly. In fact, most Ada implementations do not provide garbage
-collection, so this is a very realistic concern.
+It is important to note that Ada programs do not need to make as much use of heap allocation as
+is often the case with other languages. For example, it is possible in Ada to specify the bounds
+(and hence the size) of a local array using dynamically computed values. Other examples exist.
+As a result, the issue of garbage collection can often be entirely avoided by simply avoiding
+the use of allocators (the |new| expressions). Many useful programs can still be written in Ada
+even with that restriction.
+
+However, when allocators are needed, the optional nature of garbage collection in Ada presents
+an immediate problem for programmers interested in portability. If the implementation does not
+collect its garbage and the programmer takes no steps to manually reclaim allocated objects, the
+program will leak memory. This is a disaster for long running programs like servers. Thus for
+maximum portability one must assume that garbage collection is not done and take steps
+accordingly. In fact, most Ada implementations do not provide garbage collection, so this is a
+very realistic concern.
 
 The Ada library provides a generic procedure named |Unchecked_Deallocation| that can be used to
 manually deallocate a dynamically allocated object. Unfortunately the use of

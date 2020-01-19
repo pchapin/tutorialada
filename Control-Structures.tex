@@ -50,13 +50,13 @@ evident because of the |use| statements.
 If the value entered is two or more, the program uses a |for| loop to see if any value less than
 the given number divides into it evenly (that is, produces a zero remainder after division, as
 calculated with the |rem| operator). Ada |for| loops scan over the given range assigning each
-value in that range to the loop parameter variable (named |I| in this case) one at a time.
-Notice that it is not necessary to explicitly declare the loop parameter variable. The compiler
-deduces its type based on the type used to define the loop's range. It is also important to
-understand that if the start of the range is greater than the end of the range, the result is an
-empty range. For example, the range |2 .. 1| contains no members and a loop using that range
-won't execute at all. It does not execute starting at two and counting down to one. You need to
-use the word |reverse| to get that effect:
+value in that range to the \newterm{loop parameter variable} (named |I| in this case) one at a
+time. Notice that it is not necessary to explicitly declare the loop parameter variable. The
+compiler deduces its type based on the type used to define the loop's range. It is also
+important to understand that if the start of the range is greater than the end of the range, the
+result is an empty range. For example, the range |2 .. 1| contains no members and a loop using
+that range won't execute at all. It does not execute starting at two and counting down to one.
+You need to use the word |reverse| to get that effect:
 
 \begin{lstlisting}
 for I in reverse 1 .. 2 loop
