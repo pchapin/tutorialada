@@ -3,10 +3,13 @@ with "aunit.gpr";
 project Samples is
 
    for Object_Dir use "build";
-   for Source_Dirs use (".", "Check");
+   for Source_Dirs use (".", "Check", "ElaborationOrder", "Hexdump", "Huffman", "Tagged");
    for Main use
-     ("filter.adb",
+     ("elaboration_demo.adb",
+      "filter.adb",
       "hello.adb",
+      "hexdump.adb",
+      "huffman.adb",
       "prime.adb",
       "prime2.adb",
       "prime_factors.adb",
@@ -16,6 +19,7 @@ project Samples is
       "samples_test.adb",
       "sieve.adb",
       "sieve_task.adb",
+      "tagged_demo.adb",
       "vowels");
    
    package Compiler is

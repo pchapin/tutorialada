@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
 -- FILE    : sorters.adb
--- SUBJECT : Package providing various sorting procedures
+-- SUBJECT : Body of a package providing various sorting procedures
+--
 ---------------------------------------------------------------------------
 
 package body Sorters is
@@ -44,7 +45,7 @@ package body Sorters is
       -- Finds the smallest element in the remaining unsorted data.
       function Index_Of_Minimum(Starting_At : in Index_Type) return Index_Type
         with Post =>
-          Index_Of_Minimum'Result in Starting_At .. Index_Type'Last and then
+          Index_Of_Minimum'Result >= Starting_At and then
           (for all J in Starting_At .. Index_Type'Last =>
              Values(Index_Of_Minimum'Result) <= Values(J))
       is

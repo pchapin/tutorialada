@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
--- FILE          : random.adb
--- SUBJECT       : Implementation of a random number generator package.
+-- FILE   : random.adb
+-- SUBJECT: Body of a package for random number generators.
+--
 ---------------------------------------------------------------------------
 with Interfaces; use Interfaces;
 

@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------------
--- FILE          : hexdump.adb
--- SUBJECT       : Simple hex file viewer utility.
--- PROGRAMMER    : (C) Copyright 2006 by Peter C. Chapin
+-- FILE      : hexdump.adb
+-- SUBJECT   : Simple hex file viewer utility.
+-- PROGRAMMER: (C) Copyright 2006 by Peter C. Chapin
+--
 ---------------------------------------------------------------------------
 
 with Ada.Command_Line; use Ada.Command_Line;

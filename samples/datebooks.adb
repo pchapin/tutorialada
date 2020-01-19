@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
 -- FILE    : datebooks.adb
--- SUBJECT : Package providing a simple datebook type.
+-- SUBJECT : Body of a package providing a simple datebook type.
+--
 ---------------------------------------------------------------------------
 
 package body Datebooks is

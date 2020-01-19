@@ -1,8 +1,12 @@
+---------------------------------------------------------------------------
+-- FILE    : strong.adb
+-- SUBJECT : A contrived program to show off Ada's strong typing.
+--
+---------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
 
--- This is a contrived program designed to show off Ada's strong typing.
 procedure Strong is
-   
+
    type Row_Type is range 1..25;
    type Col_Type is range 1..80;
 
@@ -30,4 +34,3 @@ begin
    -- Runtime error! Out of bounds result.
    Initial_Row := 10 * Initial_Row;
 end Strong;
-

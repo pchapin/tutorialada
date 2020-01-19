@@ -28,11 +28,11 @@ package body Check_Buffers is
       Buffer4 : Buffer_Type( 1 .. 10);  -- Typical case.
       Buffer5 : Buffer_Type(11 .. 20);  -- Typical case with "unusual" index bounds.
 
-      Result1 : Buffer_Type( 1 ..  0) := (others => 'x');
-      Result2 : Buffer_Type( 1 ..  1) := (others => 'x');
-      Result3 : Buffer_Type(10 .. 10) := (others => 'x');
-      Result4 : Buffer_Type( 1 .. 10) := (others => 'x');
-      Result5 : Buffer_Type(11 .. 20) := (others => 'x');
+      Result1 : constant Buffer_Type( 1 ..  0) := (others => 'x');
+      Result2 : constant Buffer_Type( 1 ..  1) := (others => 'x');
+      Result3 : constant Buffer_Type(10 .. 10) := (others => 'x');
+      Result4 : constant Buffer_Type( 1 .. 10) := (others => 'x');
+      Result5 : constant Buffer_Type(11 .. 20) := (others => 'x');
    begin
       Fill(Buffer1, 'x');
       Fill(Buffer2, 'x');
@@ -143,7 +143,7 @@ package body Check_Buffers is
 
    -- This is a very basic test. It's better than nothing!
    procedure Test_Count_Substrings(T : in out Test_Case'Class) is
-      Workspace : Buffer_Type(101 .. 106) := ('a', 'b', 'a', 'b', 'a', 'b');
+      Workspace : constant Buffer_Type(101 .. 106) := ('a', 'b', 'a', 'b', 'a', 'b');
    begin
       Assert(Count_Substrings(Workspace, "aba") = 2, "Failed Test #1");
    end Test_Count_Substrings;
@@ -289,7 +289,7 @@ package body Check_Buffers is
    procedure Test_Copy_Into(T : in out AUnit.Test_Cases.Test_Case'Class) is
       subtype Test_Buffer_Type is Buffer_Type(101 .. 200);
       Workspace : Test_Buffer_Type;
-      Oversize  : String(1 .. 101) := (101 => 'y', others => 'x');
+      Oversize  : constant String(1 .. 101) := (101 => 'y', others => 'x');
    begin
       Copy_Into(Workspace, "");
       Assert(Workspace = Test_Buffer_Type'(others => ' '),
@@ -403,7 +403,7 @@ package body Check_Buffers is
       for I in Substring_Cases'Range loop
          declare
             Current : Substring_Record renames Substring_Cases(I);
-            Result : String := Substring(Current.Input, Current.Point, Current.Length);
+            Result : constant String := Substring(Current.Input, Current.Point, Current.Length);
          begin
             Assert(Result'Length = Current.Expected_Length,
                    "Substring FAILS for case #" & Integer'Image(I));

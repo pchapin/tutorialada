@@ -1,8 +1,10 @@
 ---------------------------------------------------------------------------
--- FILE          : sieve_task.adb
--- SUBJECT       : Finds prime numbers using a background task.
+-- FILE   : sieve_task.adb
+-- SUBJECT: Finds prime numbers using a background task.
 --
--- This program is contrived, but it illustrates the basics of Ada's tasking support.
+-- This program is contrived, but it illustrates the basics of Ada's tasking support. The
+-- program also demonstrates the use of access types and dynamically allocated arrays.
+--
 ---------------------------------------------------------------------------
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
@@ -69,7 +71,7 @@ begin -- Sieve_Task
          Set_Exit_Status(Failure);
       else
          Do_Sieve.Provide_Bound(Upper_Bound);
-         Put_Line("Here I do things while Do_Sieve works out the primes.");
+         Put_Line("Here I do useful things while Do_Sieve works out the primes...");
          Do_Sieve.Get_Result(Answer);
          for I in Answer'Range loop
             if Answer(I) = True then
@@ -78,7 +80,9 @@ begin -- Sieve_Task
             end if;
          end loop;
 
-         -- Should deallocate Answer unless implementation collects garbage.
+         -- Should deallocate Answer unless implementation collects garbage. Most implementations
+         -- do not do garbage collection so manual memory management is required as with C++ or
+         -- C.
       end if;
    end if;
 end Sieve_Task;

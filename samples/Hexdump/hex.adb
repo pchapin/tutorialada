@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------------
--- FILE          : hex.adb
--- SUBJECT       : Implementation of a package for manipulating hex strings.
--- PROGRAMMER    : (C) Copyright 2006 by Peter C. Chapin
+-- FILE      : hex.adb
+-- SUBJECT   : Implementation of a package for manipulating hex strings.
+-- PROGRAMMER: (C) Copyright 2006 by Peter C. Chapin
+--
 ---------------------------------------------------------------------------
 with Interfaces; use Interfaces;
 

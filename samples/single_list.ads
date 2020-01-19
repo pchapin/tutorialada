@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
--- FILE         : single_list.ads
--- SUBJECT      : Specification of a singly linked list package.
+-- FILE   : single_list.ads
+-- SUBJECT: Specification of a singly linked list package.
+--
 ---------------------------------------------------------------------------
 
 with Ada.Finalization;

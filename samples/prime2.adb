@@ -7,8 +7,7 @@
 -- practice in general since it makes the computation more reusable. Compare this code with
 -- that in prime.adb.
 --
--- Exercise: Implement some superior (faster) primality checking method. See also package
--- Number_Theory in these samples.
+-- Exercise: Implement some superior (faster) primality checking method.
 ---------------------------------------------------------------------------
 
 with Ada.Text_IO;         use Ada.Text_IO;
@@ -43,4 +42,3 @@ begin
       end if;
    end if;
 end Prime2;
-

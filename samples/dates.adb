@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
 -- FILE    : dates.adb
--- SUBJECT : Package providing calendar dates.
+-- SUBJECT : Body of a package providing calendar dates.
+--
 ---------------------------------------------------------------------------
 
 package body Dates is
@@ -25,21 +26,7 @@ package body Dates is
 
 
    -- Return the length in days of the given month. The effect of leap years is considered.
-   function Get_Month_Length(Year : Year_Type; Month : Month_Type) return Day_Type
-     with Post =>
-       (if Month =  1 then  Get_Month_Length'Result = 31) and
-       (if Month =  2 then (Get_Month_Length'Result = 28 or Get_Month_Length'Result = 29)) and
-       (if Month =  3 then  Get_Month_Length'Result = 31) and
-       (if Month =  4 then  Get_Month_Length'Result = 30) and
-       (if Month =  5 then  Get_Month_Length'Result = 31) and
-       (if Month =  6 then  Get_Month_Length'Result = 30) and
-       (if Month =  7 then  Get_Month_Length'Result = 31) and
-       (if Month =  8 then  Get_Month_Length'Result = 31) and
-       (if Month =  9 then  Get_Month_Length'Result = 30) and
-       (if Month = 10 then  Get_Month_Length'Result = 31) and
-       (if Month = 11 then  Get_Month_Length'Result = 30) and
-       (if Month = 12 then  Get_Month_Length'Result = 31)
-   is
+   function Get_Month_Length(Year : Year_Type; Month : Month_Type) return Day_Type is
       Month_Length : constant array(Month_Type) of Day_Type :=
         (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 

@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
--- FILE          : rot13.adb
--- SUBJECT       : Program that does ROT13 transformation on a text file.
+-- FILE   : rot13.adb
+-- SUBJECT: Program that does ROT13 transformation on a text file.
+--
 ---------------------------------------------------------------------------
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO;      use Ada.Text_IO;

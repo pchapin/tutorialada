@@ -1,3 +1,8 @@
+---------------------------------------------------------------------------
+-- FILE    : buffers.adb
+-- SUBJECT : Body of a package providing various buffer manipulating subprograms.
+--
+---------------------------------------------------------------------------
 
 package body Buffers is
 

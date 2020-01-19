@@ -1,6 +1,10 @@
 ---------------------------------------------------------------------------
--- FILE          : sieve.adb
--- SUBJECT       : Finds prime numbers.
+-- FILE   : sieve.adb
+-- SUBJECT: Finds prime numbers.
+--
+-- This program demonstrates the use of arrays. Notice that the local array in Do_Sieve has
+-- a size that depends on dynamically computed values. Yet the array itself is not dynamically
+-- allocated (e. g., with 'new').
 --------------------------------------------------------------------------
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;

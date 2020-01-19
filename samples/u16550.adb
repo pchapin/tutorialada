@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------
--- FILE          : u16550.adb
--- SUBJECT       : Implementation of a 16550 UART handling package.
+-- FILE   : u16550.adb
+-- SUBJECT: Implementation of a 16550 UART handling package.
+--
+-- TODO: Complete me!
 ---------------------------------------------------------------------------
 with Interfaces; use Interfaces;
 

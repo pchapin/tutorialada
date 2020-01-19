@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
--- FILE          : rationals.ads
--- SUBJECT       : Specification of a rational number handling package.
+-- FILE   : rationals.ads
+-- SUBJECT: Specification of a rational number handling package.
 --
 -- Note that it is common to give packages containing a single private type a name that is
 -- the plural form of the name used for the private type. Thus package Rationals contains

@@ -1,3 +1,13 @@
+---------------------------------------------------------------------------
+-- FILE   : filter.adb
+-- SUBJECT: A skeleton of a basic text filter.
+--
+-- It is sometimes convenient to create a program that reads lines of text from the standard
+-- input device, processes them, and then writes the resulting processed material to the
+-- standard output device. This program is a skeleton of such a "filter." Flesh it out for
+-- whatever application is needed by expanding the processing done inside the while loop.
+---------------------------------------------------------------------------
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Filter is

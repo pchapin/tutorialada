@@ -7,7 +7,8 @@
 -- illustrates a number of useful techniques.
 --
 -- Exercise: Add a subprogram that computes the difference between two dates returning the
--- number of days apart the dates are using Day_Advance_Type.
+-- number of days apart the dates are. The subprogram should return its result using the
+-- signed type Day_Advance_Type.
 ---------------------------------------------------------------------------
 
 package Dates is
@@ -30,7 +31,9 @@ package Dates is
    type Time is private;
    type Datetime is private;
 
-   -- Used to initialize Date objects with user specified values.
+   -- Used to initialize Date objects with user specified values. Valid is set to True if the
+   -- date is valid, otherwise it is set to False. Note that the subtypes themselves are not
+   -- sufficient to ensure validity in this case.
    procedure Create_Date
      (Year     : in  Year_Type;
       Month    : in  Month_Type;
@@ -38,7 +41,8 @@ package Dates is
       New_Date : out Date;
       Valid    : out Boolean);
 
-   -- This subprogram can't fail so it doesn't need to return a Valid indicator.
+   -- This subprogram can't fail so it doesn't need to return a Valid indicator. This also
+   -- allows it to be a function rather than a procedure since it only returns one thing.
    function Create_Time
      (Hour   : in Hour_Type;
       Minute : in Minute_Type;
@@ -49,7 +53,7 @@ package Dates is
 
    -- Accessor methods.
    function Get_Year(Current_Date : Date) return Year_Type with Inline;
-   function Get_Month (Current_Date : Date) return Month_Type with Inline;
+   function Get_Month(Current_Date : Date) return Month_Type with Inline;
    function Get_Day(Current_Date : Date) return Day_Type with Inline;
 
    function Get_Hour(Current_Time : Time) return Hour_Type with Inline;
@@ -62,7 +66,6 @@ package Dates is
    -- Advances a date by the specified amount. It is permitted to advance by a negative amount.
    -- If an attempt is made to advance off the end of the valid range of dates, Valid is set to
    -- False and Current_Date is set to the last allowed date in the direction of advancement.
-   --
    procedure Advance(Current_Date : in out Date; By : in Day_Advance_Type; Valid : out Boolean);
 
    -- Returns True if Past comes before Future.
@@ -91,6 +94,7 @@ private
       end record;
 
 
+   -- Expression functions for the trivial accessors.
    function Get_Year  (Current_Date : Date) return Year_Type   is (Current_Date.Year);
    function Get_Month (Current_Date : Date) return Month_Type  is (Current_Date.Month);
    function Get_Day   (Current_Date : Date) return Day_Type    is (Current_Date.Day);

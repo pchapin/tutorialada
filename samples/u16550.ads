@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------
--- FILE          : u16550.ads
--- SUBJECT       : Specification of a 16550 UART handling package.
+-- FILE   : u16550.ads
+-- SUBJECT: Specification of a 16550 UART handling package.
+--
+-- This package is intended to illustrate some of Ada's support for low level hardware control.
 ---------------------------------------------------------------------------
 with System;
 

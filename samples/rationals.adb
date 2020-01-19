@@ -1,11 +1,14 @@
 ---------------------------------------------------------------------------
--- FILE          : rationals.adb
--- SUBJECT       : Implementation of a rational number handling package.
+-- FILE   : rationals.adb
+-- SUBJECT: Implementation of a rational number handling package.
+--
 ---------------------------------------------------------------------------
 
 package body Rationals is
 
-   -- Internal subprograms.
+   -----------------------
+   -- Internal Subprograms
+   -----------------------
 
    procedure Reduce(R : in out Rational) is
 
@@ -35,7 +38,9 @@ package body Rationals is
       R.Denominator := R.Denominator / Divisor;
    end Reduce;
 
-   -- Constructor.
+   --------------
+   -- Constructor
+   --------------
 
    function Make(Numerator, Denominator : Numeric_Type) return Rational is
       Result : Rational := (Numerator, Denominator);
@@ -48,19 +53,24 @@ package body Rationals is
       return Result;
    end Make;
 
-   -- Accessor functions.
+   ---------------------
+   -- Accessor Functions
+   ---------------------
 
    function Get_Numerator(R : Rational) return Numeric_Type is
    begin
       return R.Numerator;
    end Get_Numerator;
 
+
    function Get_Denominator(R : Rational) return Numeric_Type is
    begin
       return R.Denominator;
    end Get_Denominator;
 
-   -- Mathematical operations.
+   --------------------------
+   -- Mathematical Operations
+   --------------------------
 
    function "+"(Left, Right : Rational) return Rational is
       Result : Rational;
@@ -73,6 +83,7 @@ package body Rationals is
       return Result;
    end "+";
 
+
    function "-"(Left, Right : Rational) return Rational is
       Result : Rational;
       Common : constant Numeric_Type := Left.Denominator * Right.Denominator;
@@ -84,6 +95,7 @@ package body Rationals is
       return Result;
    end "-";
 
+
    function "*"(Left, Right : Rational) return Rational is
       Result : Rational;
    begin
@@ -92,6 +104,7 @@ package body Rationals is
       Reduce(Result);
       return Result;
    end "*";
+
 
    function "/"(Left, Right : Rational) return Rational is
       Result : Rational;

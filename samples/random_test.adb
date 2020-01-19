@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
--- FILE          : random_test.adb
--- SUBJECT       : Simple demonstration/test program for package Random.
+-- FILE   : random_test.adb
+-- SUBJECT: Simple demonstration/test program for package Random.
+--
 ---------------------------------------------------------------------------
 with Ada.Text_IO;
 with Random;

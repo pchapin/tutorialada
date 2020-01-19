@@ -2,8 +2,9 @@
 -- FILE    : sorters.ads
 -- SUBJECT : Package providing various sorting procedures
 --
--- This package is largely illustrative.
--- A real package like this would need to use an unconstrained array type and be generic.
+-- This package is largely illustrative. A real package like this would use an unconstrained
+-- array type and be generic. A version showing these things should probably be added to this
+-- collection of samples.
 ---------------------------------------------------------------------------
 
 package Sorters is

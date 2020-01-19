@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
--- FILE          : random.ads
--- SUBJECT       : Specification of a random number generator package.
+-- FILE   : random.ads
+-- SUBJECT: Package for random number generators.
+--
 ---------------------------------------------------------------------------
 private with Interfaces;
 

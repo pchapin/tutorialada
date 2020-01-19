@@ -2,9 +2,9 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Base;
 with Derived;
 
-procedure Main is
+procedure Tagged_Demo is
 
-   procedure Test( X : Base.Base_Type'Class ) is
+   procedure Test(X : Base.Base_Type'Class) is
       Y : Base.Base_Type'Class := X;
    begin
       Base.P1(X);
@@ -12,13 +12,13 @@ procedure Main is
       Y := Base.F;
    end Test;
 
-   procedure Test2 ( X, Y : Base.Base_Type'Class ) is
+   procedure Test2 (X, Y : Base.Base_Type'Class) is
    begin
       Base.P3(X, Y);
    end Test2;
 
-   X : Base.Base_Type := ( B => 10 );
-   Y : Derived.Derived_Type := ( B => 10, D => 20 );
+   X : constant Base.Base_Type := (B => 10);
+   Y : constant Derived.Derived_Type := (B => 10, D => 20);
 begin
 
    Put_Line("Testing regular types.");
@@ -35,4 +35,4 @@ begin
    -- Test2(X, Y);  -- Raises Constraint_Error at run time.
    -- Test2(Y, X);  -- Raises Constraint_Error at run time.
    Test2(Y, Y);
-end Main;
+end Tagged_Demo;

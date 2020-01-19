@@ -1,6 +1,7 @@
 ---------------------------------------------------------------------------
--- FILE         : single_list.adb
--- SUBJECT      : Implementation of a singly linked list package.
+-- FILE   : single_list.adb
+-- SUBJECT: Implementation of a singly linked list package.
+--
 ---------------------------------------------------------------------------
 
 with Ada.Unchecked_Deallocation;
