@@ -1,8 +1,6 @@
 
 separate(Checksum)
-function Count_Errors(Original : IN Block; Perverted : IN Block)
-                      RETURN Integer is
-
+function Count_Errors(Original : in Block; Perverted : in Block) return Integer is
    Bad_Bits   : Integer := 0;
    Error_Byte : Channel.Octet;
 
@@ -10,7 +8,7 @@ function Count_Errors(Original : IN Block; Perverted : IN Block)
      ( 16#01#, 16#02#, 16#04#, 16#08#, 16#10#, 16#20#, 16#40#, 16#80# );
 begin
 
-   for I in Block'RANGE loop
+   for I in Block'range loop
       Error_Byte := Original(I) xor Perverted(I);
       if (Error_Byte /= 0) then
 

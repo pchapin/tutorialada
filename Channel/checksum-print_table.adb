@@ -4,7 +4,7 @@ with Ada.Strings;
 with Ada.Strings.Fixed;
 
 separate(Checksum)
-procedure Print_Table(Results : IN Error_Table) is
+procedure Print_Table(Results : in Error_Table) is
 
    Block_Count : Integer := 0;
 
