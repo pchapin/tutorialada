@@ -25,8 +25,8 @@ procedure Print_Table(Results : in Error_Table) is
       return Result;
    end Pad;
 
-   Separator_Length : constant Integer := 3*Integer'Width + Float'Width + 3*4;
-   Separator_Line   : constant String(1..Separator_Length) := (others => '=');
+   Separator_Length : constant Integer := 4*Integer'Width + Float'Width + 4*4;
+   Separator_Line   : constant String(1 .. Separator_Length) := (others => '=');
 
 begin -- Print_Table
 
@@ -42,7 +42,9 @@ begin -- Print_Table
    Put("    ");
    Put(Pad("Probability", Float'Width));
    Put("    ");
-   Put(Pad("#Undetected"));
+   Put(Pad("#SimpUndet"));
+   Put("    ");
+   Put(Pad("#CRCUndet"));
    New_Line;
    Put_Line(Separator_Line);
 
@@ -54,7 +56,9 @@ begin -- Print_Table
       Put("    ");
       Flt_IO.Put(Float(Results(I).Error_Occurrences)/Float(Block_Count));
       Put("    ");
-      Int_IO.Put(Results(I).Undetected_Occurrences);
+      Int_IO.Put(Results(I).Simple_Undetected);
+      Put("    ");
+      Int_IO.Put(Results(I).CRC_Undetected);
       New_Line;
    end loop;
 end Print_Table;
