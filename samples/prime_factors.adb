@@ -25,7 +25,7 @@ procedure Prime_Factors is
       Exponent := 1;
 
       -- Find smallest factor.
-      while (N mod Factor) /= 0 loop
+      while (N rem Factor) /= 0 loop
          Factor := Factor + 1;
       end loop;
 
@@ -33,7 +33,7 @@ procedure Prime_Factors is
       N := N / Factor;
 
       -- ... as many times as possible.
-      while (N mod Factor) = 0 loop
+      while (N rem Factor) = 0 loop
          Exponent := Exponent + 1;
          N := N / Factor;
       end loop;
@@ -41,9 +41,9 @@ procedure Prime_Factors is
 
 
    procedure Find_Factors(N : in Positive) is
-      Number   : Positive := N;  -- Must copy for use as 'out' parameter in call below.
-      Factor   : Positive;
-      Exponent : Positive;
+      Number     : Positive := N;  -- Must copy for use as 'out' parameter in call below.
+      Factor     : Positive;
+      Exponent   : Positive;
       Print_Star : Boolean := False;
    begin
       Put(Number, 0); Put(" = ");
@@ -71,7 +71,7 @@ begin -- Prime_Factors
       Set_Exit_Status(Failure);
    else
       N := Integer'Value(Argument(1));
-      if N <= 1 then
+      if N = 1 then
          Put_Line("Invalid N. Use a value greater than one.");
          Set_Exit_Status(Failure);
       else
@@ -80,4 +80,3 @@ begin -- Prime_Factors
    end if;
    Set_Exit_Status(Success);
 end Prime_Factors;
-

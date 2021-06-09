@@ -18,10 +18,10 @@ procedure Prime2 is
 
    -- This function returns True if N is prime; False otherwise.
    -- Note that it assumes N >= 2.
-   function Is_Prime(N : Integer) return Boolean is
+   function Is_Prime(N : in Integer) return Boolean is
    begin
       for I in 2 .. (N - 1) loop
-         if N mod I = 0 then
+         if N rem I = 0 then
             return False;
          end if;
       end loop;
