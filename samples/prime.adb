@@ -31,4 +31,3 @@ begin
       Put_Line(" is prime.");
    end if;
 end Prime;
-
