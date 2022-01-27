@@ -18,7 +18,7 @@ package body Number_Theory is
 
 
    function Is_Prime(N : in Prime_Argument_Type) return Boolean is
-      Upper_Bound     : Prime_Argument_Type;
+      Upper_Bound     : Positive;
       Current_Divisor : Prime_Argument_Type;
    begin
       -- Handle 2 as a special case.
@@ -33,6 +33,7 @@ package body Number_Theory is
             return False;
          end if;
          Upper_Bound := N / Current_Divisor;
+         Current_Divisor := Current_Divisor + 1;
       end loop;
       return True;
    end Is_Prime;
