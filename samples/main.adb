@@ -15,9 +15,14 @@ procedure Main is
    use Floating_IO;
 
    N : Number_Theory.Prime_Argument_Type;
-   -- Add any other local variables you might need here.
+   Exact_Prime_Count : Natural;
+   Approximate_Prime_Count : Number_Theory.Floating_Type;
 
 begin
-   Put_Line("Counting Primes!");
-   -- TODO: Finish me!
+   Put("Enter a number: ");
+   Get(N);
+   Exact_Prime_Count := Number_Theory.Prime_Counting(N);
+   Put(" π(N) = "); Put(Exact_Prime_Count, 0); New_Line;
+   Approximate_Prime_Count := Number_Theory.Logarithmic_Integral(N);
+   Put("li(N) = "); Put(Approximate_Prime_Count, 0); New_Line;
 end Main;
