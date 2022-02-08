@@ -6,10 +6,11 @@
 -- Standard.String type, Buffer_Type has subprograms more in keeping with use as a storage
 -- area for raw data.
 ---------------------------------------------------------------------------
+pragma SPARK_Mode(On);
 
 package Buffers is
 
-   Maximum_Size : constant := 65536;
+   Maximum_Size : constant := 2**16;
 
    subtype Buffer_Index_Type is Positive range 1 .. Maximum_Size;
    subtype Buffer_Count_Type is Natural range 0 .. Maximum_Size;
