@@ -35,6 +35,6 @@ package Number_Theory is
 
    -- The logarithmic integral function, which is an approximation of the prime counting function.
    function Logarithmic_Integral(N : in Prime_Argument_Type) return Floating_Type
-     with Post => Logarithmic_Integral'Result > Prime_Counting(N);
+     with Post => Logarithmic_Integral'Result > Floating_Type(Prime_Counting(N));
 
 end Number_Theory;

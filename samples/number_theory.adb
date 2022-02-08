@@ -70,7 +70,7 @@ package body Number_Theory is
       -- The approach is to edit Term for each iteration.
       Term   := Log(Floating_Type(N)); -- Compute term #1 as a special case.
       Result := Result + Term;         -- ... and add it into the result.
-      for I in 2 .. 1000 loop            -- Compute all other terms based on previous term.
+      for I in 2 .. 100 loop           -- Compute new terms based on previous term.
          Term := Term * Log(Floating_Type(N)) * (Floating_Type(I - 1)/Floating_Type(I*I));
          Result := Result + Term;
       end loop;
