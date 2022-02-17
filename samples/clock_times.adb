@@ -41,7 +41,7 @@ package body Clock_Times is
       Hours_Difference   := Left.Hours   - Right.Hours;
       Minutes_Difference := Left.Minutes - Right.Minutes;
       Seconds_Difference := Left.Seconds - Right.Seconds;
-      return 3600*Hours_Difference + 60*Minutes_Difference + Seconds_DIfference;
+      return 3600*Hours_Difference + 60*Minutes_Difference + Seconds_Difference;
    end Difference;
 
 end Clock_Times;
