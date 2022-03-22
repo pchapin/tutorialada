@@ -1,5 +1,6 @@
 # Various build artifacts from compiling the samples and examples.
 build
+.clang-format
 
 # Build artifacts from compiling LaTeX documents.
 *.aux
