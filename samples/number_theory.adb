@@ -8,12 +8,14 @@ package body Number_Theory is
 
 
    function Factorial(N : in Factorial_Argument_Type) return Positive is
+      Result : Positive := 1;
    begin
-      -- TODO: Finish me!
-      --
-      -- 0! is 1
-      -- N! is N * (N-1) * (N-2) * ... * 1
-      return 1;
+      if N > 0 then
+         for I in 1 .. N loop
+            Result := Result * I;
+         end loop;
+      end if;
+      return Result;
    end Factorial;
 
 
@@ -40,20 +42,39 @@ package body Number_Theory is
 
 
    function Prime_Counting(N : in Prime_Argument_Type) return Natural is
+      Count : Natural := 0;
    begin
-      -- TODO: Finish me!
-      --
-      -- See the lab page for more information.
-      return 0;
+      for I in 2 .. N loop
+         if Is_Prime(I) then
+            Count := Count + 1;
+         end if;
+      end loop;
+      return Count;
    end Prime_Counting;
 
 
    function Logarithmic_Integral(N : in Prime_Argument_Type) return Floating_Type is
+      Result : Floating_Type;
+      Term   : Floating_Type;
    begin
-      -- TODO: Finish me!
+      Result := Gamma + Log(Log(Floating_Type(N)));
+      -- How many terms should we compute? The 11th term is the last that won't overflow
+      -- the multipliciation I * Factorial(I). However, to get a good estimate of li(N)
+      -- we need considerably more terms.
       --
-      -- See the lab page for more information.
-      return 1.0;
+      --for I in 1 .. 11 loop
+      --   Term := (Log(Floating_Type(N)) ** I) / Floating_Type((I * Factorial(I)));
+      --   Result := Result + Term;
+      --end loop;
+      --
+      -- The approach is to edit Term for each iteration.
+      Term   := Log(Floating_Type(N)); -- Compute term #1 as a special case.
+      Result := Result + Term;         -- ... and add it into the result.
+      for I in 2 .. 100 loop           -- Compute new terms based on previous term.
+         Term := Term * Log(Floating_Type(N)) * (Floating_Type(I - 1)/Floating_Type(I*I));
+         Result := Result + Term;
+      end loop;
+      return Result;
    end Logarithmic_Integral;
 
 end Number_Theory;
