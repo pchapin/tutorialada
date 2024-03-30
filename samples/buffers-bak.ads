@@ -8,7 +8,7 @@
 ---------------------------------------------------------------------------
 pragma SPARK_Mode(On);
 
-package Buffers is
+package Buffers.Bak is
 
    Maximum_Size : constant := 2**16;
 
@@ -72,4 +72,4 @@ package Buffers is
       Point  : Buffer_Index_Type;
       Length : Buffer_Count_Type) return String;
 
-end Buffers;
+end Buffers.Bak;

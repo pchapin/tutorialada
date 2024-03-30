@@ -1,6 +1,16 @@
+---------------------------------------------------------------------------
+-- FILE    : buffers2.ads
+-- SUBJECT : Package providing various buffer manipulating subprograms.
+--
+-- A Buffer is essentially a string bounded in length to 1024 characters. However, unlike the
+-- Standard.String type, Buffer_Type has subprograms more in keeping with use as a storage area
+-- for raw data.
+--
+-- This version uses SPARK flow analysis
+---------------------------------------------------------------------------
 pragma SPARK_Mode(On);
 
-package Buffers1 is
+package Buffers2 is
 
    Maximum_Buffer_Size : constant := 1024;
    subtype Buffer_Count_Type is Natural  range 0 .. Maximum_Buffer_Size;
@@ -20,8 +30,7 @@ package Buffers1 is
      with Depends => (Buffer =>+ null);
 
    -- Returns the number of occurrences of Ch in Buffer.
-   function Count_Character
-     (Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type;
+   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type;
 
    -- Returns the number of occurrences of Ch in Buffer and replaces those occurrences with ' '.
    procedure Count_And_Erase_Character
@@ -69,4 +78,14 @@ package Buffers1 is
       Length      : in     Buffer_Count_Type)
      with Depends => (Destination =>+ (Buffer, Point, Length));
 
-end Buffers1;
+   -- EXERCISES
+   ------------
+
+   -- Rotates Buffer contents left (toward lower index values);
+   procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type);
+
+   -- Returns a count of the number of times the string Search appears in Buffer. For example,
+   -- if Buffer contains "ababab" and Search is "aba" this function should return 2.
+   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type;
+
+end Buffers2;

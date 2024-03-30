@@ -30,8 +30,7 @@ package body Buffers1 is
    end Reverse_Buffer;
 
 
-   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type
-   is
+   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type is
       Count : Buffer_Count_Type := 0;
    begin
       for Index in Buffer_Index_Type loop
@@ -93,7 +92,7 @@ package body Buffers1 is
       if Source'Length < Characters_To_Copy then
          Characters_To_Copy := Source'Length;
       end if;
-      for Index in Buffer_Count_Type range 1 .. Characters_To_Copy loop
+      for Index in 1 .. Characters_To_Copy loop
          Buffer(Index) := Source(Source'First + (Index - 1));
       end loop;
    end Copy_Into;
@@ -114,7 +113,7 @@ package body Buffers1 is
       if Point + (Characters_To_Copy - 1) > Buffer'Last then
          Characters_To_Copy := (Buffer'Last - Point) + 1;
       end if;
-      for I in Buffer_Count_Type range 1 .. Characters_To_Copy loop
+      for I in 1 .. Characters_To_Copy loop
          Buffer(Point + (I - 1)) := Source(Source'First + (I - 1));
       end loop;
    end Copy_Onto;
@@ -136,7 +135,7 @@ package body Buffers1 is
       if Characters_To_Copy > Destination'Length then
          Characters_To_Copy := Destination'Length;
       end if;
-      for I in Buffer_Count_Type range 1 .. Characters_To_Copy loop
+      for I in 1 .. Characters_To_Copy loop
          Destination(Destination'First + (I - 1)) := Buffer(Point + (I - 1));
       end loop;
    end Copy_From;
@@ -146,7 +145,15 @@ package body Buffers1 is
 
    procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type) is
    begin
-     null;
+      -- TODO: Finish Me!
+      null;
    end Rotate_Left;
+
+
+   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type is
+   begin
+      -- TODO: Finish Me!
+      return 0;
+   end Count_Substrings;
 
 end Buffers1;

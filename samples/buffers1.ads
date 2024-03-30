@@ -75,6 +75,6 @@ package Buffers1 is
 
    -- Returns a count of the number of times the string Search appears in Buffer. For example,
    -- if Buffer contains "ababab" and Search is "aba" this function should return 2.
-   --function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type;
+   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type;
 
 end Buffers1;

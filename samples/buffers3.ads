@@ -1,6 +1,6 @@
 pragma SPARK_Mode(On);
 
-package Buffers1 is
+package Buffers3 is
 
    Maximum_Buffer_Size : constant := 1024;
    subtype Buffer_Count_Type is Natural  range 0 .. Maximum_Buffer_Size;
@@ -69,4 +69,4 @@ package Buffers1 is
       Length      : in     Buffer_Count_Type)
      with Depends => (Destination =>+ (Buffer, Point, Length));
 
-end Buffers1;
+end Buffers3;

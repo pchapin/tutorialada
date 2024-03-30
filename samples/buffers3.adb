@@ -1,6 +1,6 @@
 pragma SPARK_Mode(On);
 
-package body Buffers1 is
+package body Buffers3 is
 
    procedure Fill(Buffer : out Buffer_Type; Fill_Character : in Character) is
    begin
@@ -153,4 +153,4 @@ package body Buffers1 is
       end loop;
    end Copy_From;
 
-end Buffers1;
+end Buffers3;

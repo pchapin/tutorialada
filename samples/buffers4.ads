@@ -1,6 +1,6 @@
 pragma SPARK_Mode(On);
 
-package Buffers2 is
+package Buffers4 is
 
    Maximum_Buffer_Size : constant := 1024;
    subtype Buffer_Count_Type is Natural  range 0 .. Maximum_Buffer_Size;
@@ -107,4 +107,4 @@ package Buffers2 is
                                       then Buffer(Point + (I - Destination'First))
                                       else ' '));
 
-end Buffers2;
+end Buffers4;
