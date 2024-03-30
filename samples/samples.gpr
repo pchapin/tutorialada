@@ -4,8 +4,7 @@ project Samples is
 
    for Object_Dir use "build";
    for Source_Dirs use (".", "Check", "ElaborationOrder", "Hexdump", "Huffman", "Tagged");
-   for Main use ("calendar_dates_demo.adb", "clock_times_demo.adb", "elaboration_demo.adb", "filter.adb", "hello.adb", "hexdump.adb", "huffman.adb", "main.adb", "prime.adb", "prime_factors.adb", "prime2.adb", "random_test.adb", 
-      "rationals_test.adb", "rot13.adb", "samples_test.adb", "sieve.adb", "sieve_task.adb", "sum.adb", "tagged_demo.adb", "vowels");
+   for Main use ("buffers_demo.adb", "calendar_dates_demo.adb", "clock_times_demo.adb", "elaboration_demo.adb", "filter.adb", "hello.adb", "hexdump.adb", "huffman.adb", "main.adb", "prime.adb", "prime_factors.adb", "prime2.adb", "random_test.adb", "rationals_test.adb", "rot13.adb", "samples_test.adb", "sieve.adb", "sieve_task.adb", "sum.adb", "tagged_demo.adb", "vowels");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-gnatwa", "-gnata", "-fstack-check");
