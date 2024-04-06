@@ -97,11 +97,14 @@ package Buffers2 is
    -- EXERCISES
    ------------
 
+   -- Added Global and Depends aspects to the declarations below and use SPARK to verify they
+   -- are satisfied by the implementation.
+
    -- Rotates Buffer contents left (toward lower index values);
    procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type);
 
    -- Returns a count of the number of times the string Search appears in Buffer. For example,
    -- if Buffer contains "ababab" and Search is "aba" this function should return 2.
-   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type;
+   function Count_Substrings(Buffer : in Buffer_Type; Search : in String) return Buffer_Count_Type;
 
 end Buffers2;

@@ -35,7 +35,7 @@ package body Buffers2 is
       Count : Buffer_Count_Type := 0;
    begin
       for Index in Buffer_Index_Type loop
-         if Buffer (Index) = Ch then
+         if Buffer(Index) = Ch then
             Count := Count + 1;
          end if;
       end loop;
@@ -155,7 +155,7 @@ package body Buffers2 is
    end Rotate_Left;
 
 
-   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type is
+   function Count_Substrings(Buffer : in Buffer_Type; Search : in String) return Buffer_Count_Type is
       Result    : Buffer_Count_Type := 0;
       Positions : Buffer_Index_Type;
       Matched   : Boolean;

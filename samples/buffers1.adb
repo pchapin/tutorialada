@@ -150,10 +150,34 @@ package body Buffers1 is
    end Rotate_Left;
 
 
-   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type is
+   function Count_Substrings(Buffer : in Buffer_Type; Search : in String) return Buffer_Count_Type is
    begin
       -- TODO: Finish Me!
       return 0;
    end Count_Substrings;
+
+
+   -- MORE EXERCISES
+   -----------------
+
+   procedure Overlay(Buffer : out Buffer_Type; Overlay_Text : in String) is
+   begin
+      -- TODO: Finish Me!
+      null;
+   end Overlay;
+
+
+   function Find_Unsorted(Buffer : in Buffer_Type) return Buffer_Count_Type is
+   begin
+      -- TODO: Finish Me!
+      return 0;
+   end Find_Unsorted;
+
+
+   procedure Sort(Buffer : in out Buffer_Type) is
+   begin
+      -- TODO: Finish Me!
+      null;
+   end Sort;
 
 end Buffers1;

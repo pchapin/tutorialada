@@ -70,11 +70,39 @@ package Buffers1 is
    -- EXERCISES
    ------------
 
+   -- Complete the implementations of the subprograms below. Solutions are in Buffers2.adb.
+
    -- Rotates Buffer contents left (toward lower index values);
    procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type);
 
    -- Returns a count of the number of times the string Search appears in Buffer. For example,
    -- if Buffer contains "ababab" and Search is "aba" this function should return 2.
-   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type;
+   function Count_Substrings(Buffer : in Buffer_Type; Search : in String) return Buffer_Count_Type;
+
+   -- MORE EXERCISES (no solutions given)
+   -----------------
+
+   -- Implement the following subprograms, then copy your implementations to Buffers2, Buffers3,
+   -- and Buffers4 with the following adjustments:
+   --
+   -- Buffers2: Add Global and Depends aspects and use SPARK to show consistent flows.
+   -- Buffers3: Prove your implementation has AORTE.
+   -- Buffers4: Add suitable postconditions and prove your implementation satisfies them.
+   --
+   -- If you would prefer, you can copy your implementations directly to Buffers4 and enhance
+   -- them according to the steps above.
+
+   -- Overlay the buffer with repeating copies of Overlay_Text. The last copy can be a partial
+   -- copy, if necessary. For example, If the Overlay_Text is "Hello", the buffer should become
+   -- "HelloHelloHelloHello ... Hell". In other words, the last copy of "Hello" is truncated.
+   procedure Overlay(Buffer : out Buffer_Type; Overlay_Text : in String);
+
+   -- Scan the buffer looking for the first character that is out of sorted (ascending) order.
+   -- Return the index position of that character or 0 if the array is entirely sorted.
+   function Find_Unsorted(Buffer : in Buffer_Type) return Buffer_Count_Type;
+
+   -- Sorts the characters in the buffer in ascending order. Use a simple sorting algorithm
+   -- such as Bubble Sort (to make things easier later).
+   procedure Sort(Buffer : in out Buffer_Type);
 
 end Buffers1;

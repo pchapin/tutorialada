@@ -32,15 +32,13 @@ package body Buffers3 is
    end Reverse_Buffer;
 
 
-   function Count_Character
-     (Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type
-   is
+   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type is
       Count : Buffer_Count_Type := 0;
    begin
       for Index in Buffer_Index_Type loop
          pragma Loop_Invariant(Count < Index);
 
-         if Buffer (Index) = Ch then
+         if Buffer(Index) = Ch then
             Count := Count + 1;
          end if;
       end loop;
@@ -152,5 +150,45 @@ package body Buffers3 is
          Destination(Destination'First + (I - 1)) := Buffer(Point + (I - 1));
       end loop;
    end Copy_From;
+
+   -- EXERCISES
+   ------------
+
+   procedure Rotate_Left(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type) is
+      Temp : Character;
+   begin
+      for I in 1 .. Distance loop
+         Temp := Buffer(Buffer'First);
+         Buffer(Buffer'First .. Buffer'Last - 1) := Buffer(Buffer'First + 1 .. Buffer'Last);
+         Buffer(Buffer'Last) := Temp;
+      end loop;
+   end Rotate_Left;
+
+
+   function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type is
+      Result    : Buffer_Count_Type := 0;
+      Positions : Buffer_Index_Type;
+      Matched   : Boolean;
+   begin
+      if Search'Length > 0 and Buffer'Length >= Search'Length then
+         Positions := (Buffer'Length - Search'Length) + 1;
+         for I in 1 .. Positions loop
+            -- Does Search match the buffer's contents starting at position I?
+            Matched := True;
+            for J in Search'First .. Search'Last loop
+               if Search(J) /= Buffer(((J - Search'First) + (I - 1)) + Buffer'First) then
+                 Matched := False;
+               end if;
+            end loop;
+
+            -- If we matched, count it.
+            if Matched then
+               Result := Result + 1;
+            end if;
+         end loop;
+      end if;
+      return Result;
+   end Count_Substrings;
+
 
 end Buffers3;
