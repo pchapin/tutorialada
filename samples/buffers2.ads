@@ -19,25 +19,34 @@ package Buffers2 is
 
    -- Fills Buffer with Fill_Character.
    procedure Fill(Buffer : out Buffer_Type; Fill_Character : in Character)
-     with Depends => (Buffer => Fill_Character);
+     with
+       Global => null,
+       Depends => (Buffer => Fill_Character);
 
    -- Rotates Buffer contents right (toward higher index values).
    procedure Rotate_Right(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type)
-     with Depends => (Buffer =>+ Distance);
+     with
+       Global => null,
+       Depends => (Buffer =>+ Distance);
 
    -- Reverses the contents of Buffer.
    procedure Reverse_Buffer(Buffer : in out Buffer_Type)
-     with Depends => (Buffer =>+ null);
+     with
+       Global => null,
+       Depends => (Buffer =>+ null);
 
    -- Returns the number of occurrences of Ch in Buffer.
-   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type;
+   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type
+     with Global => null;
 
    -- Returns the number of occurrences of Ch in Buffer and replaces those occurrences with ' '.
    procedure Count_And_Erase_Character
      (Buffer : in out Buffer_Type;
       Ch     : in     Character;
       Count  :    out Buffer_Count_Type)
-     with Depends => ((Buffer, Count) => (Buffer, Ch));
+     with
+       Global => null,
+       Depends => ((Buffer, Count) => (Buffer, Ch));
 
    -- Removes instances of Erase_Character, compacting Buffer as needed. New space at the end is
    -- filled with Fill_Character. After returning, Valid contains a count of the remaining valid
@@ -48,13 +57,16 @@ package Buffers2 is
       Fill_Character  : in     Character;
       Valid           :    out Buffer_Count_Type)
      with
+       Global => null,
        Depends => (Buffer =>+ (Erase_Character, Fill_Character),
                    Valid  =>  (Erase_Character, Buffer));
 
    -- Copies the source string into the buffer. If the source string is too short the buffer is
    -- padded with spaces. If the source string is too long, it is truncated.
    procedure Copy_Into(Buffer : out Buffer_Type; Source : in String)
-     with Depends => (Buffer => Source);
+     with
+       Global => null,
+       Depends => (Buffer => Source);
 
    -- Copies the source string onto the buffer starting at position Point. At most Length
    -- characters are copied. If the source string is longer then Length, it is truncated. If the
@@ -65,7 +77,9 @@ package Buffers2 is
       Source : in     String;
       Point  : in     Buffer_Index_Type;
       Length : in     Buffer_Count_Type)
-     with Depends => (Buffer =>+ (Source, Point, Length));
+     with
+       Global => null,
+       Depends => (Buffer =>+ (Source, Point, Length));
 
    -- Copies the substring of the buffer starting at Point into the destination string. If the
    -- requested length goes beyond the end of the buffer it is truncated. If the destination is
@@ -76,7 +90,9 @@ package Buffers2 is
       Destination :    out String;
       Point       : in     Buffer_Index_Type;
       Length      : in     Buffer_Count_Type)
-     with Depends => (Destination =>+ (Buffer, Point, Length));
+     with
+       Global => null,
+       Depends => (Destination =>+ (Buffer, Point, Length));
 
    -- EXERCISES
    ------------
