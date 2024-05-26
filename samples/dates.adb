@@ -3,6 +3,7 @@
 -- SUBJECT : Body of a package providing calendar dates.
 --
 ---------------------------------------------------------------------------
+pragma SPARK_Mode(On);
 
 package body Dates is
 
@@ -15,7 +16,7 @@ package body Dates is
    -- Return True if the given year is a leap year.
    -- The method used here is correct for all years in the range of Year_Type.
    --
-   function Is_Leap_Year(Year : Year_Type) return Boolean is
+   function Is_Leap_Year(Year : in Year_Type) return Boolean is
       Result : Boolean := False;
    begin
       if Year mod 4 = 0 then
@@ -26,7 +27,7 @@ package body Dates is
 
 
    -- Return the length in days of the given month. The effect of leap years is considered.
-   function Get_Month_Length(Year : Year_Type; Month : Month_Type) return Day_Type is
+   function Get_Month_Length(Year : in Year_Type; Month : in Month_Type) return Day_Type is
       Month_Length : constant array(Month_Type) of Day_Type :=
         (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
@@ -42,8 +43,7 @@ package body Dates is
 
 
    -- Return True if the given date is a valid date.
-   function Is_Valid_Date
-     (Year : Year_Type; Month : Month_Type; Day : Day_Type) return Boolean is
+   function Is_Valid_Date(Year : Year_Type; Month : Month_Type; Day : Day_Type) return Boolean is
       Result : Boolean := True;
    begin
       if Day > Get_Month_Length(Year, Month) then
@@ -125,7 +125,7 @@ package body Dates is
    end "<";
 
    ----------------------
-   -- Visible subprograms
+   -- Visible Subprograms
    ----------------------
 
    procedure Create_Date
@@ -165,8 +165,7 @@ package body Dates is
    end Create_Datetime;
 
 
-   procedure Advance
-     (Current_Date : in out Date; By : in Day_Advance_Type; Valid : out Boolean) is
+   procedure Advance(Current_Date : in out Date; By : in Day_Advance_Type; Valid : out Boolean) is
       Steps : Day_Advance_Type;
    begin
       Valid := True;

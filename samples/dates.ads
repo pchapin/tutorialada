@@ -10,6 +10,7 @@
 -- number of days apart the dates are. The subprogram should return its result using the
 -- signed type Day_Advance_Type.
 ---------------------------------------------------------------------------
+pragma SPARK_Mode(On);
 
 package Dates is
    type Year_Type   is range 2000 .. 2099;
@@ -24,8 +25,7 @@ package Dates is
    subtype Day_Count_Type is Natural range 0 .. 36525;
 
    -- Represents the number of steps between two dates.
-   subtype Day_Advance_Type is
-     Integer range -(Day_Count_Type'Last - 1) .. (Day_Count_Type'Last - 1);
+   subtype Day_Advance_Type is Integer range -(Day_Count_Type'Last - 1) .. (Day_Count_Type'Last - 1);
 
    type Date is private;
    type Time is private;
@@ -39,7 +39,9 @@ package Dates is
       Month    : in  Month_Type;
       Day      : in  Day_Type;
       New_Date : out Date;
-      Valid    : out Boolean);
+      Valid    : out Boolean)
+     with
+       Post => (if Valid then Get_Year(New_Date) = Year and Get_Month(New_Date) = Month and Get_Day(New_Date) = Day);
 
    -- This subprogram can't fail so it doesn't need to return a Valid indicator. This also
    -- allows it to be a function rather than a procedure since it only returns one thing.
@@ -51,12 +53,12 @@ package Dates is
    -- This subprogram can't fail so it doesn't need to return a Valid indicator.
    function Create_Datetime(Date_Part : in Date; Time_Part : in Time) return Datetime;
 
-   -- Accessor methods.
-   function Get_Year(Current_Date : Date) return Year_Type with Inline;
+   -- Accessor primitive operations.
+   function Get_Year(Current_Date  : Date) return Year_Type  with Inline;
    function Get_Month(Current_Date : Date) return Month_Type with Inline;
-   function Get_Day(Current_Date : Date) return Day_Type with Inline;
+   function Get_Day(Current_Date   : Date) return Day_Type   with Inline;
 
-   function Get_Hour(Current_Time : Time) return Hour_Type with Inline;
+   function Get_Hour(Current_Time   : Time) return Hour_Type   with Inline;
    function Get_Minute(Current_Time : Time) return Minute_Type with Inline;
    function Get_Second(Current_Time : Time) return Second_Type with Inline;
 
@@ -75,14 +77,14 @@ private
 
    type Date is
       record
-         Year : Year_Type := Year_Type'First;
+         Year  : Year_Type  := Year_Type'First;
          Month : Month_Type := 1;
-         Day : Day_Type := 1;
+         Day   : Day_Type   := 1;
       end record;
 
    type Time is
       record
-         Hour : Hour_Type := 0;
+         Hour   : Hour_Type   := 0;
          Minute : Minute_Type := 0;
          Second : Second_Type := 0;
       end record;
