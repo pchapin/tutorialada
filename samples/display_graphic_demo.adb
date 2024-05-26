@@ -14,7 +14,7 @@ procedure Display_Graphic_Demo is
 
       type Pixel_Intensity_Type is range 0 .. 255;  -- 0 is black, 255 is maxiumum brightness.
 
-      procedure Set_Pixel
+      procedure Set_Pixel_Color_Component
         (X : in X_Coordinate_Type;
          Y : in Y_Coordinate_Type;
          Color      : Pixel_Color_Type;
@@ -25,7 +25,7 @@ procedure Display_Graphic_Demo is
 
    package body Graphic_Display is
 
-      procedure Set_Pixel
+      procedure Set_Pixel_Color_Componet
         (X : in X_Coordinate_Type;
          Y : in Y_Coordinate_Type;
          Color      : Pixel_Color_Type;
@@ -38,7 +38,7 @@ procedure Display_Graphic_Demo is
             ", Y: " & Y_Coordinate_Type'Image(Y) &
             ", Color: "      & Pixel_Color_Type'Image(Color) &
             ", Brightness: " & Pixel_Intensity_Type'Image(Brightness) );
-      end Set_Pixel;
+      end Set_Pixel_Color_Componet;
 
    end Graphic_Display;
 
@@ -47,7 +47,7 @@ begin
    for Color in Graphic_Display.Pixel_Color_Type loop
       for X_Coordinate in Graphic_Display.X_Coordinate_Type loop
          for Y_Coordinate in Graphic_Display.Y_Coordinate_Type loop
-            Graphic_Display.Set_Pixel(X_Coordinate, Y_Coordinate, Color, Brightness => 0);
+            Graphic_Display.Set_Pixel_Color_Component(X_Coordinate, Y_Coordinate, Color, Brightness => 0);
          end loop;
       end loop;
    end loop;
