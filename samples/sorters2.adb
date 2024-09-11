@@ -1,5 +1,5 @@
 pragma Spark_Mode (On);
-package body Sorters is
+package body Sorters2 is
 
    function Perm_Transitive (A, B, C : Array_Type) return Boolean
      with Global => null,
@@ -86,4 +86,4 @@ package body Sorters is
                Values (J) <= Values (J + 1)));
       end loop;
    end Selection_Sort;
-end Sorters;
+end Sorters2;

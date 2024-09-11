@@ -4,7 +4,7 @@
 --
 ---------------------------------------------------------------------------
 
-package body Sorters is
+package body Sorters1 is
 
    procedure Bubble_Sort(Values : in out Array_Type) is
 
@@ -162,4 +162,4 @@ package body Sorters is
       end loop;
    end Merge_Sort;
 
-end Sorters;
+end Sorters1;

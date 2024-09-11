@@ -7,7 +7,7 @@
 -- collection of samples.
 ---------------------------------------------------------------------------
 
-package Sorters is
+package Sorters1 is
 
    -- It's easier to complete the proofs if we deal with fixed sized arrays.
    Block_Size : constant := 16;  -- ... or whatever the application needs.
@@ -30,4 +30,4 @@ package Sorters is
      with
        Post => (for all I in Values'First .. Values'Last - 1 => (Values(I) <= Values(I + 1)));
 
-end Sorters;
+end Sorters1;

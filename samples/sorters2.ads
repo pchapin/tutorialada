@@ -1,5 +1,5 @@
 pragma Spark_Mode (On);
-package Sorters is
+package Sorters2 is
 
    type Array_Type is array (Positive range <>) of Integer;
 
@@ -18,4 +18,4 @@ package Sorters is
           Post    => (for all J in Values'First .. Values'Last - 1 =>
                         Values (J) <= Values (J + 1))  and then
                       Perm (Values'Old, Values);
-end Sorters;
+end Sorters2;
