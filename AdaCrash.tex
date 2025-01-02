@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FILE    : AdaCrash.tex
 % SUBJECT : A short(?) Ada tutorial.
-% AUTHOR  : (C) Copyright 2015 by Peter Chapin <PChapin@vtc.vsc.edu>
+% AUTHOR  : (C) Copyright 2025 by Peter Chapin <spicacality@kelseymountain.org>
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -87,8 +87,8 @@
 % \pagestyle{headings}
 %
 % The following create block paragraphs (no indentation, extra separation).
-% \setlength{\parindent}{0em}
-% \setlength{\parskip}{1.75ex plus0.5ex minus0.5ex}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1.75ex plus0.5ex minus0.5ex}
 
 
 % ------
@@ -108,8 +108,8 @@
 % ----------------------
 \titlehead{\centering\includegraphics[scale=0.05]{Ada-Mascot.pdf}}
 \title{Ada--A Crash Course}
-\author{Peter Chapin\thanks{pchapin@vtc.edu}\\
-  Vermont Technical College}
+\author{Peter Chapin\thanks{peter.chapin@vermontstate.edu}\\
+  Vermont State University}
 \date{Generated: \today}
 \maketitle
 
@@ -124,26 +124,28 @@
 
 \input{Tutorial}
 
+% In the future there might be sections documenting and describing the various sample programs.
+
 \lstDeleteShortInline|
 
 % At some point these references must make it into the bibliography for this document.
 %
 % 1. High Integrity Software. The SPARK Approach to Safety and Security by John Barnes.
-% Addison-Wesley, 2003. ISBN=0-321-13616-0. This book describes a specialized subset of the Ada
-% language called SPARK that is used for the construction of ultra-reliable software.
+%    Addison-Wesley, 2003. ISBN=0-321-13616-0. This book describes a specialized subset of the
+%    Ada language called SPARK that is used for the construction of ultra-reliable software.
 %
 % 2. WikiBook on Ada: http://en.wikibooks.org/wiki/Ada_Programming. This is one of the better of
-% the WikiBooks. As always anything on-line is a work in progress. Nevertheless many aspects of
-% Ada are well described.
+%    the WikiBooks. As always anything on-line is a work in progress. Nevertheless many aspects
+%    of Ada are well described.
 %
 % 3. Ada Newsgroup: news://comp.lang.ada. An active newsgroup where you can post questions and
-% talk with Ada experts.
+%    talk with Ada experts.
 %
 % 4. Ada IRC channel: irc://irc.freenode.net/#ada. Although often quiet there are usually a few
-% people there who can answer questions.
+%    people there who can answer questions.
 %
 % 5. There are several Ada web sites. The Ada Information Clearinghouse (http://www.adaic.com/),
-% site is a good place to start.
+%    site is a good place to start.
 
 \bibliography{references}
 \bibliographystyle{plain}

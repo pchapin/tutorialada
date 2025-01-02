@@ -139,7 +139,7 @@ There are quite a few things to point out about this program. Let's look at them
   vowels would be an error since you would not have fully covered all possible characters (the
   type of |Letter| is |Character|). In this program I want to ignore the other characters. To do
   this, I provide a |when others| clause that executes the special |null| statement. This lets
-  future readers of my program know that I am ignoring the other characters intentionally and
+  future readers of my program know that I am ignoring the other characters intentionally, and
   it's not just an oversight.
 
 \item |New_Line| is a parameterless procedure in package |Ada.Text_IO| that advances the output
@@ -152,7 +152,7 @@ There are quite a few things to point out about this program. Let's look at them
 \begin{enumerate}
 \item The prime number program in Listing~\ref{lst:prime-program} is not very efficient. It can
   be improved by taking advantage of the following observation: If |Number| is not divisible by
-  any value less than |I|, then it can't be divisible by any value greater than |Number/I|. Thus
+  any value less than |I|, then it can't be divisible by any value greater than |Number/I|. Thus,
   the upper bound of the loop can be reduced as |I| increases. Modify the program to use this
   observation to improve its performance. Note: You will have to change the |for| loop to a
   |while| loop (try using a |for| loop first and see what happens).

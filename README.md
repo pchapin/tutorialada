@@ -7,8 +7,7 @@ varying levels of depth. As with most things on GitHub, it is a work in progress
 You can download snapshots of this tutorial below.
 
 + A [PDF of the tutorial](http://www.pchapin.org/Ada/AdaCrash.pdf) itself.
-+ A zip archive of the [source code of the
-  samples](http://www.pchapin.org/Ada/samples.zip).
++ A zip archive of the [source code of the samples](http://www.pchapin.org/Ada/samples.zip).
 
 Pull requests against this repository are also welcome.
 
@@ -34,9 +33,9 @@ menu items in GPS to build and run the sample programs.
 
 In addition to the samples, this repository contains several larger example programs that
 demonstrate Ada more fully or that show how a particular technology/library can be used in Ada.
-These larger programs stand alone, meaning they each have their own GNAT project file. Currently
-the tutorial document does not describe these additional programs, although that might change in
-the future. The following examples are included:
+These larger programs stand alone, meaning they each have their own project file. Currently, the
+tutorial does not describe these additional programs, although that might change in the future.
+The following examples are included:
 
 * `ASIS`. The ASIS library allows you to write analysis programs for Ada without having to
   create your own parser and semantic analyzer. This example program is merely a skeleton.
@@ -55,8 +54,16 @@ the future. The following examples are included:
   file as a sequence of bytes in hex, along with the offset of each byte and its ASCII
   interpretation.
   
-* `Huffman`. This program does a huffman encoding of the specified input file. It also displays
+* `Huffman`. This program does a Huffman encoding of the specified input file. It also displays
   some interesting information about the encoding process. The program is incomplete.
+
+* `Interfacing`. This program demonstrates using Ada to interface to low-level code written in C
+  and to hardware. The program is incomplete.
+
+* `Networking`. This program demonstrates using Ada to write a simple client/server application.
+
+* `Tasks`. This program demonstrates using Ada tasks to implement a simple producer/consumer
+  application. The program is incomplete.
 
 * `Win32Ada`. This program is intended to demonstrate the Win32Ada library that allows Ada to
   interface directly to the Windows OS. Right now it is little more than a placeholder. A more
@@ -66,5 +73,5 @@ the future. The following examples are included:
   more interesting application would be welcome.
 
 
-Peter C. Chapin  
-chapinp@acm.org  
+Peter Chapin  
+spicacality@kelseymountain.org  
