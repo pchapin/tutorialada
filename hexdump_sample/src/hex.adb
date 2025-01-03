@@ -8,8 +8,7 @@ with Interfaces; use Interfaces;
 package body Hex is
 
    Conversion_Table : constant array (Unsigned_8 range 0 .. 15) of Character :=
-     ('0', '1', '2', '3', '4', '5', '6', '7',
-      '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
+     ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 
    procedure Flip (Buffer : in out String) is
       Temp : Character;
