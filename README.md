@@ -1,41 +1,35 @@
 TutorialAda
 ===========
 
-An Ada programming language tutorial with samples. This tutorial covers a variety of topics in
-varying levels of depth. As with most things on GitHub, it is a work in progress.
+This repository contains an Ada programming language tutorial with samples, covering a variety
+of topics in varying levels of depth. As with most things on GitHub, it is a work in progress.
 
-You can download snapshots of this tutorial below.
-
-+ A [PDF of the tutorial](http://www.pchapin.org/Ada/AdaCrash.pdf) itself.
-+ A zip archive of the [source code of the samples](http://www.pchapin.org/Ada/samples.zip).
+You can download a [snapshot of this tutorial](http://www.pchapin.org/Ada/AdaCrash.pdf) as a
+single PDF file. Note that the snapshot might be relatively out of date compared to the contents
+of this repository.
 
 Pull requests against this repository are also welcome.
 
 To build the document, you will need a suitable TeX installation. On Windows I recommend
-[MiKTeX](https://miktex.org/), but other TeX installations would probably be fine. In the root
-folder use the following commands:
+[MiKTeX](https://miktex.org/), but other TeX installations should also work. In the root folder
+use the following commands:
 
-    $ pdflatex main
-    $ bibtex main
-    $ pdflatex main
-    $ pdflatex main
+    $ pdflatex AdaCrash
+    $ bibtex AdaCrash
+    $ pdflatex AdaCrash
+    $ pdflatex AdaCrash
 
-Yes, it is necessary to issue the same command multiple times. LaTeX relies on this to correctly
-build cross-references, the table of contents, and similar things. The result of the commands
-above is the file `main.pdf` which contains the tutorial. You may have to install some
-supporting packages into your TeX installation. Some TeX installations can do this
-automatically; others may need manual assistance. Let the error messages be your guide.
+It is necessary to issue the same command multiple times so LaTeX will correctly build the
+cross-references, the table of contents, and similar things. The result of the commands above is
+the file `AdaCrash.pdf`. You may have to install some supporting packages into your TeX
+installation. Some TeX installations can do this automatically; others may need manual
+assistance.
 
-To run the samples, install the latest version of [GNAT
-Community](https://www.adacore.com/community). Start the GPS integrated development environment
-and load the project file `samples.gpr` in the `samples` folder. You can then use the various
-menu items in GPS to build and run the sample programs.
+To run the samples, install the latest version of [Alire](https://alire.ada.dev/). More detailed
+instructions can be found in the ``Hello, Ada`` section of the tutorial.
 
-In addition to the samples, this repository contains several larger example programs that
-demonstrate Ada more fully or that show how a particular technology/library can be used in Ada.
-These larger programs stand alone, meaning they each have their own project file. Currently, the
-tutorial does not describe these additional programs, although that might change in the future.
-The following examples are included:
+What follows is a brief description of the samples. See the README files in the individual
+sample folders for more information.
 
 * `ASIS`. The ASIS library allows you to write analysis programs for Ada without having to
   create your own parser and semantic analyzer. This example program is merely a skeleton.
@@ -50,12 +44,12 @@ The following examples are included:
   is little more than a placeholder (it displays a single button). A more interesting
   application (like a graphical version of the Hexdump example?) would be welcome.
 
-* `Hexdump`. This program is a simple command line hex viewer. It displays the contents of a
-  file as a sequence of bytes in hex, along with the offset of each byte and its ASCII
+* `hexdump_sample`. This program is a simple command line hex viewer. It displays the contents
+  of a file as a sequence of bytes in hex, along with the offset of each byte and its ASCII
   interpretation.
   
-* `Huffman`. This program does a Huffman encoding of the specified input file. It also displays
-  some interesting information about the encoding process. The program is incomplete.
+* `huffman_sample`. This program does a Huffman encoding of the specified input file. It also
+  displays some interesting information about the encoding process. The program is incomplete.
 
 * `Interfacing`. This program demonstrates using Ada to interface to low-level code written in C
   and to hardware. The program is incomplete.

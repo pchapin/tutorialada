@@ -6,3 +6,5 @@ Hexdump
 XMLAda
 Chapin
 adb
+Alire
+AdaCore
