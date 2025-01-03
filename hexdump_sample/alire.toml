@@ -1,0 +1,22 @@
+name = "hexdump_sample"
+description = "A simple hex dumping utility for educational purposes"
+version = "0.1.0-dev"
+
+authors = ["Peter Chapin"]
+maintainers = ["Peter Chapin <spicacality@kelseymountain.org>"]
+maintainers-logins = ["pchapin"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["hexdump_sample"]
+
+# This is how you can provide custom compiler switches. Specifically, this overrides the default
+# style checks configured by Alire, replacing them with an extended line length. The problem is
+# that all the other style checks are erased (which is undesirable).
+#
+# The Alire community would prefer using a community-wide style as defined by Alire, so
+# modifying the default style options is discouraged anyway.
+
+#[build-switches]
+#"*".style_checks = ["-gnatyM96"]
