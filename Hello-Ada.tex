@@ -1,7 +1,7 @@
 \section{Hello, Ada}
 \label{sec:hello-ada}
 
-Whenever you begin to study a new language or software development environment you should start
+Whenever you begin to study a new language or software development environment, you should start
 by writing the most trivial program possible in that language or environment. Thus, I will begin
 this tutorial with a short but complete program that displays the string ``Hello, Ada!'' on the
 console.
@@ -20,28 +20,28 @@ end Hello;
 The context clause specifies the packages that will be used in this particular compilation unit.
 Although the compilation unit above contains just a single procedure, most Ada code is in
 packages. The standard library components are in child packages of the package |Ada|. In this
-case we will be using facilities in the child package |Ada.Text_IO|.
+case, we use facilities in the child package |Ada.Text_IO|.
 
 The main program is the procedure named |Hello|. The precise name used for the main program can
 be anything; exactly which procedure is used as the program's entry point is specified when the
 program is compiled. The procedure consists of two parts: the part between |is| and |begin| is
 called the declarative part. Although empty in this simple case, it is here where you would
-declare local variables and other things. The part between |begin| and |end| constitute the
+declare local variables and other things. The part between |begin| and |end| constitutes the
 executable statements of the procedure. In this case, the only executable statement is a call to
 procedure |Put_Line| in package |Ada.Text_IO|. As you can probably guess from its name,
 |Put_Line| prints the given string onto the program's standard output device. It also terminates
 the output with an appropriate end-of-line marker.
 
-Notice how the name of the procedure is repeated at the end. This is optional, but considered
-good practice. In more complex examples the readability is improved by making it clear exactly
+Notice how the name of the procedure is repeated at the end. This is optional but considered
+good practice. In more complex examples, the readability is improved by making it clear exactly
 what is ending. Notice also the semicolon at the end of the procedure definition. C family
-languages do not require a semicolon here so you might accidentally leave it out.
+languages do not require a semicolon here, so you might accidentally leave it out.
 
-Spelling out the full name |Ada.Text_IO.Put_Line| is rather tedious. If you wish to avoid it you
-can include a |use| statement for the |Ada.Text_IO| package in the context clause (or in the
+Spelling out the full name |Ada.Text_IO.Put_Line| is rather tedious. If you wish to avoid it,
+you can include a |use| statement for the |Ada.Text_IO| package in the context clause (or in the
 declarative part of |Hello|). Where the |with| statement makes the names in the withed package
 \newterm{visible}, the |use| statement makes them \newterm{directly visible}. Such names can
-then be used without qualification as shown below:
+then be used without qualification, as shown below:
 
 \begin{lstlisting}
 with Ada.Text_IO; use Ada.Text_IO;
@@ -57,31 +57,31 @@ However, indiscriminate use of |use| can make it difficult to understand your pr
 can be hard to tell in which package a particular name has been declared.
 
 Ada is a case-insensitive language. Thus, identifiers such as |Hello|, |hello|, and |hElLo| all
-refer to the same entity. It is traditional in modern Ada source code to use all lower case
+refer to the same entity. It is traditional in modern Ada source code to use all lowercase
 letters for reserved words. For all other identifiers, capitalize the first letter of each word
 and separate multiple words with an underscore.\footnote{This style is often called
-\newterm{title case}.} The Ada language does not enforce this convention, but it is a well
-established standard in the Ada community, so you should follow it.
+\newterm{title case}.} The Ada language does not enforce this convention, but it is a
+well-established standard in the Ada community, so you should follow it.
 
 \subsection{Building Ada Programs}
 
-Before continuing, I should describe how to compile the program above. The modern approach is to
-use the Alire build and package manager. Although Alire is more powerful than is necessary for
-the simple programs you will write as a beginning Ada programmer, it is worth learning to use it
+Before continuing, I should describe how to compile the program above. The modern approach uses
+the Alire build and package manager. Although Alire is more powerful than is necessary for the
+simple programs you will write as a beginning Ada programmer, it is worth learning to use it
 early. Alire is quickly becoming the de facto standard for open source Ada development.
 
 Begin by downloading Alire from \url{https://alire.ada.dev}. The precise installation
-instructions depend on your development platform, but they are straightforward. Once you have
-installed Alire, you will need to create a \newterm{crate} for your program. Every program
-should have its own crate.
+instructions depend on your development platform but are straightforward. Once you have
+installed Alire, you must create a \newterm{crate} for your program. Every program should have
+its own crate.
 
-A crate is Alire's unit of deployment. Applications, both small and large can exist in a crate,
+A crate is Alire's unit of deployment. Applications, both small and large, can exist in a crate,
 but a crate can also contain a library with no main program. The ``crate'' terminology used by
 Alire avoids ambiguity with ``package'' which, as you will see, is an important tool for
-structure Ada code, and is something quite different from what Alire calls a crate.
+structuring Ada code and is something quite different from what Alire calls a crate.
 
-Using a command prompt, navigate to the folder where you want to create your crate and
-enter the following command:
+Using a command prompt, navigate to the folder where you want to create your crate and enter the
+following command:
 
 \begin{Verbatim}
   alr init --bin hello
@@ -89,7 +89,7 @@ enter the following command:
 
 \noindent This initializes a subfolder named \filename{hello} with the necessary material for a
 new, empty application crate (as opposed to a library crate). The name ``hello'' is arbitrary,
-but it must agree with the name of your program, and it should be all lower case.
+but it must agree with the name of your program, and it should be all lowercase.
 
 The first time you run Alire, it will ask you what \newterm{toolchain} you want to use. You can
 choose the default, which should be a recent version of the GNAT compiler. You will also be
@@ -97,7 +97,7 @@ asked some questions about the new crate you are creating. The answers are not c
 be changed later.
 
 Most of the files and folders created by Alire can be ignored for the simple programs you will
-write at first. However, inside the \filename{hello} folder you will find a file
+write at first. However, inside the \filename{hello} folder, you will find a file
 \filename{src/hello.adb}. This is the file where you will put your Ada code, such as the
 ``Hello, Ada'' program show earlier.
 
@@ -118,24 +118,24 @@ command:
 \noindent This both compiles and runs the program in one step.
 
 It is important that the procedure |Hello| be stored in a file named \filename{hello.adb}.
-Notice that the name of the file must be in lower case letters and must agree with the name of
-the procedure stored in that file. The \filename{adb} extension stands for ``Ada body.'' This is
-in contrast with Ada specification files that are given an extension of \filename{ads}. You will
-see Ada specifications when I talk about packages in Section~\ref{sec:packages}. I will describe
+Notice that the file's name must be in lowercase letters and must agree with the name of the
+procedure stored in that file. The \filename{adb} extension stands for ``Ada body.'' This
+contrasts with Ada specification files that are given an extension of \filename{ads}. You will
+see Ada specifications when I discuss packages in Section~\ref{sec:packages}. I will describe
 other GNAT file naming requirements at that time.
 
 You can use any text editor to write Ada programs, but many Ada programmers use GNAT Programming
-Studio from AdaCore which provides a full IDE experience. It is also common to use Visual Studio
-Code with the Ada extension from AdaCore. The tricky part of using these tools is ensuring they
-are run in an appropriate environment so they can see the Ada compiler you are using. To do
-this, first tell Alire which editor you are using:
+Studio from AdaCore, which provides a full IDE experience. It is also common to use Visual
+Studio Code with the Ada extension from AdaCore. The tricky part of using these tools is
+ensuring they are run in an appropriate environment so they can see the Ada compiler you are
+using. To do this, first tell Alire which editor you are using:
 
 \begin{Verbatim}
   alr edit --select-editor
 \end{Verbatim}
 
-\noindent Then, from the root of the crate, run the following command to launch the editor with the
-correct environment:
+\noindent Then, from the root of the crate, run the following command to launch the editor with
+the correct environment:
 
 \begin{Verbatim}
   alr edit
