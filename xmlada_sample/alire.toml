@@ -10,3 +10,6 @@ website = ""
 tags = []
 
 executables = ["xmlada_sample"]
+
+[[depends-on]]
+xmlada = "^25.0.0"

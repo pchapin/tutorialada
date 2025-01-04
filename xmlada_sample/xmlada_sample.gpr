@@ -8,7 +8,8 @@ project Xmlada_Sample is
    for Main use ("xmlada_sample.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use Xmlada_Sample_Config.Ada_Compiler_Switches;
+      for Default_Switches ("Ada") use Xmlada_Sample_Config.Ada_Compiler_Switches &
+         ("-gnatyM96");
    end Compiler;
 
    package Binder is
