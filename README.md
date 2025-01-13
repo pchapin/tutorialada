@@ -29,7 +29,12 @@ To run the samples, install the latest version of [Alire](https://alire.ada.dev/
 instructions can be found in the ``Hello, Ada`` section of the tutorial.
 
 What follows is a brief description of the samples. See the README files in the individual
-sample folders for more information.
+sample folders for more information. To run each sample, change to the directory containing
+the sample and do `alr run`.
+
+If you want to edit the samples, install [Visual Studio Code](https://code.visualstudio.com/),
+along with the Ada extension from AdaCore. Use the command `alr edit` in each sample folder to
+start VS Code on that sample.
 
 * `ASIS`. The ASIS library allows you to write analysis programs for Ada without having to
   create your own parser and semantic analyzer. This example program is merely a skeleton.
@@ -58,13 +63,17 @@ sample folders for more information.
 
 * `Tasks`. This program demonstrates using Ada tasks to implement a simple producer/consumer
   application. The program is incomplete.
+  
+* `tutorial_samples`. This program is a collection of unrelated samples, many of which are
+  presented in the text of the tutorial. It is menu-driven so you can pick which sample you want
+  to run.
 
 * `Win32Ada`. This program is intended to demonstrate the Win32Ada library that allows Ada to
   interface directly to the Windows OS. Right now it is little more than a placeholder. A more
   interesting application (again: a graphical version of the Hexdump example?) would be welcome.
   
-* `XMLAda`. This program is nothing more than one of the samples in the XMLAda documentation. A
-  more interesting application would be welcome.
+* `xmlada_sample`. This program is nothing more than one of the samples in the XMLAda
+  documentation. A more interesting application would be welcome.
 
 
 Peter Chapin  

@@ -9,8 +9,8 @@ project Hexdump_Sample is
 
    package Compiler is
       for Default_Switches ("Ada") use Hexdump_Sample_Config.Ada_Compiler_Switches &
-         ("-gnatyM96"  -- Set maximum allowed line lengths to 96 characters.
-         );
+         ("-gnatyM96",  -- Set maximum allowed line lengths to 96 characters.
+          "-gnaty-B");  -- Turn off the boolean operator check.
    end Compiler;
 
    package Binder is

@@ -1,20 +1,15 @@
 ---------------------------------------------------------------------------
--- FILE    : dates-check_dates.adb
--- SUBJECT : Package containing tests of package Dates.
--- AUTHOR  : (C) Copyright 2014 by Peter C. Chapin
+--  FILE    : dates-check_dates.adb
+--  SUBJECT : Package containing tests of package Dates.
 --
--- Please send comments or bug reports to
---
---      Peter C. Chapin <PChapin@vtc.vsc.edu>
 ---------------------------------------------------------------------------
 with AUnit.Assertions; use AUnit.Assertions;
-with Dates;
 
 package body Dates.Check_Dates is
 
-   ---------
-   -- Create
-   ---------
+   ----------
+   --  Create
+   ----------
 
    type Create_Record is
       record
@@ -23,7 +18,7 @@ package body Dates.Check_Dates is
          D      : Day_Type;
       end record;
 
-   Create_Success_Cases : constant array(1 .. 29) of Create_Record :=
+   Create_Success_Cases : constant array (1 .. 29) of Create_Record :=
      ( 1 => (Y => 2000, M =>  1, D =>  1),  -- Check a few boundaries.
        2 => (Y => 2000, M =>  2, D => 29),
        3 => (Y => 2000, M => 12, D => 31),
@@ -54,7 +49,7 @@ package body Dates.Check_Dates is
       28 => (Y => 2004, M => 11, D => 30),
       29 => (Y => 2004, M => 12, D => 31));
 
-   Create_Failure_Cases : constant array(1 .. 9) of Create_Record :=
+   Create_Failure_Cases : constant array (1 .. 9) of Create_Record :=
      ( 1 => (Y => 2000, M =>  2, D => 30),  -- The only failure cases are for over-large days.
        2 => (Y => 2000, M =>  2, D => 31),
        3 => (Y => 2000, M =>  4, D => 31),
@@ -65,28 +60,28 @@ package body Dates.Check_Dates is
        8 => (Y => 2001, M =>  2, D => 30),
        9 => (Y => 2001, M =>  2, D => 31));
 
-   procedure Test_Create(T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Test_Create (T : in out AUnit.Test_Cases.Test_Case'Class) is
       Result : Date;
       Valid  : Boolean;
    begin
       for I in Create_Success_Cases'Range loop
          Create_Date
-           (Create_Success_Cases(I).Y,
-            Create_Success_Cases(I).M,
-            Create_Success_Cases(I).D, Result, Valid);
+           (Create_Success_Cases (I).Y,
+            Create_Success_Cases (I).M,
+            Create_Success_Cases (I).D, Result, Valid);
          Assert
-           (Get_Year(Result)  = Create_Success_Cases(I).Y and
-            Get_Month(Result) = Create_Success_Cases(I).M and
-            Get_Day(Result)   = Create_Success_Cases(I).D and Valid,
+           (Get_Year (Result)  = Create_Success_Cases (I).Y and
+            Get_Month (Result) = Create_Success_Cases (I).M and
+            Get_Day (Result)   = Create_Success_Cases (I).D and Valid,
             "Dates.Create FAILS for case #" & Integer'Image(I));
       end loop;
 
       for I in Create_Failure_Cases'Range loop
          Create_Date
-           (Create_Failure_Cases(I).Y,
-            Create_Failure_Cases(I).M,
-            Create_Failure_Cases(I).D, Result, Valid);
-         Assert(not Valid, "Dates.Create FAILS to fail for case #" & Integer'Image(I));
+           (Create_Failure_Cases (I).Y,
+            Create_Failure_Cases (I).M,
+            Create_Failure_Cases (I).D, Result, Valid);
+         Assert (not Valid, "Dates.Create FAILS to fail for case #" & Integer'Image (I));
       end loop;
    end Test_Create;
 
@@ -101,7 +96,7 @@ package body Dates.Check_Dates is
          Expected : Date;
       end record;
 
-   Advance_Success_Cases : constant array(1 .. 5) of Advance_Record :=
+   Advance_Success_Cases : constant array (1 .. 5) of Advance_Record :=
      (1 => (Start    => (Year => 2000, Month =>  1, Day =>  1),
             Distance => 1,
             Expected => (Year => 2000, Month =>  1, Day =>  2)),
@@ -123,7 +118,7 @@ package body Dates.Check_Dates is
             Expected => (Year => 2000, Month =>  1, Day =>  1))
      );
 
-   Advance_Failure_Cases : constant array(1 .. 4) of Advance_Record :=
+   Advance_Failure_Cases : constant array (1 .. 4) of Advance_Record :=
      (1 => (Start    => (Year => 2099, Month => 12, Day => 31),
             Distance => 1,
             Expected => (Year => 2099, Month => 12, Day => 31)),
@@ -141,39 +136,38 @@ package body Dates.Check_Dates is
             Expected => (Year => 2000, Month =>  1, Day =>  1))
      );
 
-
-   procedure Test_Advance(T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Test_Advance (T : in out AUnit.Test_Cases.Test_Case'Class) is
       Temporary_Date : Date;
       Valid          : Boolean;
    begin
       for I in Advance_Success_Cases'Range loop
-         Temporary_Date := Advance_Success_Cases(I).Start;
-         Advance(Temporary_Date, Advance_Success_Cases(I).Distance, Valid);
+         Temporary_Date := Advance_Success_Cases (I).Start;
+         Advance (Temporary_Date, Advance_Success_Cases (I).Distance, Valid);
          Assert
-           (Temporary_Date = Advance_Success_Cases(I).Expected and Valid,
-            "Dates.Advance FAILS for case #" & Integer'Image(I));
+           (Temporary_Date = Advance_Success_Cases (I).Expected and Valid,
+            "Dates.Advance FAILS for case #" & Integer'Image (I));
       end loop;
 
       for I in Advance_Failure_Cases'Range loop
-         Temporary_Date := Advance_Failure_Cases(I).Start;
-         Advance(Temporary_Date, Advance_Failure_Cases(I).Distance, Valid);
+         Temporary_Date := Advance_Failure_Cases (I).Start;
+         Advance (Temporary_Date, Advance_Failure_Cases (I).Distance, Valid);
          Assert
-           (Temporary_Date = Advance_Failure_Cases(I).Expected and (not Valid),
-            "Dates.Advance FAILS to fail for case #" & Integer'Image(I));
+           (Temporary_Date = Advance_Failure_Cases (I).Expected and (not Valid),
+            "Dates.Advance FAILS to fail for case #" & Integer'Image (I));
       end loop;
    end Test_Advance;
 
-
-   procedure Register_Tests(T : in out Date_Test) is
+   overriding
+   procedure Register_Tests (T : in out Date_Test) is
    begin
-      AUnit.Test_Cases.Registration.Register_Routine(T, Test_Create'Access, "Create");
-      AUnit.Test_Cases.Registration.Register_Routine(T, Test_Advance'Access, "Advance");
+      AUnit.Test_Cases.Registration.Register_Routine (T, Test_Create'Access, "Create");
+      AUnit.Test_Cases.Registration.Register_Routine (T, Test_Advance'Access, "Advance");
    end Register_Tests;
 
-
-   function Name(T : Date_Test) return AUnit.Message_String is
+   overriding
+   function Name (T : Date_Test) return AUnit.Message_String is
    begin
-      return AUnit.Format("Dates");
+      return AUnit.Format ("Dates");
    end Name;
 
 end Dates.Check_Dates;

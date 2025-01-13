@@ -1,14 +1,14 @@
-with "config/huffman_sample_config.gpr";
-project Huffman_Sample is
+with "config/tutorial_samples_config.gpr";
+project Tutorial_Samples is
 
-   for Source_Dirs use ("src/", "config/");
-   for Object_Dir use "obj/" & Huffman_Sample_Config.Build_Profile;
+   for Source_Dirs use ("src/**", "config/");
+   for Object_Dir use "obj/" & Tutorial_Samples_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
-   for Main use ("huffman_sample.adb");
+   for Main use ("tutorial_samples.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use Huffman_Sample_Config.Ada_Compiler_Switches &
+      for Default_Switches ("Ada") use Tutorial_Samples_Config.Ada_Compiler_Switches &
          ("-gnatyM96",  -- Set maximum allowed line lengths to 96 characters.
           "-gnaty-B");  -- Turn off the boolean operator check.
    end Compiler;
@@ -21,4 +21,4 @@ project Huffman_Sample is
       for Artifacts (".") use ("share");
    end Install;
 
-end Huffman_Sample;
+end Tutorial_Samples;

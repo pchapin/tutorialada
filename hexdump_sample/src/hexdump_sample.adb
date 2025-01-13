@@ -37,7 +37,7 @@ procedure Hexdump_Sample is
          --  Print item.
          Item_Count := Item_Count + 1;
          Line_Size  := Line_Size + 1;
-         if Item >= 16#20# and then Item <= 16#7E# then
+         if Item >= 16#20# and Item <= 16#7E# then
             Text_Form (Line_Size) := Character'Val (Item);
          end if;
          Put (Hex.To_String (Item));

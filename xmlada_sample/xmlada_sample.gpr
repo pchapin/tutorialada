@@ -9,7 +9,8 @@ project Xmlada_Sample is
 
    package Compiler is
       for Default_Switches ("Ada") use Xmlada_Sample_Config.Ada_Compiler_Switches &
-         ("-gnatyM96");
+         ("-gnatyM96",  -- Set maximum allowed line lengths to 96 characters.
+          "-gnaty-B");  -- Turn off the boolean operator check.
    end Compiler;
 
    package Binder is
