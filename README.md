@@ -40,10 +40,10 @@ sample folders for more information.
   create your own parser and semantic analyzer. This example program is merely a skeleton.
   (Note: it might be more appropriate to demonstrate libadalang rather than ASIS).
   
-* `Channel`. This program creates a simulated noisy channel and sends random data over that
-  channel using different error detection and correction methods. It is very old code written by
-  me to support a computer communications class I taught many years ago. The program is mature
-  enough to be a little interesting, but it could benefit from more elaboration.
+* `channel_sample`. This program creates a simulated noisy channel and sends random data over
+  that channel using different error detection and correction methods. It is very old code
+  written by me to support a computer communications class I taught many years ago. The program
+  is mature enough to be a little interesting, but it could benefit from more elaboration.
   
 * `gtkada_sample`. This program is intended to demonstrate the GtkAda graphical library. Right
   now it is little more than a placeholder (it displays a single button). A more interesting

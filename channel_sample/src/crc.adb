@@ -1,19 +1,19 @@
 
 package body CRC is
 
-   function Shift_Left(Value : Double_Octet; Count : Natural) return Double_Octet
+   function Shift_Left (Value : Double_Octet; Count : Natural) return Double_Octet
      with
        Import,
        Convention => Intrinsic,
        Global     => null;
 
-   function Shift_Right(Value : Double_Octet; Count : Natural) return Double_Octet
+   function Shift_Right (Value : Double_Octet; Count : Natural) return Double_Octet
      with
        Import,
        Convention => Intrinsic,
        Global     => null;
 
-   CRC_Table : constant array(Double_Octet range 0 .. 255) of Double_Octet :=
+   CRC_Table : constant array (Double_Octet range 0 .. 255) of Double_Octet :=
      (16#0000#, 16#1021#, 16#2042#, 16#3063#, 16#4084#, 16#50a5#, 16#60c6#, 16#70e7#,
       16#8108#, 16#9129#, 16#a14a#, 16#b16b#, 16#c18c#, 16#d1ad#, 16#e1ce#, 16#f1ef#,
       16#1231#, 16#0120#, 16#3273#, 16#2252#, 16#52b5#, 16#4294#, 16#72f7#, 16#62d6#,
@@ -47,21 +47,17 @@ package body CRC is
       16#ef1f#, 16#ff3e#, 16#cf5d#, 16#df7c#, 16#af9b#, 16#bfba#, 16#8fd9#, 16#9ff8#,
       16#6e17#, 16#7e36#, 16#4e55#, 16#5e74#, 16#2e93#, 16#3eb2#, 16#0ed1#, 16#1ef0#);
 
-
-   function CRC_Calculation
-     (Buffer : Octet_Array) return Double_Octet
-   is
+   function CRC_Calculation (Buffer : Octet_Array) return Double_Octet is
       CRC           : Double_Octet := 16#ffff#;
       Buffer_Holder : Double_Octet;
    begin
       for I in Buffer'Range loop
-         Buffer_Holder := Double_Octet(Buffer(I));
-         CRC:= CRC_Table(((Shift_Right(CRC, 8)) xor Buffer_Holder) and 16#ff#) xor
-           (Shift_Left(CRC, 8));
+         Buffer_Holder := Double_Octet (Buffer (I));
+         CRC := CRC_Table (((Shift_Right (CRC, 8)) xor Buffer_Holder) and 16#ff#) xor
+           (Shift_Left (CRC, 8));
       end loop;
       return CRC;
    end CRC_Calculation;
-
 
    function Continuation_CRC_Calculation
      (Buffer : Octet_Array;
@@ -72,9 +68,9 @@ package body CRC is
    begin
       CRC := Seed;
       for I in Buffer'Range loop
-         Buffer_Holder := Double_Octet(Buffer(I));
-         CRC:= CRC_Table(((Shift_Right(CRC, 8)) xor Buffer_Holder) and 16#ff#) xor
-           (Shift_Left(CRC, 8));
+         Buffer_Holder := Double_Octet (Buffer (I));
+         CRC := CRC_Table (((Shift_Right (CRC, 8)) xor Buffer_Holder) and 16#ff#) xor
+           (Shift_Left (CRC, 8));
       end loop;
       return CRC;
    end Continuation_CRC_Calculation;
