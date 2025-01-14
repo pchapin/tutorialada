@@ -69,9 +69,10 @@ sample folders for more information.
   presented in the text of the tutorial. It is menu-driven so you can pick which sample you want
   to run.
 
-* `Win32Ada`. This program is intended to demonstrate the Win32Ada library that allows Ada to
-  interface directly to the Windows OS. Right now it is little more than a placeholder. A more
-  interesting application (again: a graphical version of the Hexdump example?) would be welcome.
+* `win32ada_sample`. This program is intended to demonstrate the Win32Ada library that allows
+  Ada to interface directly to the Windows OS. Right now it is little more than a placeholder. A
+  more interesting application (again: a graphical version of the Hexdump example?) would be
+  welcome. This program is only expected to work on Windows.
   
 * `xmlada_sample`. This program is nothing more than one of the samples in the XMLAda
   documentation. A more interesting application would be welcome.

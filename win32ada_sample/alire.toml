@@ -1,0 +1,15 @@
+name = "win32ada_sample"
+description = "A short program that demonstrates the Win32Ada library."
+version = "0.1.0-dev"
+
+authors = ["Peter Chapin"]
+maintainers = ["Peter Chapin <spicacality@kelseymountain.org>"]
+maintainers-logins = ["pchapin"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["win32ada_sample"]
+
+[[depends-on]]
+win32ada = "^23.0.0"
