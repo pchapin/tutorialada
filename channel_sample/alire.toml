@@ -9,4 +9,4 @@ licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = []
 
-executables = ["channel_sample"]
+executables = ["channel_sample", "channel_test"]
