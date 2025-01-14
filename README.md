@@ -25,16 +25,16 @@ the file `AdaCrash.pdf`. You may have to install some supporting packages into y
 installation. Some TeX installations can do this automatically; others may need manual
 assistance.
 
-To run the samples, install the latest version of [Alire](https://alire.ada.dev/). More detailed
-instructions can be found in the ``Hello, Ada`` section of the tutorial.
-
-What follows is a brief description of the samples. See the README files in the individual
-sample folders for more information. To run each sample, change to the directory containing
-the sample and do `alr run`.
+To run the samples, install the latest version of [Alire](https://alire.ada.dev/), change to the
+folder containing the sample, and do `alr run`. More detailed instructions can be found in the
+`Hello, Ada` section of the tutorial.
 
 If you want to edit the samples, install [Visual Studio Code](https://code.visualstudio.com/),
 along with the Ada extension from AdaCore. Use the command `alr edit` in each sample folder to
 start VS Code on that sample.
+
+What follows is a brief description of the samples. See the README files in the individual
+sample folders for more information.
 
 * `ASIS`. The ASIS library allows you to write analysis programs for Ada without having to
   create your own parser and semantic analyzer. This example program is merely a skeleton.
@@ -45,9 +45,10 @@ start VS Code on that sample.
   me to support a computer communications class I taught many years ago. The program is mature
   enough to be a little interesting, but it could benefit from more elaboration.
   
-* `GtkAda`. This program is intended to demonstrate the GtkAda graphical library. Right now it
-  is little more than a placeholder (it displays a single button). A more interesting
-  application (like a graphical version of the Hexdump example?) would be welcome.
+* `gtkada_sample`. This program is intended to demonstrate the GtkAda graphical library. Right
+  now it is little more than a placeholder (it displays a single button). A more interesting
+  application (like a graphical version of the Hexdump example?) would be welcome. This
+  sample is known to work on Windows. It should be checked on Linux and macOS.
 
 * `hexdump_sample`. This program is a simple command line hex viewer. It displays the contents
   of a file as a sequence of bytes in hex, along with the offset of each byte and its ASCII

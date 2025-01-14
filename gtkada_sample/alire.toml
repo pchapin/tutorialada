@@ -1,0 +1,15 @@
+name = "gtkada_sample"
+description = "A simple program that demonstrates GtkAda"
+version = "0.1.0-dev"
+
+authors = ["Peter Chapin"]
+maintainers = ["Peter Chapin <spicacality@kelseymountain.org>"]
+maintainers-logins = ["pchapin"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["gtkada_sample"]
+
+[[depends-on]]
+gtkada = "^25.0.1"
