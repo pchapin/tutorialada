@@ -62,8 +62,8 @@ sample folders for more information.
 
 * `Networking`. This program demonstrates using Ada to write a simple client/server application.
 
-* `Tasks`. This program demonstrates using Ada tasks to implement a simple producer/consumer
-  application. The program is incomplete.
+* `tasks_sample`. This program demonstrates using Ada tasks to implement a simple
+  producer/consumer application. The program is incomplete.
   
 * `tutorial_samples`. This program is a collection of unrelated samples, many of which are
   presented in the text of the tutorial. It is menu-driven so you can pick which sample you want
