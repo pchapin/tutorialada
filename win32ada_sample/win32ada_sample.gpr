@@ -1,4 +1,6 @@
 with "config/win32ada_sample_config.gpr";
+with "shared.gpr";  -- Needed for Win32Ada.
+
 project Win32ada_Sample is
 
    for Source_Dirs use ("src/", "config/");
@@ -9,7 +11,9 @@ project Win32ada_Sample is
 
    package Compiler is
       for Default_Switches ("Ada") use Win32ada_Sample_Config.Ada_Compiler_Switches &
-         ("-gnatyM96",  -- Set maximum allowed line lengths to 96 characters.
+         (Shared.Prep,  -- Needed for Win32Ada.
+          "-gnateG",    -- Needed for Win32Ada.
+          "-gnatyM96",  -- Set maximum allowed line lengths to 96 characters.
           "-gnaty-B");  -- Turn off the boolean operator check.
    end Compiler;
 

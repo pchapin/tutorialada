@@ -6,7 +6,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C; use Interfaces.C;
 with System;
-with Win32.Windef;
 with Win32.Winuser; use Win32.Winuser;
 
 --  function MessageBox(hWnd      : Win32.Windef.HWND;
@@ -21,8 +20,8 @@ procedure Win32Ada_Sample is
 begin
    Result := MessageBox
       (hWnd      => System.Null_Address,
-       lpText    => Message (0)'Unchecked_Access,
-       lpCaption => Caption (0)'Unchecked_Access,
+       lpText    => Message (0)'Access,
+       lpCaption => Caption (0)'Access,
        uType     => MB_OKCANCEL);
 
    case Result is
