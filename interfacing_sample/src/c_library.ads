@@ -1,18 +1,18 @@
-pragma SPARK_Mode(On);
+pragma SPARK_Mode (On);
 
 with Interfaces.C;
 use  Interfaces;
 
 package C_Library is
 
-   function Sum(X : in C.int; Y : in C.int) return C.int
+   function Sum (X : C.int; Y : C.int) return C.int
      with
        Global => null,
        Import,
        Convention => C,
        External_Name => "sum";
 
-   procedure Print_Int(Value : in C.int)
+   procedure Print_Int (Value : C.int)
      with
        Import,
        Convention => C,
@@ -21,16 +21,15 @@ package C_Library is
    type IntFormat is
       record
          Number    : C.int;
-         Formatted : C.char_array(0 .. 127);
+         Formatted : C.char_array (0 .. 127);
       end record
      with Convention => C;
 
-   procedure Format_Integer(Value : in out IntFormat)
+   procedure Format_Integer (Value : in out IntFormat)
      with
        Global => null,
        Import,
        Convention => C,
        External_Name => "format_integer";
-
 
 end C_Library;

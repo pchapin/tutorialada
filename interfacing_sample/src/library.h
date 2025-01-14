@@ -3,10 +3,10 @@
 #define LIBRARY_H
 
 // Function that adds two integers.
-int sum (int x, int y);
+int sum(int x, int y);
 
 // Function that prints an integer.
-void print_int (int value);
+void print_int(int value);
 
 // This example demonstrates using a structure and a C-style string.
 struct IntFormat

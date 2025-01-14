@@ -66,8 +66,8 @@ sample folders for more detailed and specific information.
 * `huffman_sample`. This program does a Huffman encoding (compression) of the specified input
   file. It also displays some interesting information about the encoding process.
 
-* `Interfacing`. This program demonstrates using Ada to interface to low-level code written in C
-  and to hardware.
+* `interfacing_sample`. This program demonstrates using Ada to interface to low-level code
+  written in C and to hardware.
 
 * `tasks_sample`. This program demonstrates using Ada tasks to implement a simple
   producer/consumer application.
@@ -79,8 +79,7 @@ sample folders for more detailed and specific information.
 * `win32ada_sample`. This program is intended to demonstrate the Win32Ada library that allows
   Ada to interface directly to the Windows OS. Right now it is just a placeholder. A more
   interesting application (again: a graphical version of the Hexdump sample?) would be better.
-  This program is only expected to work on Windows, but currently does not compile due to
-  some issue with Win32Ada.
+  This program is only expected to work on Windows.
   
 * `xmlada_sample`. This program is intended to demonstrate the XMLAda library for processing XML
   documents. Right now it is nothing more than one of the samples in the XMLAda documentation.
