@@ -8,3 +8,4 @@ Chapin
 adb
 Alire
 AdaCore
+AUnit

@@ -34,7 +34,7 @@ along with the Ada extension from AdaCore. Use the command `alr edit` in each sa
 start VS Code on that sample with the environment configured appropriately.
 
 The samples are intended to complement the tutorial by demonstrating Ada in a more realistic
-context than found in typical tutorial examples. The samples are choosen to showcase some aspect
+context than found in typical tutorial examples. The samples are chosen to showcase some aspect
 of Ada or some popular Ada library. They are written in an educational style, meaning they
 contain more documentation about Ada itself than one typically finds in production code. The
 samples are wildly variable in terms of their complexity, scope, and degree of completeness.
@@ -57,7 +57,7 @@ sample folders for more detailed and specific information.
 * `gtkada_sample`. This program is intended to demonstrate the GtkAda graphical library. Right
   now it is little more than a placeholder (it displays a single button). A more interesting
   application (like a graphical version of the Hexdump sample?) would be better. This sample is
-  known to work on Windows, but has not been chacked on macOS or Linux.
+  known to work on Windows, but has not been checked on macOS or Linux.
 
 * `hexdump_sample`. This program is a simple command line hex viewer. It displays the contents
   of a file as a sequence of bytes in hex, along with the offset of each byte and its ASCII

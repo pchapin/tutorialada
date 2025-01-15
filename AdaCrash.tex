@@ -19,6 +19,7 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage{color}
 
 \newcommand{\SPARK}{\textsc{Spark}}   % For ease of small capping SPARK.
 
@@ -52,24 +53,32 @@
 %        xleftmargin=0.25in,
 %        showstringspaces=false}
 
-% Define listing parameters for Ada 2012. Base it on Ada 2005.
-\lstdefinelanguage{Ada2012}[2005]{Ada}
+% Define listing parameters for Ada 2022. Base it on Ada 2005.
+\lstdefinelanguage{Ada2022}[2005]{Ada}
 {
-  morekeywords={some},
+  basicstyle=\small\sffamily,
+  morekeywords={some, parallel},
   sensitive=false,
   breaklines=false,
   showstringspaces=false,
   xleftmargin=0.25in,
-  basicstyle=\small\sffamily,
   columns=flexible,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{magenta}\itshape,
+  stringstyle=\color{red},
 }
-\lstset{language=Ada2012, showlines=true}
+\lstset{
+  language=Ada2022,
+  showlines=true,
+  aboveskip=1em,
+  belowskip=0.5em,
+}
 
 % Wide equivalent of the listings package lstset. The parameter is the amount to indent the code
 % (may be negative).
 %
 \lstnewenvironment{widelisting}[1]
-   {\lstset{language=Ada2012,xleftmargin=#1}}
+   {\lstset{language=Ada2022,xleftmargin=#1}}
    {}
    
 % Wide listing from a file using the Listings package lstinputlisting. First parameter is
@@ -77,7 +86,7 @@
 % be negative).
 %
 \newcommand{\wideinputlisting}[2]{%
-   \lstinputlisting[language=Ada2012,xleftmargin=#2]{#1}}
+   \lstinputlisting[language=Ada2022,xleftmargin=#2]{#1}}
 
 % ------------------
 % Layout adjustments
