@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
---  FILE    : primary_suite.adb
---  SUBJECT : The main test suite of the samples unit test program.
+-- FILE    : primary_suite.adb
+-- SUBJECT : The main test suite of the samples unit test program.
 --
 ---------------------------------------------------------------------------
 with Check_Buffers;
@@ -21,9 +21,9 @@ package body Primary_Suite is
    --  Function to return an access to the configured suite
    function Suite return Access_Test_Suite is
    begin
-      Add_Test (Suite_Object'Access, Test_1'Access);
-      Add_Test (Suite_Object'Access, Test_2'Access);
-      Add_Test (Suite_Object'Access, Test_3'Access);
+      Add_Test(Suite_Object'Access, Test_1'Access);
+      Add_Test(Suite_Object'Access, Test_2'Access);
+      Add_Test(Suite_Object'Access, Test_3'Access);
       return Suite_Object'Access;
    end Suite;
 

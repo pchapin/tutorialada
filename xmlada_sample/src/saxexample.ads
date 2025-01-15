@@ -15,21 +15,21 @@ package SaxExample is
    overriding
    procedure Start_Element
      (Handler       : in out Reader;
-      Namespace_URI : Unicode.CES.Byte_Sequence := "";
-      Local_Name    : Unicode.CES.Byte_Sequence := "";
-      Qname         : Unicode.CES.Byte_Sequence := "";
-      Atts          : Sax.Attributes.Attributes'Class);
+      Namespace_URI : in Unicode.CES.Byte_Sequence := "";
+      Local_Name    : in Unicode.CES.Byte_Sequence := "";
+      Qname         : in Unicode.CES.Byte_Sequence := "";
+      Atts          : in Sax.Attributes.Attributes'Class);
 
    overriding
    procedure End_Element
      (Handler       : in out Reader;
-      Namespace_URI : Unicode.CES.Byte_Sequence := "";
-      Local_Name    : Unicode.CES.Byte_Sequence := "";
-      Qname         : Unicode.CES.Byte_Sequence := "");
+      Namespace_URI : in Unicode.CES.Byte_Sequence := "";
+      Local_Name    : in Unicode.CES.Byte_Sequence := "";
+      Qname         : in Unicode.CES.Byte_Sequence := "");
 
    overriding
    procedure Characters
      (Handler : in out Reader;
-      Ch      : Unicode.CES.Byte_Sequence);
+      Ch      : in Unicode.CES.Byte_Sequence);
 
 end SaxExample;

@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
---  FILE    : channel.ads
---  SUBJECT : Package specification for simulated noisy channel.
+-- FILE    : channel.ads
+-- SUBJECT : Package specification for simulated noisy channel.
 --
 ---------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ package Channel is
    type Octet_Array is array (Natural range <>) of Octet;
 
    procedure Initialize;
-   procedure Error_Rate (New_Rate : Float);
-   procedure Transceive (Data     : in out Octet);
+   procedure Error_Rate(New_Rate : in Float);
+   procedure Transceive(Data     : in out Octet);
 
 end Channel;

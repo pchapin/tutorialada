@@ -2,8 +2,8 @@
 -- FILE    : unconstrained_buffers.ads
 -- SUBJECT : Package providing various buffer manipulating subprograms.
 --
--- A Buffer is essentially a string. However, unlike the Standard.String type, Buffer_Type has subprograms more
--- in keeping with use as a storage area for raw data.
+-- A Buffer is essentially a string. However, unlike the Standard.String type, Buffer_Type has
+-- subprograms more in keeping with use as a storage area for raw data.
 --
 -- This version uses SPARK to prove limited functional correctness.
 ---------------------------------------------------------------------------
@@ -42,7 +42,8 @@ package Unconstrained_Buffers is
             Buffer(I) = Buffer'Old(Buffer'Last - (I - Buffer'First)));
 
    -- Returns the number of occurrences of Ch in Buffer.
-   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type;
+   function Count_Character
+     (Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type;
 
    -- Returns the number of occurrences of Ch in Buffer and replaces those occurrences with ' '.
    procedure Count_And_Erase_Character

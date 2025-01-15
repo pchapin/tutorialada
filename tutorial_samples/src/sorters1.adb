@@ -30,7 +30,6 @@ package body Sorters1 is
       end loop;
    end Bubble_Sort;
 
-
    procedure Selection_Sort(Values : in out Array_Type; Limit  : in Index_Type) is
 
       -- Swaps the values of two components in the array Values.
@@ -65,7 +64,6 @@ package body Sorters1 is
          Swap(Current, Index_Of_Minimum(Starting_At => Current));
       end loop;
    end Selection_Sort;
-
 
    procedure Merge_Sort(Values : in out Array_Type) is
 

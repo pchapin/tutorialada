@@ -35,39 +35,39 @@ begin
    Gtk.Main.Init;
 
    --  Creates a new window
-   Gtk.Window.Gtk_New (Window);
+   Gtk.Window.Gtk_New(Window);
 
    --  When the window is given the "delete_event" signal (this is given by the window manager,
    --  usually by the "close" option, or on the title bar), we ask it to call the Delete_Event
    --  function.
    Return_Handlers.Connect
-     (Window, "delete_event", Return_Handlers.To_Marshaller (Delete_Event'Access));
+     (Window, "delete_event", Return_Handlers.To_Marshaller(Delete_Event'Access));
 
    --  Here we connect the "destroy" event to a signal handler. This event occurs when we call
    --  Gtk.Widget.Destroy on the window, or if we return False in the "delete_event" callback.
-   Handlers.Connect (Window, "destroy", Handlers.To_Marshaller (Destroy'Access));
+   Handlers.Connect(Window, "destroy", Handlers.To_Marshaller(Destroy'Access));
 
    --  Sets the border width of the window.
-   Gtk.Window.Set_Border_Width (Window, 10);
+   Gtk.Window.Set_Border_Width(Window, 10);
 
    --  Creates a new button with the label "Hello World".
-   Gtk_New (Button, "Hello World");
+   Gtk_New(Button, "Hello World");
 
    --  When the button receives the "clicked" signal, it will call the procedure Hello_Callback.
    Handlers.Connect
-     (Button, "clicked", Handlers.To_Marshaller (Hello_Callback'Access));
+     (Button, "clicked", Handlers.To_Marshaller(Hello_Callback'Access));
 
    --  This will cause the window to be destroyed by calling Gtk.Widget.Destroy (Window) when
    --  "clicked". Again, the destroy signal could come from here, or the window manager.
    Handlers.Object_Connect
-     (Button, "clicked", Handlers.To_Marshaller (Destroy'Access), Window);
+     (Button, "clicked", Handlers.To_Marshaller(Destroy'Access), Window);
 
    --  This packs the button into the window (a Gtk_Container).
-   Gtk.Window.Add (Window, Button);
+   Gtk.Window.Add(Window, Button);
 
    --  The final step is to display this newly created widget and window.
-   Show (Button);
-   Show (Window);
+   Show(Button);
+   Show(Window);
 
    --  All GtkAda applications must have a Main. Control ends here and waits for an event to
    --  occur (like a key press or mouse event).

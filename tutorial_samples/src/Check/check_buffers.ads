@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
---  FILE    : check_buffers.ads
---  SUBJECT : Package containing tests of package Buffers.
+-- FILE    : check_buffers.ads
+-- SUBJECT : Package containing tests of package Buffers.
 --
 ---------------------------------------------------------------------------
 with AUnit;

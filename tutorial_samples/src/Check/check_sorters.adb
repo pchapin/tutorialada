@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
---  FILE    : check_sorters.adb
---  SUBJECT : Package containing tests of package Sorters.
+-- FILE    : check_sorters.adb
+-- SUBJECT : Package containing tests of package Sorters.
 --
 ---------------------------------------------------------------------------
 with AUnit.Assertions; use AUnit.Assertions;
@@ -33,45 +33,45 @@ package body Check_Sorters is
              Expected_Output => ( 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1))
      );
 
-   procedure Test_Selection_Sort (T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Test_Selection_Sort(T : in out AUnit.Test_Cases.Test_Case'Class) is
       Workspace : Sorters1.Array_Type;
    begin
       for I in Sort_Cases'Range loop
-         Workspace := Sort_Cases (I).Input;
-         --  TODO: Try a few cases where Limit /= Workspace'Last.
-         Sorters1.Selection_Sort (Workspace, Workspace'Last);
+         Workspace := Sort_Cases(I).Input;
+         -- TODO: Try a few cases where Limit /= Workspace'Last.
+         Sorters1.Selection_Sort(Workspace, Workspace'Last);
          Assert
-           (Workspace = Sort_Cases (I).Expected_Output,
-            "Sorters1.Selection_Sort FAILS for case #" & Integer'Image (I));
+           (Workspace = Sort_Cases(I).Expected_Output,
+            "Sorters1.Selection_Sort FAILS for case #" & Integer'Image(I));
       end loop;
    end Test_Selection_Sort;
 
-   procedure Test_Bubble_Sort (T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Test_Bubble_Sort(T : in out AUnit.Test_Cases.Test_Case'Class) is
       Workspace : Sorters1.Array_Type;
    begin
       for I in Sort_Cases'Range loop
-         Workspace := Sort_Cases (I).Input;
+         Workspace := Sort_Cases(I).Input;
          Sorters1.Bubble_Sort (Workspace);
          Assert
-           (Workspace = Sort_Cases (I).Expected_Output,
-            "Sorters1.Bubble_Sort FAILS for case #" & Integer'Image (I));
+           (Workspace = Sort_Cases(I).Expected_Output,
+            "Sorters1.Bubble_Sort FAILS for case #" & Integer'Image(I));
       end loop;
    end Test_Bubble_Sort;
 
-   procedure Test_Merge_Sort (T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Test_Merge_Sort(T : in out AUnit.Test_Cases.Test_Case'Class) is
       Workspace : Sorters1.Array_Type;
    begin
       for I in Sort_Cases'Range loop
-         Workspace := Sort_Cases (I).Input;
-         Sorters1.Merge_Sort (Workspace);
+         Workspace := Sort_Cases(I).Input;
+         Sorters1.Merge_Sort(Workspace);
          Assert
-           (Workspace = Sort_Cases (I).Expected_Output,
-            "Sorters1.Merge_Sort FAILS for case #" & Integer'Image (I));
+           (Workspace = Sort_Cases(I).Expected_Output,
+            "Sorters1.Merge_Sort FAILS for case #" & Integer'Image(I));
       end loop;
    end Test_Merge_Sort;
 
    overriding
-   procedure Register_Tests (T : in out Sort_Test) is
+   procedure Register_Tests(T : in out Sort_Test) is
    begin
       AUnit.Test_Cases.Registration.Register_Routine
         (T, Test_Selection_Sort'Access, "Selection_Sort");
@@ -84,9 +84,9 @@ package body Check_Sorters is
    end Register_Tests;
 
    overriding
-   function Name (T : Sort_Test) return AUnit.Message_String is
+   function Name(T : Sort_Test) return AUnit.Message_String is
    begin
-      return AUnit.Format ("Sorters1");
+      return AUnit.Format("Sorters1");
    end Name;
 
 end Check_Sorters;

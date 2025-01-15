@@ -22,7 +22,7 @@ Generator_Matrix	DB	0F8h, 0C7h, 0B6h, 06Dh, 01Bh
 
 		CSEG
 
-function Hamming_Encode(Data_Byte : IN Integer) RETURN Integer is
+function Hamming_Encode(Data_Byte : in Integer) return Integer is
 
 		-- Set up stack frame.
 		push	bp

@@ -10,14 +10,14 @@ procedure Tasks_Sample is
    Number   : Natural;
    Is_Prime : Boolean;
 begin
-   Put ("Enter an integer: ");
-   Get (Number);
+   Put("Enter an integer: ");
+   Get(Number);
 
-   Task_Demo.Check_Prime (N => Number, Result => Is_Prime);
+   Task_Demo.Check_Prime(N => Number, Result => Is_Prime);
    if Is_Prime then
-      Put_Line ("It is prime.");
+      Put_Line("It is prime.");
    else
-      Put_Line ("It is not prime.");
+      Put_Line("It is not prime.");
    end if;
 
 end Tasks_Sample;

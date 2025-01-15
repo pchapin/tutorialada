@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
---  FILE      : hello.adb
---  SUBJECT   : Demonstration of Win32Ada.
+-- FILE      : hello.adb
+-- SUBJECT   : Demonstration of Win32Ada.
 --
 ---------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
@@ -15,24 +15,24 @@ with Win32.Winuser; use Win32.Winuser;
 
 procedure Win32Ada_Sample is
    Result  : Win32.INT;
-   Message : char_array := To_C ("Hello, World!");
-   Caption : char_array := To_C ("Win32Ada");
+   Message : char_array := To_C("Hello, World!");
+   Caption : char_array := To_C("Win32Ada");
 begin
    Result := MessageBox
       (hWnd      => System.Null_Address,
-       lpText    => Message (0)'Access,
-       lpCaption => Caption (0)'Access,
+       lpText    => Message(0)'Access,
+       lpCaption => Caption(0)'Access,
        uType     => MB_OKCANCEL);
 
    case Result is
       when IDCANCEL =>
-         Put_Line ("You pressed 'Cancel'");
+         Put_Line("You pressed 'Cancel'");
 
       when IDOK =>
-         Put_Line ("You pressed 'OK'");
+         Put_Line("You pressed 'OK'");
 
       when others =>
-         Put_Line ("You pressed something, but I don't know what.");
+         Put_Line("You pressed something, but I don't know what.");
    end case;
 
 end Win32Ada_Sample;

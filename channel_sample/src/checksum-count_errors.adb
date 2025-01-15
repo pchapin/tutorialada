@@ -1,7 +1,7 @@
 
-separate (Checksum)
+separate(Checksum)
 
-function Count_Errors (Original : Block; Perverted : Block) return Integer is
+function Count_Errors(Original : in Block; Perverted : in Block) return Integer is
    Bad_Bits   : Integer := 0;
    Error_Byte : Channel.Octet;
 
@@ -10,7 +10,7 @@ function Count_Errors (Original : Block; Perverted : Block) return Integer is
 begin
 
    for I in Block'Range loop
-      Error_Byte := Original (I) xor Perverted (I);
+      Error_Byte := Original(I) xor Perverted(I);
       if Error_Byte /= 0 then
 
          for Bit_Number in 0 .. 7 loop

@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
---  FILE    : primary_suite.ads
---  SUBJECT : The main test suite of the samples unit test program.
+-- FILE    : primary_suite.ads
+-- SUBJECT : The main test suite of the samples unit test program.
 --
 ---------------------------------------------------------------------------
 with AUnit.Test_Suites;
