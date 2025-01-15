@@ -9,3 +9,8 @@ adb
 Alire
 AdaCore
 AUnit
+pragma
+Pragmas
+pragmas
+deallocate
+Deallocation

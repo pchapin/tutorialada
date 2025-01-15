@@ -13,7 +13,7 @@ Workspace : array(1 .. 1024) of Character;
 
 In fact, you can define arrays using any discrete subtype for the index. Recall that |1 .. 1024|
 is really an abbreviation for an integer subtype specification. It is not possible to access an
-array out of bounds for exactly the same reason it's not possible to store an out of bounds
+array out of bounds for exactly the same reason it's not possible to store an out-of-bounds
 value into a variable. The compiler raises the |Constraint_Error| exception in precisely the
 same way.
 
@@ -57,7 +57,7 @@ This example illustrates several important features.
   step. The compiler deduces the type of the aggregate from its context.
 
 \item Notice that in the preceding example the same subtype is used for both the loop index
-  variable and the array index. This is a common situation and it means the compiler can
+  variable and the array index. This is a common situation, and it means the compiler can
   optimize out the run time checks normally required when accessing an array element. Since the
   value of |Day| can't possibly be outside the range of allowed array indexes, there is no need
   to check that |Work_Hours(Day)| is in bounds.
@@ -72,10 +72,10 @@ illustrates:
 
 \begin{lstlisting}
 procedure Example is
-  type Buffer_Type is array(0..1023) of Character;
+  type Buffer_Type is array(0 .. 1023) of Character;
   B1 : Buffer_Type;
   B2 : Buffer_Type;
-  B3 : array(0..1023) of Character;
+  B3 : array(0 .. 1023) of Character;
 begin
   B1 := B2;  -- Fine. Entire array assigned.
   B1 := B3;  -- Error. Types don't match. B3 has anonymous type.
@@ -83,7 +83,7 @@ end Example;
 \end{lstlisting}
 
 Because subtypes are defined dynamically the size and bounds of an array can also be defined
-dynamically. For example a declaration such as |A : array(1..N) of Natural| is allowed even if
+dynamically. For example a declaration such as |A : array(1 .. N) of Natural| is allowed even if
 the value of |N| is not known at compile time. For example, it could be a subprogram parameter.
 This feature means that many places where dynamic allocation is necessary in, for example, C++
 can be handled in Ada without the use of explicit memory allocators.\footnote{In fairness, C++
@@ -97,17 +97,17 @@ procedure that takes an array of unknown size. Arrays of different sizes have di
 and strong typing will prevent them from being mixed. To get around this problem Ada has the
 concept of unconstrained array types. Such a type does not specify the bounds on the array as
 part of the type, allowing arrays with different bounds to be in the same type. However, the
-bounds must be specified when an actual array object is declared so the compiler knows how much
+bounds must be specified when an actual array object is declared, so the compiler knows how much
 memory to allocate for the object. The following example illustrates:
 
 \begin{lstlisting}
 procedure Unconstrained_Array_Example is
   type Buffer_Type is array(Integer range <>) of Character;
   B1 : Buffer_Type;  -- Error. Must specify array bounds.
-  B2 : Buffer_Type( 0..15);  -- Okay.
-  B3 : Buffer_Type( 0..15);
-  B4 : Buffer_Type(16..31);  -- Fine.
-  B5 : Buffer_Type( 0..63);  -- No problem.
+  B2 : Buffer_Type( 0 .. 15);  -- Okay.
+  B3 : Buffer_Type( 0 .. 15);
+  B4 : Buffer_Type(16 .. 31);  -- Fine.
+  B5 : Buffer_Type( 0 .. 63);  -- No problem.
 
   procedure Process_Buffer(Buffer : in Buffer_Type) is
   begin
@@ -142,16 +142,16 @@ Again there are several points to make about this example.
   index type mentioned in the array declaration.
 
 \item It is fine to declare a subprogram, such as |Process_Buffer|, taking an unconstrained
-  array type as an parameter. However, such a subprogram can't safely access the elements of the
+  array type as a parameter. However, such a subprogram can't safely access the elements of the
   given array using specific index values like 1 or 2 because those values might not be legal
-  for the array. Instead you need to use special array attributes. For example, |Buffer'First|
+  for the array. Instead, you need to use special array attributes. For example, |Buffer'First|
   is the first index value that is valid for array |Buffer|, and similarly for
-  |Buffer'Last|.\footnote{These attributes only return valid indexes if the array has a non-zero
+  |Buffer'Last|\footnote{These attributes only return valid indexes if the array has a non-zero
     length}. The attribute |Range| is shorthand for |Buffer'First .. Buffer'Last| and is quite
   useful in for loops as the example illustrates.
 
 \item You might find it surprising that the assignment |B2 := B4| is legal since the array
-  bounds do not match. However, the two arrays have the same length so corresponding elements of
+  bounds do not match. However, the two arrays have the same length, so corresponding elements of
   the arrays are assigned. This is called \newterm{sliding semantics} because you can imagine
   sliding one array over until the bounds do match.
 

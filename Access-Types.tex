@@ -2,7 +2,7 @@
 
 Ada, like many languages, allows you to create objects that refer to other objects. It also
 allows you to create objects that have a lifetime extending beyond that of the scope in which
-they are created. Both of these capabilities are important and many programming techniques
+they are created. Both of these capabilities are important, and many programming techniques
 depend on them. C and C++ allow the programmer to use arbitrary pointers, implemented as simple
 memory addresses, in any way desired. While this is very powerful, it is also very dangerous. C
 and C++ programs suffer from many bugs and security vulnerabilities related to the unrestricted
@@ -78,9 +78,9 @@ D1.all := D2.all; -- Copies Date objects.
 
 In this case the |.all| syntax is very natural. It shows that you are accessing all the members
 of the referenced object at the same time. It is important to notice that Ada normally
-``forwards'' operations applied to the access variable to the referenced object. Thus |D1.Day|
+``forwards'' operations applied to the access variable to the referenced object. Thus, |D1.Day|
 in the example means the |Day| component of the object pointed at by |D1|. Only operations that
-are meaningful for the access type itself are not forwarded. Thus |D1 := D2| copies the access
+are meaningful for the access type itself are not forwarded. Thus, |D1 := D2| copies the access
 values. To copy the objects pointed at by the access variables one must use the |.all| syntax. I
 should also note that syntax such as |D1.all.Day|, while verbose, is also legal. The |.all|
 dereferences |D1|. The result is a date record so the selection of the |Day| component is
@@ -135,11 +135,11 @@ not required to do so. This may seem surprisingly wishy-washy for a language tha
 support reliable and portable programming. The problem is that Ada also endeavors to support low
 level embedded systems and real time programming. In such environments garbage collection is
 widely considered problematic. It is difficult to meet real time objectives if a complex garbage
-collection algorithm might run at any time. Also the space overhead of having a garbage
+collection algorithm might run at any time. Also, the space overhead of having a garbage
 collector in the run time system might be unacceptable for space constrained embedded devices.
 Advances in garbage collection technology and machine capabilities have made some of these
 concerns less pressing today than they were when Ada was first designed. However, these matters
-are still important. Thus Ada allows, but does not require garbage collection.
+are still important. Thus, Ada allows, but does not require garbage collection.
 
 It is important to note that Ada programs do not need to make as much use of heap allocation as
 is often the case with other languages. For example, it is possible in Ada to specify the bounds
@@ -151,7 +151,7 @@ even with that restriction.
 However, when allocators are needed, the optional nature of garbage collection in Ada presents
 an immediate problem for programmers interested in portability. If the implementation does not
 collect its garbage and the programmer takes no steps to manually reclaim allocated objects, the
-program will leak memory. This is a disaster for long running programs like servers. Thus for
+program will leak memory. This is a disaster for long-running programs like servers. Thus, for
 maximum portability one must assume that garbage collection is not done and take steps
 accordingly. In fact, most Ada implementations do not provide garbage collection, so this is a
 very realistic concern.
@@ -162,13 +162,13 @@ manually deallocate a dynamically allocated object. Unfortunately the use of
 provides. In particular, if you deallocate an object while an access variable still points at
 it, any further use of that access variable will result in erroneous behavior. As a service
 |Unchecked_Deallocation| will set the access variable you give it to |null| causing future use
-of that access variable to result in a well defined exception. However, there might be other
+of that access variable to result in a well-defined exception. However, there might be other
 access variables that point at the same object and |Unchecked_Deallocation| cannot, in general,
 know about all of them.
 
 If your program never uses |Unchecked_Deallocation| then all access variables are either |null|
 or point at a real object; dangling pointers are impossible. However, your program might also
-leak memory if the Ada implementation does not provide garbage collection. Thus in most real
+leak memory if the Ada implementation does not provide garbage collection. Thus, in most real
 programs |Unchecked_Deallocation| is used.
 
 This is an example of where Ada compromises safety for the sake of practical reality. In fact,

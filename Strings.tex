@@ -15,9 +15,9 @@ that the smallest index available is 1. Any time a string is created, its index 
 to be provided, either explicitly or implicitly.
 
 \begin{lstlisting}
-Buffer   : String(1..32);     -- A buffer of 32 characters
-Message  : String := "ABCDE"; -- Constrained by initializer to (1..5)
-Message2 : String := Message & Message; -- Constrained by initializer to (1..10)
+Buffer   : String(1 .. 32);   -- A buffer of 32 characters
+Message  : String := "ABCDE"; -- Constrained by initializer to (1 .. 5)
+Message2 : String := Message & Message; -- Constrained by initializer to (1 .. 10)
 \end{lstlisting}
 
 One important distinction between Ada's |String| type and strings found in other languages is
@@ -28,13 +28,13 @@ string.
 
 It is common to want to work with a portion of a string. Fortunately this can easily be done
 using array slices. Since the |String| type is just an array of characters, techniques that
-apply to any array (e. g., slicing, concatenation) also work for strings.
+apply to any array (e.g., slicing, concatenation) also work for strings.
 
 \begin{lstlisting}
 -- Using the Message variable declared earlier.
-Put_Line(Message);                       -- Prints "ABCDE"
-Put_Line(Message(2..4));                 -- Prints "BCD"
-Put_Line(Message(1..2) & Message(4..5)); -- Prints "ABDE"
+Put_Line(Message);                           -- Prints "ABCDE"
+Put_Line(Message(2 .. 4));                   -- Prints "BCD"
+Put_Line(Message(1 .. 2) & Message(4 .. 5)); -- Prints "ABDE"
 \end{lstlisting}
 
 \noindent Note the use of the |&| operator, which is used to concatenate arrays in Ada and
@@ -56,15 +56,15 @@ with Ada.Text_Io; use Ada.Text_Io;
 procedure String_Reverse is
 
    -- A naive implementation that assumes string indices start at 1.
-   procedure naive_reverse_print(S: String) is
+   procedure Naive_Reverse_Print(S : String) is
    begin
       for I in reverse 1 .. S'Length loop
          Put(S(I));
       end loop;
-   end naive_reverse_print;
+   end Naive_Reverse_Print;
 
    -- A better implementation that makes no assumptions about the string.
-   procedure Reverse_Print(S: String) is
+   procedure Reverse_Print(S : String) is
    begin
       for I in reverse S'Range loop
          Put(S(I));
@@ -73,21 +73,21 @@ procedure String_Reverse is
 
    Message : String := "ABCDE";
 begin
-   Naive_Reverse_Print(Message); -- Prints EDCBA
+   Naive_Reverse_Print(Message);   -- Prints EDCBA
    New_Line;
-   --Naive_Reverse_Print(Message(3..5)); -- Contraint error if uncommented
+   --Naive_Reverse_Print(Message(3 .. 5)); -- Constraint error if uncommented
    New_Line;
-   Reverse_Print(Message); -- Prints EDCBA
+   Reverse_Print(Message);         -- Prints EDCBA
    New_Line;
-   Reverse_Print(Message(3..5)); -- Prints EDC
+   Reverse_Print(Message(3 .. 5)); -- Prints EDC
    New_Line;
 end String_Reverse;   
 \end{lstlisting}    
 \end{figure}
 
 
-Because Ada's String type is simply an array of Characters, all of the useful attributes for
-using arrays are available:
+Because Ada's String type is simply an array of Characters, all the useful attributes for using
+arrays are available:
 
 \emph{MyString'First} gives the First valid index.
 
@@ -97,7 +97,7 @@ using arrays are available:
 loops that index the entire array.
 
 \emph{MyString'Length} gives the length of the string. Do not use the length attribute to
-calculate an index. Always use 'First or 'Last instead.
+calculate an index. Always use |'First| or |'Last| instead.
 \\\\ % Force linebreak.
 There are also various helper procedures and functions available in the package
 |Ada.Strings.Fixed|, such as:
@@ -123,8 +123,9 @@ separate variable to keep track of the last valid index; Ada's built-in procedur
 method.
 
 If we want to read a string from the user, assuming we already have declared:
+
 \begin{lstlisting}
-Buffer : String(1..32);
+Buffer : String(1 .. 32);
 \end{lstlisting}
 
 \noindent We will also need to declare:
@@ -153,7 +154,7 @@ characters were input before ENTER was pressed).
 If the program needs to print out the data we read in earlier, the code might look like:
 
 \begin{lstlisting}
-Put_Line(Buffer(1..Buffer_Last));
+Put_Line(Buffer(1 .. Buffer_Last));
 \end{lstlisting}
 
 \noindent Here it is OK to assume the string |Buffer| starts at 1 because we can see where it is
@@ -161,13 +162,13 @@ declared. If |Buffer_Last| is a 0, because nothing was entered before the ENTER 
 resulting code will be:
 
 \begin{lstlisting}
-Put_Line(Buffer(1..0));
+Put_Line(Buffer(1 .. 0));
 \end{lstlisting}
 
 \noindent This results in an empty string (a valid string with no characters in it) that
 |Put_Line| happily prints to the screen by printing no characters and moving to the next
 line. Ada will always give you an empty array when the range for a slice has a starting point
-higher then the ending point, and this works for strings as well.
+higher than the ending point, and this works for strings as well.
 
 Ada's fixed strings are fast and efficient, but can be inconvenient to use for data of unknown
 size. They also are not easy to use for appending new data on to the end of an existing string
@@ -233,7 +234,7 @@ floating point, and even enumeration types. Ada has a built-in facility for doin
 do need to be careful because it may throw an exception if the text in the string does not look
 like the type of thing you are trying to convert it to.
 
-For all of Ada's basic types (including ones you create,) there is a |'Value| attribute that
+For all of Ada's basic types (including ones you create), there is a |'Value| attribute that
 accepts a string and returns an item of that type. Using it might look like:
 
 \begin{lstlisting}
@@ -270,7 +271,7 @@ type. Listing~\ref{lst:io-program} shows an example using a newly declared type.
 with Ada.Text_IO;
 procedure IO_Example is
    -- Create my own type.
-   type Channel is new Natural range 1..13;
+   type Channel is new Natural range 1 .. 13;
 
    -- Instantiate a version of Integer_IO for the Channel type.
    package Channel_IO is new Ada.Text_IO.Integer_IO(Channel);
@@ -292,7 +293,7 @@ end IO_Example;
 \end{figure}
 
 The advantage to instantiating one of the IO packages for each of your custom types is that the
-compiler will guarantee that the input converts to a valid value (eg. is within a range
+compiler will guarantee that the input converts to a valid value (i.e., is within a range
 specified in the type definition) or will throw a |Data_Error| exception. One minor annoyance is
 that there is no |put_line| procedure in these generic packages. This means you will need to use
 |New_Line| from |Ada.Text_IO| if you want to print a value and move to the next line, as shown

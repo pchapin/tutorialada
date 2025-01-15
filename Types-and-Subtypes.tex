@@ -4,7 +4,7 @@ In the examples so far you have seen the built-in types |Integer| and |Character
 a type |Float| for floating point values and a type |Boolean| for true/false values. These types
 are similar to their counterparts in other programming languages. However, it may surprise you
 to learn that, with the possible exception of |Boolean|, these built-in types are often not used
-directly. Instead Ada encourages you to define types that reflect your problem domain and then
+directly. Instead, Ada encourages you to define types that reflect your problem domain and then
 use your types throughout your program. There is nothing new about this idea; many languages
 support some mechanism for creating user defined types. However, in Ada it is possible to create
 even user defined integer, floating point, and character types---a feature many languages do not
@@ -13,7 +13,7 @@ support.
 To explore this idea further, I will start by introducing Ada's \newterm{strong typing}. There
 is no precise definition of this term, but for our purposes we will say that a strongly typed
 language is one which does very few, if any, implicit type conversions. Unlike C, for example,
-Ada will not convert integers to floating point values or vice-versa without explicit
+Ada will not convert integers to floating point values or vice versa without explicit
 instruction from the programmer. The example procedure in Listing~\ref{lst:strong-typing}
 illustrates the effect.
 
@@ -48,7 +48,7 @@ promotes software reliability.
 
 By creating a new type for each logically distinct set of values in your program, you enable the
 compiler to find logical errors that it might otherwise miss. For example, suppose you are
-working on a program that manipulates a two dimensional array of graphical pixels. Instead of
+working on a program that manipulates a two-dimensional array of graphical pixels. Instead of
 using |Integer| to represent pixel coordinates you might define separate types as follows:
 
 \begin{lstlisting}
@@ -142,7 +142,7 @@ must support is |Integer|. The number of bits used by type |Integer| is implemen
 and varies from compiler to compiler. Most compilers support additional, non-standard integer
 types such as |Long_Integer| and |Long_Long_Integer|. However, the names of these additional
 types, and even their existence, varies from compiler to compiler. Rather than deal with this
-complexity directly you can just specify the range of values you desire and the compiler will
+complexity directly you can just specify the range of values you desire, and the compiler will
 select the most appropriate underlying type. For example
 
 \begin{lstlisting}
@@ -158,7 +158,7 @@ to improve their readability.
 
 Ada also allows you to define \newterm{modular types}. These types are unsigned and have
 ``wrap-around'' semantics. Incrementing beyond the end of an ordinary type causes an exception,
-but incrementing beyond the end of a modular type wraps around to zero. In addition the
+but incrementing beyond the end of a modular type wraps around to zero. In addition, the
 operators |not|, |and|, |or|, and |xor| can be used on modular types to do bitwise manipulation.
 The following listing demonstrates this:
 
@@ -179,8 +179,8 @@ manipulation is good.
 
 \subsection{Enumeration Types}
 
-In many cases you want to define a type that has only a small number of allowed values and you
-want to name those values abstractly. For example, the definition
+In many cases you want to define a type that has only a few allowed values, and you want to name
+those values abstractly. For example, the definition
 
 \begin{lstlisting}
 type Day_Type is (Sun, Mon, Tue, Wed, Thu, Fri, Sat);
@@ -230,9 +230,9 @@ allowed value. Some attributes behave like functions. For example |Day_Type'Succ
 |Mon|, the successor of |Sun| in the |Day_Type| enumeration. There is also a |Pred| attribute
 for finding the predecessor value.
 
-In addition there is a |Pos| attribute that returns the integer position of a particular
+In addition, there is a |Pos| attribute that returns the integer position of a particular
 enumerator and a |Val| attribute that does the reverse. For example |Day_Type'Pos(Mon)| is one
-(the position values start at zero) and |Day_Type'Val(1)| is |Mon|. Ada defines many attributes
+(the position values start at zero) and |Day_Type'Val(1)| is |Mon|. Ada defines many attributes,
 and we will see others later in this tutorial.
 
 Ranges of discrete types can be defined in a uniform way and used, for example, as cases in
@@ -251,7 +251,7 @@ end loop;
 \noindent Notice that despite Ada's full coverage rules it is not necessary to specify a case
 for |Sat|. This is because the compiler can see |Day| is limited to |Sun .. Fri| and thus will
 never take on the value |Sat|. It is an Ada rule that the loop parameter variable of a |for|
-loop can not be modified inside the loop so there is no possibility of the programmer setting
+loop can not be modified inside the loop, so there is no possibility of the programmer setting
 |Day| to |Sat| before the |case| statement is reached.
 
 \subsection{Subtypes}
@@ -293,7 +293,7 @@ In this example a subtype |Interval| is defined in the procedure's declarative p
 variable |X| of type |Interval| is given |Interval|'s first value. Mixing |Interval| and
 |Day_Type| variables in the later assignment statements is allowed because they are really both
 of the same type. Because |Interval| is a subtype of |Day_Type| the assignment of |X| to |Day|
-must succeed. Thus the compiler does not need to include any runtime checks on the value of |X|.
+must succeed. Thus, the compiler does not need to include any runtime checks on the value of |X|.
 However, the value of |Day| might be outside the allowed range of the subtype and so the
 compiler will need to insert a runtime check on |Day|'s value before assigning it to |X|. If
 that check fails, the |Constraint_Error| exception is raised. Under no circumstances can an out
@@ -319,7 +319,7 @@ A range such as |1 .. 10| is really an abbreviation for the specification of a s
 Integer range 1 .. 10
 \end{lstlisting}
 
-\noindent Thus a |for| loop header such as |for I in 1 .. 10| is really just an abbreviation for
+\noindent Thus, a |for| loop header such as |for I in 1 .. 10| is really just an abbreviation for
 the more specific |for I in Integer range 1 .. 10|. In general the |for| loop specifies a
 subtype over which the loop index variable ranges. This is why above it was not necessary to
 provide a case for |Sat|. The loop parameter |Day| implicitly declared in the loop header has
@@ -361,7 +361,7 @@ that should never arise. It is also often used for array indexes as you will see
 
 \item Pick a program you've written in some other language and identify the different ways in
   which the integer type is used. If you were to translate your program to Ada, which of those
-  ways would best get new types and which would best be subtypes? Show appropriate type/subtype
+  ways would best get new types, and which would best be subtypes? Show appropriate type/subtype
   definitions.
 \end{enumerate}
 

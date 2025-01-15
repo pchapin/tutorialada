@@ -11,7 +11,7 @@ parameters.
 
 Ada generics are very similar in concept and purpose to C++ templates. Like C++ templates,
 generics are handled entirely at compile time; each instantiation generates code that is
-specialized for the types used to instantiate it. This is different than generics in Java which
+specialized for the types used to instantiate it. This is different from generics in Java which
 are resolved at run time and that use a common code base for all instances. However, Ada
 generics and C++ templates also differ in some important ways. First Ada requires the programmer
 to explicitly instantiate a generic unit using special syntax. In C++ instantiations are done
@@ -25,9 +25,9 @@ easily replicate.
 
 The other major difference between Ada generics and C++ templates is that Ada allows the
 programmer to specify the necessary properties of the types used to instantiate a generic unit.
-In contrast in C++ one only says that the parameter is a type. If a type is used to instantiate
+In contrast, in C++ one only says that the parameter is a type. If a type is used to instantiate
 a template that doesn't make sense, the compiler only realizes that when it is actually doing
-the instantiation. The resulting error messages can be very cryptic. In contrast the Ada
+the instantiation. The resulting error messages can be very cryptic. In contrast, the Ada
 compiler can check before it begins the instantiation if the given types are acceptable. If they
 are not, it can provide a much clearer and more specific error message.
 

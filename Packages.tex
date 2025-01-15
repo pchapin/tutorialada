@@ -27,8 +27,8 @@ as the name of the package. In this case, the file would be \filename{screen.ads
 \begin{lstlisting}
 package Screen is
 
-   type Row_Type is range 1..25;
-   type Column_Type is range 1..80;
+   type Row_Type is range 1 .. 25;
+   type Column_Type is range 1 .. 80;
    type Color_Type is (Black, Red, Green, Blue, White);
 
    procedure Set_Cursor_Position
@@ -58,8 +58,8 @@ needs, for example, types defined in some other package.
 
 The package body, stored in a \filename{.adb} file, contains the implementation of the various
 subprograms declared in the specification. The Ada compiler checks for consistency between the
-specification and the body. You must implement all subprograms declared in the specification and
-you must even use exactly the same names for the parameters to those subprograms. However,
+specification and the body. You must implement all subprograms declared in the specification,
+and you must even use exactly the same names for the parameters to those subprograms. However,
 the body can define types and subprograms that are not declared in the specification. Such
 entities can only be used inside the package body; they are not visible to the users of the
 package. The following example shows an abbreviated version of \filename{screen.adb}:
@@ -132,7 +132,7 @@ begin
 end Example;
 \end{lstlisting}
 
-% TODO: Is this the first time the word "elborate" is used? If so, it should be introduced.
+% TODO: Is this the first time the word "elaborate" is used? If so, it should be introduced.
 
 In this example, an internal variable |Counter| is initialized by calling a function in a
 supporting package |Other|. This initialization is done when the package body is elaborated.
@@ -144,19 +144,18 @@ elaborated in an inappropriate order.
 
 To address this potential problem a pragma is included in the context clause of package
 |Example|'s body. Pragmas are commands to the compiler that control the way the program is
-built. The Ada standard defines a large number of pragmas and implementations are allowed to
-define others. In this case the use of pragma |Elaborate_All| forces the bodies of package
-|Other|, and any packages that package |Other| uses, to be elaborated before the body of package
-|Example|. Note that the |with| clauses will automatically cause the specifications of the
-withed packages to be elaborated first, but not necessarily the bodies. In this case it is
-essential to control the order in which the package bodies are elaborated. Hence the pragma is
-necessary.
+built. The Ada standard defines many pragmas and implementations are allowed to define others.
+In this case the use of pragma |Elaborate_All| forces the bodies of package |Other|, and any
+packages that package |Other| uses, to be elaborated before the body of package |Example|. Note
+that the |with| clauses will automatically cause the specifications of the withed packages to be
+elaborated first, but not necessarily the bodies. In this case it is essential to control the
+order in which the package bodies are elaborated. Hence, the pragma is necessary.
 
 Notice that Ada does not provide any facilities for automatically cleaning up a package when the
 program terminates. If a package has shutdown requirements a procedure must be defined for this
 purpose, and arrangements must be made to call that procedure at an appropriate time. In
 embedded systems, one of the major target application areas for Ada, programs often never end.
-Thus the asymmetric handling of package initialization and cleanup is reasonable in that
+Thus, the asymmetric handling of package initialization and cleanup is reasonable in that
 context. Other programming languages do provide ``module destructors'' of some kind to deal with
 this matter more uniformly.
 
@@ -178,7 +177,7 @@ package.
 
 One might then define some child packages of |Compress|. Suppose that |Compress.Algo| contains
 the compression algorithms and |Compress.Utility| contains utility subprograms that are used by
-the rest of the library but that are not directly related to data compression. Further child
+the rest of the library, but that are not directly related to data compression. Further child
 packages of |Compress.Algo| might be defined for each compression algorithm supported by the
 library. For example, |Compress.Algo.LZW| might provide types and subprograms related to the LZW
 compression algorithm and |Compress.Algo.Huffman| might provide types and subprograms related to
@@ -204,7 +203,7 @@ Clearly a package hierarchy with many levels of child packages will produce very
 the entities contained in those deeply nested packages. This can be awkward, but Ada provides
 two ways to deal with that. You have already met one way: the |use| statement. By including use
 |Compress.Algo.LZW| in the context clause, the contents of that package are made directly
-visible and the long prefixes can be deleted. However, Ada also allows you to rename a package
+visible, and the long prefixes can be deleted. However, Ada also allows you to rename a package
 to something shorter and more convenient. The following example shows how it could look.
 
 \begin{lstlisting}
@@ -230,10 +229,10 @@ Notice that the optimal names to use for entities in a package will depend on ho
 itself is used. In the example above the package |LZW| provides a type |LZW_Engine|. In cases
 (such as shown) where fully qualified names are used the ``LZW'' in the name |LZW_Engine| is
 redundant and distracting. It might make sense to just name the type |Engine| yielding a fully
-qualified name of |Compress.Algo.LZW.Engine|. On the other hand, if use statements are used the
-name |Engine| by itself is rather ambiguous (what kind of engine is that?). In that case it
+qualified name of |Compress.Algo.LZW.Engine|. On the other hand, if |use| statements are used
+the name |Engine| by itself is rather ambiguous (what kind of engine is that?). In that case it
 makes more sense to keep the name |LZW_Engine|. Different programmers have different ideas about
-how much name qualification is appropriate and it leads to differences in the way names are
+how much name qualification is appropriate, and it leads to differences in the way names are
 selected.
 
 The problem is that the programmer who writes a package is often different from the programmer
@@ -256,7 +255,7 @@ end Hello;
 \end{lstlisting}
 
 Notice that while packages and subprograms (and also objects) can be renamed, types can not be
-renamed in this way. Instead you can introduce a subtype without any constraints as a way of
+renamed in this way. Instead, you can introduce a subtype without any constraints as a way of
 effectively renaming a type.
 
 In this simple example, the renaming declarations bulk up the code more than they save. However,

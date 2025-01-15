@@ -4,7 +4,7 @@ Often it is desirable to hide the internal structure of a type from its users. T
 designer of that type to change its internal structure later without affecting the code that
 uses that type. Ada supports this concept by way of private types. A type can be declared as
 private in the visible part of a package specification. Users can then create variables of that
-type and use the built in assignment and equality test operations on that type. All other
+type and use the built-in assignment and equality test operations on that type. All other
 operations, however, must be provided in the package where the type is defined. Subprograms in
 the same package as the type have access to the type's internal representation. The following
 example shows a hypothetical package that provides a type representing calendar dates.
@@ -43,7 +43,7 @@ type, it needs to know how much memory to set aside for such variables. Thus whi
 programmer is forbidden to make use of the private type's internal structure, the compiler needs
 to do so. Note that some programming languages go further than Ada in this regard and move all
 such private information out of the interface definition. However, there is generally an
-execution performance penalty involved in doing this. In Ada it is possible to simulate such a
+execution performance penalty involved in doing this. In Ada, it is possible to simulate such a
 feature using the so called ``pimpl idiom.'' This method involves access types and controlled
 types and so is not described further here.
 
@@ -64,8 +64,8 @@ specified type. This does not mean assignment is impossible; it only means that 
 author must now provide a procedure to do assignment---if support for assignment is desired.
 Presumably that procedure would take whatever steps were necessary to make the assignment work
 properly. Calendar dates are not good candidates to make into a limited type. The component-wise
-assignment of one date to another is exactly the correct way to assign dates. Thus the built in
-record assignment operation is fine. Similar comments apply to the built in test for equality
+assignment of one date to another is exactly the correct way to assign dates. Thus, the built-in
+record assignment operation is fine. Similar comments apply to the built-in test for equality
 operation. However, types that represent resources outside the computer system (for example a
 network connection) can't reasonably be assigned. They should be declared limited private
 instead.

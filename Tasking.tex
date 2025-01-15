@@ -16,7 +16,7 @@ correctly but has reduced overhead as compared to the older style \newterm{proce
 
 In some environments offering thread level concurrency the programmer must invoke subprograms in
 a special library to create and synchronize threads. Such an approach requires relatively little
-support from the programming language but it tends to be error prone. Another approach is to
+support from the programming language, but it tends to be error-prone. Another approach is to
 build support for thread level concurrency into the programming language itself. This allows the
 compiler to take care of the low level details of thread management, freeing the programmer to
 focus on other aspects of the program's design. Ada uses this second approach and supports
@@ -52,12 +52,12 @@ end Main;
 \end{lstlisting}
 
 In this example a task |Nag| is both specified and defined in the declarative part of the main
-program. The task simply prints ``Hello'' one hundred times with a 10 second delay between each
+program. The task simply prints ``Hello'' one hundred times with a 10-second delay between each
 line of output. While the task does this important work, the main program simultaneously
 executes the useful function of the program.
 
 It is important to understand that the task starts executing automatically as soon as the
-enclosing subprogram begins. It is not necessary to explicitly start the task. Furthermore the
+enclosing subprogram begins. It is not necessary to explicitly start the task. Furthermore, the
 enclosing subprogram will not return until the task has completed. Care must be taken to ensure
 that the task eventually ends. If the task never ends the enclosing subprogram will never
 return.
@@ -65,7 +65,7 @@ return.
 Because the task is nested inside another program unit it has access to the local variables and
 other entities declared in the enclosing unit above the task's definition. This gives a way for
 the task to share information with the enclosing unit but beware that sharing data in this
-manner is difficult and error prone. As I will describe shortly Ada provides much more robust
+manner is difficult and error-prone. As I will describe shortly Ada provides much more robust
 ways for tasks to communicate.
 
 The example above shows a task nested inside a procedure. Tasks can also be nested inside
