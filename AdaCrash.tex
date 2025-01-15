@@ -20,6 +20,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{color}
+\usepackage{inconsolata}
 
 \newcommand{\SPARK}{\textsc{Spark}}   % For ease of small capping SPARK.
 
@@ -56,7 +57,8 @@
 % Define listing parameters for Ada 2022. Base it on Ada 2005.
 \lstdefinelanguage{Ada2022}[2005]{Ada}
 {
-  basicstyle=\small\sffamily,
+  %basicstyle=\small\sffamily,
+  basicstyle=\fontsize{10}{11}\selectfont\ttfamily,
   morekeywords={some, parallel},
   sensitive=false,
   breaklines=false,
