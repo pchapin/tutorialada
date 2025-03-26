@@ -30,7 +30,10 @@ package body Buffers1 is
    end Reverse_Buffer;
 
 
-   function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type is
+   function Count_Character
+     (Buffer : in Buffer_Type;
+      Ch     : in Character) return Buffer_Count_Type
+   is
       Count : Buffer_Count_Type := 0;
    begin
       for Index in Buffer_Index_Type loop
@@ -150,7 +153,10 @@ package body Buffers1 is
    end Rotate_Left;
 
 
-   function Count_Substrings(Buffer : in Buffer_Type; Search : in String) return Buffer_Count_Type is
+   function Count_Substrings
+     (Buffer : in Buffer_Type;
+      Search : in String) return Buffer_Count_Type
+   is
    begin
       -- TODO: Finish Me!
       return 0;

@@ -7,6 +7,7 @@ package body Unconstrained_Buffers is
       Buffer := (others => Fill_Character);
    end Fill;
 
+
    procedure Rotate_Right(Buffer : in out Buffer_Type; Distance : in Buffer_Count_Type) is
       Workspace : Buffer_Type(Buffer'Range);
       New_Index : Buffer_Index_Type;
@@ -26,6 +27,7 @@ package body Unconstrained_Buffers is
       Buffer := Workspace;
    end Rotate_Right;
 
+
    procedure Reverse_Buffer(Buffer : in out Buffer_Type) is
       Workspace : Buffer_Type(Buffer'Range) := (others => ' ');
    begin
@@ -39,6 +41,7 @@ package body Unconstrained_Buffers is
       Buffer := Workspace;
    end Reverse_Buffer;
 
+
    function Count_Character(Buffer : in Buffer_Type; Ch : in Character) return Buffer_Count_Type is
       Count : Buffer_Count_Type := 0;
    begin
@@ -51,6 +54,7 @@ package body Unconstrained_Buffers is
       end loop;
       return Count;
    end Count_Character;
+
 
    procedure Count_And_Erase_Character
      (Buffer : in out Buffer_Type;
@@ -74,6 +78,7 @@ package body Unconstrained_Buffers is
          end if;
       end loop;
    end Count_And_Erase_Character;
+
 
    procedure Compact
      (Buffer          : in out Buffer_Type;
@@ -116,6 +121,7 @@ package body Unconstrained_Buffers is
       Buffer := Workspace;
    end Compact;
 
+
    procedure Copy_Into(Buffer : out Buffer_Type; Source : in  String) is
       Characters_To_Copy : constant Buffer_Count_Type :=
         Buffer_Count_Type'Min(Buffer'Length, Source'Length);
@@ -131,6 +137,7 @@ package body Unconstrained_Buffers is
          Buffer(Index) := Source(Source'First + (Index - 1));
       end loop;
    end Copy_Into;
+
 
    procedure Copy_Onto
      (Buffer : in out Buffer_Type;
@@ -157,6 +164,7 @@ package body Unconstrained_Buffers is
          end if;
       end loop;
    end Copy_Onto;
+
 
    procedure Copy_From
      (Buffer      : in     Buffer_Type;
@@ -194,6 +202,7 @@ package body Unconstrained_Buffers is
          Buffer(Buffer'Last) := Temp;
       end loop;
    end Rotate_Left;
+
 
    function Count_Substrings(Buffer : Buffer_Type; Search : String) return Buffer_Count_Type is
       Result    : Buffer_Count_Type := 0;

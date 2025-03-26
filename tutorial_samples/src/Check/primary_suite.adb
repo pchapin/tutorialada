@@ -3,7 +3,7 @@
 -- SUBJECT : The main test suite of the samples unit test program.
 --
 ---------------------------------------------------------------------------
-with Check_Buffers;
+with Check_Unconstrained_Buffers;
 with Dates.Check_Dates;
 with Check_Sorters;
 
@@ -14,7 +14,7 @@ package body Primary_Suite is
    Suite_Object : aliased Test_Suite;
 
    --  The various tests in this suite.
-   Test_1 : aliased Check_Buffers.Buffer_Test;
+   Test_1 : aliased Check_Unconstrained_Buffers.Unconstrained_Buffer_Test;
    Test_2 : aliased Dates.Check_Dates.Date_Test;
    Test_3 : aliased Check_Sorters.Sort_Test;
 

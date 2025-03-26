@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
--- FILE    : check_buffers.adb
--- SUBJECT : Package containing tests of package Buffers.
+-- FILE    : check_unconstrained_buffers.adb
+-- SUBJECT : Package containing tests of package Unconstrained_Buffers.
 --
 ---------------------------------------------------------------------------
 with Ada.Strings.Unbounded;
@@ -11,13 +11,13 @@ use Ada.Strings.Unbounded;
 use AUnit.Assertions;
 use Unconstrained_Buffers;
 
-package body Check_Buffers is
+package body Check_Unconstrained_Buffers is
 
    --------------
    -- Fill_Buffer
    --------------
 
-   procedure Test_Fill (T : in out Test_Case'Class) is
+   procedure Test_Fill(T : in out Test_Case'Class) is
       Buffer1 : Buffer_Type( 1 ..  0);  -- Empty.
       Buffer2 : Buffer_Type( 1 ..  1);  -- Single element.
       Buffer3 : Buffer_Type(10 .. 10);  -- Single element with "unusual" index bounds.
@@ -403,7 +403,7 @@ package body Check_Buffers is
    -- end Test_Substring;
 
    overriding
-   procedure Register_Tests(T : in out Buffer_Test) is
+   procedure Register_Tests(T : in out Unconstrained_Buffer_Test) is
    begin
       Registration.Register_Routine(T, Test_Fill'Access, "Fill");
       Registration.Register_Routine(T, Test_Reverse_Buffer'Access, "Reverse_Buffer");
@@ -419,9 +419,9 @@ package body Check_Buffers is
    end Register_Tests;
 
    overriding
-   function Name(T : Buffer_Test) return AUnit.Message_String is
+   function Name(T : Unconstrained_Buffer_Test) return AUnit.Message_String is
    begin
-      return AUnit.Format("Buffers");
+      return AUnit.Format("Unconstrained Buffers");
    end Name;
 
-end Check_Buffers;
+end Check_Unconstrained_Buffers;
